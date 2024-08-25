@@ -20,22 +20,22 @@ function MultipleItems() {
     <div className="gyms-carousel-div">
       <Slider {...settings} style={{height: 470}}>
         <div>
-            <GymContainer imageLink={gym1} location={"Alexandria Sydney"} phoneNumber={"04 5427 6512"} address="28 Maddox St, Alexandria NSW 2015" addressLink={"https://maps.app.goo.gl/UcY7BxxSXXbswatn8"}/>
+            <GymContainer imageLink={gym1} location={"Alexandria - Sydney"} phoneNumber={"04 5427 6512"} address="28 Maddox St, Alexandria NSW 2015" addressLink={"https://maps.app.goo.gl/UcY7BxxSXXbswatn8"}/>
         </div>
         <div>
-            <GymContainer imageLink={gym2} location={"Windsor Brisbane"} phoneNumber={"04 8365 1932"} address="54 Nicholas St, Windsor QLD 4030" addressLink={"https://maps.app.goo.gl/yY1Jw6N4jH6BhFms6"}/>
+            <GymContainer imageLink={gym2} location={"Windsor - Brisbane"} phoneNumber={"04 8365 1932"} address="54 Nicholas St, Windsor QLD 4030" addressLink={"https://maps.app.goo.gl/yY1Jw6N4jH6BhFms6"}/>
         </div>
         <div>
-            <GymContainer imageLink={gym3} location={"Hadfield Melbourne"} phoneNumber={"04 1934 8273"} address="94 West St, Hadfield VIC 3046" addressLink={"https://maps.app.goo.gl/7rHWpe7dFEm4NurH6"}/>
+            <GymContainer imageLink={gym3} location={"Hadfield - Melbourne"} phoneNumber={"04 1934 8273"} address="94 West St, Hadfield VIC 3046" addressLink={"https://maps.app.goo.gl/7rHWpe7dFEm4NurH6"}/>
         </div>
         <div>
-            <GymContainer imageLink={gym4} location={"Bull Creek Perth"} phoneNumber={"04 9783 2634"} address="9 Benningfield Rd, Bull Creek WA 6149" addressLink={"https://maps.app.goo.gl/iAExf6NFUCJBH2x66"}/>
+            <GymContainer imageLink={gym4} location={"Bull Creek - Perth"} phoneNumber={"04 9783 2634"} address="9 Benningfield Rd, Bull Creek WA 6149" addressLink={"https://maps.app.goo.gl/iAExf6NFUCJBH2x66"}/>
         </div>
         <div>
-            <GymContainer imageLink={gym5} location={"Beverley Adelaide"} phoneNumber={"04 2311 6212"} address="634 Port Rd Beverley SA" addressLink={"https://maps.app.goo.gl/bPmxHx1GvXbvhKKa9"}/>
+            <GymContainer imageLink={gym5} location={"Beverley - Adelaide"} phoneNumber={"04 2311 6212"} address="634 Port Rd Beverley SA" addressLink={"https://maps.app.goo.gl/bPmxHx1GvXbvhKKa9"}/>
         </div>
         <div>
-            <GymContainer imageLink={gym6} location={"Mount Hutton Newcastle"} phoneNumber={"04 2827 3436"} address="16 Wilsons Rd, Mount Hutton NSW 2290" addressLink={"https://maps.app.goo.gl/rf4W6egJLVcbBxRC7"}/>
+            <GymContainer imageLink={gym6} location={"Cardiff - Newcastle"} phoneNumber={"04 2827 3436"} address="20-32 Florence St, Cardiff NSW 2285" addressLink={"https://maps.app.goo.gl/obEXMCMYQ3pBxNyD6"}/>
         </div>
       </Slider>
     </div>
