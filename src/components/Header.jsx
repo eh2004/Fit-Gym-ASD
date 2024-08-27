@@ -18,7 +18,7 @@ function Header() {
             <li className="nav-li"><a href="/src/pages/Progress.html">Progress</a></li>
             <li className="nav-li"><a href="/src/pages/Leaderboard.html">Leaderboard</a></li>
             <li className="nav-li"><a href="">Classes</a></li>
-            <li className="nav-li"><a href="">Trainers</a></li>
+            <li className="nav-li"><a href="/src/pages/Dashboard.html">Trainers</a></li>
             <li><a href=""><img src={profile} id="profile"/></a></li>
             </ul>
         </nav>
