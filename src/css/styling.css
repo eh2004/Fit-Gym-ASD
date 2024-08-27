@@ -67,6 +67,12 @@ nav a {
     padding: 0px;
     margin: 0px;
 }
+
+#logo-image {
+    width: 20%; /* Adjust this percentage to make the image smaller */
+    height: auto; /* Maintains the aspect ratio */
+}
+
 /* ---------- Footer ---------- */
 footer {
     display: flex;

@@ -12,7 +12,7 @@ function Header() {
         <nav>
         <img src={navimg} id="nav-image" />
         <ul className="nav-items-ul">
-            <li className="nav-li" id="logo"><a href="/index.html">Fit Gym<br/><span id="slogan">#1 Imaginary Gym</span></a></li>
+            <li className="nav-li" id="logo"><a href="/index.html"><img src="/src/assets/logo.png" alt="Fit Gym Logo" id="logo-image"/></a></li>
             <li className="nav-li"><a href="/index.html">Home</a></li>
             <li className="nav-li"><a href="/src/pages/AboutUs.html">About</a></li>
             <li className="nav-li"><a href="/src/pages/Progress.html">Progress</a></li>
