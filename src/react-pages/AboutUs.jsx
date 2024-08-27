@@ -5,7 +5,6 @@ import Footer from "../components/Footer.jsx"
 import Carousel from "../components/Carousel.jsx"
 import GymsCarousel from "../components/GymsCarousel.jsx"
 import "../css/styling.css"
-import gym1 from "../assets/gym1.jpg";
 
 function App() {
     return (

@@ -1,5 +1,5 @@
-import React from 'react';
-import profileImage from '../assets/profile.jpeg';
+import React from "react";
+import profileImage from "../assets/profile.jpeg";
 
 function TrainerProfile() {
   return (
