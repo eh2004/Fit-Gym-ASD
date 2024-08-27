@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 
 // import images here
-import IoTBayLogo from "../pages/Images/IoTBay.png";
+import IoTBayLogo from "../pages/Images/FitGym.png";
 
 export default function HardwareHome() {
   const [products, setProducts] = useState([]);
