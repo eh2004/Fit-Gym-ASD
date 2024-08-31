@@ -195,3 +195,58 @@ h1 {
     margin: 0;
     margin-bottom: 10px;
 }
+
+/*----------- Profile Dropdown ------------*/
+ .profile-dropdown {
+    width: 200px;
+    height: 200px;
+    z-index: 2;
+    background-color:  #D9D9D9;
+    position: absolute;
+    right: 0;
+    top: -120px;
+    margin-top: 190px;
+    border-radius: 15px;
+    height: auto;
+    margin-right: 10px;
+    border: 1px solid #888888; 
+    display: none;
+} 
+
+.profile-container:hover .profile-dropdown {
+    display: block;
+}
+
+#profile:hover .profile-dropdown {
+    display: block;
+}
+
+.profile-dropdown a { 
+    text-decoration: none;
+    display: block;
+    color: black;
+    font-weight: normal;
+    letter-spacing: 1px;
+    padding: 10px 0px;
+    padding-left: 10px;
+
+}
+
+.profile-dropdown a:nth-last-of-type(even) {
+    border-top: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+}
+
+.profile-dropdown a:nth-of-type(1):hover {
+    background-color:  #888888;
+    border-radius: 15px 15px 0px 0px;
+}
+
+.profile-dropdown a:nth-last-of-type(1):hover {
+    background-color:  #888888;
+    border-radius: 0px 0px 15px 15px;
+}
+
+.profile-dropdown a:hover {
+    background-color: #888888;
+}
