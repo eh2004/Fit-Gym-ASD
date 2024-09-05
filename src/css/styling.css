@@ -279,7 +279,7 @@ h1 {
     color: white;
 }
 
-thead tr {
+.transactions-table thead tr {
     background-image: linear-gradient(to right, #0139b1 , rgb(155, 0, 216));
 }
 
