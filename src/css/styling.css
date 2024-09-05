@@ -283,8 +283,16 @@ h1 {
     background-image: linear-gradient(to right, #0139b1 , rgb(155, 0, 216));
 }
 
+.transactions-table tbody tr {
+    height: 45px;
+    /* transition: height 2s; */
+    transition: transform .25s, visibility .25s ease-in;
+}
+
 .transactions-table tbody tr:hover {
     background-image: linear-gradient(to right, #6998fd , rgb(230, 161, 255));
+    /* height: 100px; */
+    transform: scale(1.03);
 }
 
 .transactions-table {
