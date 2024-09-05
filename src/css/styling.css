@@ -250,3 +250,55 @@ h1 {
 .profile-dropdown a:hover {
     background-color: #888888;
 }
+
+/*---------------Transaction Table----------------*/
+
+.transactions-table {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 3px 6px;
+}
+
+.transactions-table tbody tr:nth-child(2n + 1) {
+    background-image: linear-gradient(to right, #90b3ff , rgb(237, 193, 253));
+}
+
+.transactions-table tbody tr:nth-child(2n) {
+    background-image: linear-gradient(to right, #a2befa , rgb(240, 208, 252));
+}
+
+.transactions-table td, .transactions-table th {
+    padding: 10px 0px;
+    padding-left: 10px;
+    text-align: left;
+    box-shadow: 0px 3px 3px rgb(175, 175, 175);
+}
+
+.transactions-table th {
+    color: white;
+}
+
+thead tr {
+    background-image: linear-gradient(to right, #0139b1 , rgb(155, 0, 216));
+}
+
+.transactions-table tbody tr:hover {
+    background-image: linear-gradient(to right, #6998fd , rgb(230, 161, 255));
+}
+
+.transactions-table {
+    padding-bottom: 100px;
+}
+
+.transactions-table td:nth-of-type(1), .transactions-table th:nth-of-type(1) {
+    border-radius: 15px 0px 0px 15px;
+}
+
+.transactions-table td:nth-last-of-type(1), .transactions-table th:nth-last-of-type(1) {
+    border-radius: 0px 15px 15px 0px;
+    box-shadow: 5px 3px 3px rgb(175, 175, 175);
+}
+
+
+

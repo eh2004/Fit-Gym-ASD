@@ -8,7 +8,7 @@ function ProfileDropDown() {
     return (
         <div className="profile-dropdown">
             <a href="">Profile</a>
-            <a href="">Transaction History</a>
+            <a href="/src/pages/Transactions.html">Transaction History</a>
             <a href="">Logout</a>
         </div>
     )
