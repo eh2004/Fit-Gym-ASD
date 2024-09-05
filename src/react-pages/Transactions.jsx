@@ -131,11 +131,26 @@ function TransactionsTable() {
     )
 }
 
+function TransactionsSort() {
+    return (
+        <div className="dropdown-container">
+            <button className="dropdown-btn">Sort By</button>
+            <div className="dropdown-list">
+                <button>Date (Newest to Oldest)</button>
+                <button>Date (Oldest to Newest)</button>
+                <button>Amount (Highest to Lowest)</button>
+                <button>Amount (Lowest to Highest)</button>
+            </div>
+        </div>
+    )
+}
+
 function App() {
     return (
         <React.Fragment>
         <Header />
         <h1>Transaction History</h1>
+        <TransactionsSort />
         <TransactionsTable />
         <Footer />
         </React.Fragment>

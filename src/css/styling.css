@@ -174,7 +174,7 @@ h1 {
 }
 
 .gym-container:hover {
-    transform: scale(1.04);
+    transform: scale(1.06);
 }
 
 .gym-container h3 {
@@ -255,17 +255,17 @@ h1 {
 }
 
 .profile-dropdown a:nth-of-type(1):hover {
-    background-color:  #888888;
+    background-color:  #a8a8a8;
     border-radius: 15px 15px 0px 0px;
 }
 
 .profile-dropdown a:nth-last-of-type(1):hover {
-    background-color:  #888888;
+    background-color:  #a8a8a8;
     border-radius: 0px 0px 15px 15px;
 }
 
 .profile-dropdown a:hover {
-    background-color: #888888;
+    background-color: #a8a8a8;
 }
 
 /*---------------Transaction Table----------------*/
@@ -321,6 +321,70 @@ h1 {
 .transactions-table td:nth-last-of-type(1), .transactions-table th:nth-last-of-type(1) {
     border-radius: 0px 15px 15px 0px;
     box-shadow: 5px 3px 3px rgb(175, 175, 175);
+}
+
+/*------------Transactions Sort--------------*/
+.dropdown-btn {
+    background-image: linear-gradient(to right, #008ad4 , rgb(108, 103, 255));
+    box-shadow: 5px 3px 3px rgb(175, 175, 175);
+    padding: 10px 40px;
+    border: none;
+    font-family: Helvetica;
+    letter-spacing: 5px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.dropdown-list {
+    position: absolute;
+    display: none;
+    z-index: 5;
+}
+
+.dropdown-btn:hover {
+    background-image: linear-gradient(to right, #032d87 , rgb(101, 0, 138));
+}
+
+.dropdown-container {
+    display: inline-block;
+    position: relative;
+    margin-left: 70px;
+}
+
+.dropdown-container:hover .dropdown-list {
+    display: block;
+}
+
+
+.dropdown-list button {
+    display: block;
+    text-decoration: none;
+    background-color: #D9D9D9;
+    padding: 10px;
+    width: 280px;
+    border: none;
+    font-family: Helvetica;
+    letter-spacing: 3px;
+    box-shadow: 0px 3px 3px rgb(93, 93, 93);
+}
+
+.dropdown-list button {
+    border-bottom: 1px solid rgb(118, 118, 118);
+}
+
+.dropdown-list button:hover {
+    background-color: #bebebe;
+}
+
+.dropdown-list button:nth-child(1) {
+    border-radius: 20px 20px 0px 0px;
+}
+
+.dropdown-list button:nth-last-of-type(1) {
+    border-bottom: none;
+    border-radius: 0px 0px 20px 20px;
 }
 
 
