@@ -145,12 +145,28 @@ function TransactionsSort() {
     )
 }
 
+function TransactionsFilter() {
+    return (
+        <div className="dropdown-container filter-container">
+            <button className="dropdown-btn filter-dropdown-btn">Filter</button>
+            <div className="dropdown-list filter-list">
+                <button>Show Payments</button>
+                <button>Show Refunds</button>
+                <button>Show All</button>
+            </div>
+        </div>
+    )
+}
+
 function App() {
     return (
         <React.Fragment>
         <Header />
         <h1>Transaction History</h1>
-        <TransactionsSort />
+        <div className="sort-filter-container">
+            <TransactionsSort />
+            <TransactionsFilter />
+        </div>
         <TransactionsTable />
         <Footer />
         </React.Fragment>
