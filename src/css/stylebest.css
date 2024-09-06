@@ -1,13 +1,14 @@
-/* Homtext sections */
+/* Home Text Section */
 .hometext {
-    color: #000000;
+    color: #333; 
     text-align: center;
     margin-top: 3rem;
     font-weight: bold;
-    font-size: 3rem;
+    font-size: 2.5rem; 
     margin-left: 6rem;
     margin-right: 6rem;
     border-radius: 12px;
+    font-family: 'Arial', sans-serif; 
 }
 
 /* Image styling */
@@ -29,7 +30,6 @@
     display: inline-block;
     cursor: pointer;
     border-radius: 12px;
-    /* Ensure child img is positioned correctly */
     overflow: hidden;
 }
 
@@ -83,24 +83,24 @@ span {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(128, 128, 128, 0.7); /* Grey overlay with 60% opacity */
+    background: rgba(128, 128, 128, 0.7);
     transition: opacity 0.3s ease;
     opacity: 0;
-    z-index: 1; /* Ensure overlay is on top */
+    z-index: 1; 
 }
 
 .imgbox-z:hover::after,
 .imgbox-z:focus::after {
-    opacity: 1; /* Show overlay on hover/focus */
+    opacity: 1; 
 }
 
 .child {
-    position: relative; /* Ensure child is positioned above overlay */
+    position: relative; 
     z-index: 0;
 }
 
 span {
-    position: relative; /* Ensure text is above overlay */
+    position: relative; 
     z-index: 2;
     display: none;
     font-size: 35px;
@@ -122,15 +122,31 @@ span {
 
 /*Trainer Page*/
 /* Trainer Card Styles */
-.trainer-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin: 15px;
+
+.trainer-container {
+    display: flex;
+    justify-content: space-around; 
+    align-items: center; 
     padding: 20px;
-    width: 300px;
+    margin-bottom: 3rem;
+}
+
+.trainer-container2 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center; 
+    padding: 20px;
+    margin-bottom: 5rem;
+}
+
+.trainer-card {
+    background-color: #f9f9f9; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
     text-align: center;
-    transition: transform 0.3s;
+    width: 250px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .trainer-card:hover {
@@ -154,16 +170,157 @@ p {
     margin-bottom: 20px;
 }
 
-button {
+.button-link {
+    display: inline-block;
     background-color: #007bff;
     color: #fff;
-    border: none;
     padding: 10px 20px;
     border-radius: 5px;
-    cursor: pointer;
+    text-align: center;
+    text-decoration: none; 
+    font-size: 16px;
     transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
 }
 
-button:hover {
+.button-link:hover {
     background-color: #0056b3;
 }
+
+
+
+
+/* Profile container */
+.trainer-profile-container {
+    display: flex; 
+    justify-content: space-around; 
+    align-items: flex-start; 
+    padding: 40px;
+    gap: 40px; 
+  }
+  
+  .trainer-profile-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 300px; 
+  }
+  
+  .profile-photo {
+    width: 200px; 
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .trainer-bio {
+    text-align: center;
+  }
+  
+  .trainer-bio h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .trainer-bio p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .trainer-bio p strong {
+    font-weight: bold;
+  }
+  
+  .trainer-profile-middle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .trainer-message-box {
+    width: 100%; 
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    resize: none; 
+  }
+
+
+
+
+
+
+
+
+
+
+
+/* Styles for the calendar container */
+.calendar-container {
+    background-color: #f9f9f9; /* Background color for the container */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+/* Container for the calendar and time slots */
+.working-time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Container for the time slots below the calendar */
+  .time-slots-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  /* Time slot list styling */
+  .time-slot-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Four slots per row */
+    gap: 10px;
+    justify-content: center;
+  }
+  
+ /* Time slot button styling */
+.time-slot-button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .time-slot-button.available {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .time-slot-button.unavailable {
+    background-color: #ddd;
+    color: #999;
+    cursor: not-allowed;
+  }
+  
+  .time-slot-button:disabled {
+    cursor: not-allowed;
+  }
+
+
+  
