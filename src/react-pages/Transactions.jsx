@@ -158,6 +158,8 @@ function TransactionsFilter({onFilterSort}) {
     )
 }
 
+var filterType = "none";
+
 function App() {
     const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
@@ -165,24 +167,71 @@ function App() {
         let transactionsSortCopy = [...transactions];
         if(condition === "All") {
             setFilteredTransactions(transactions);
+            filterType= "none";
         }
         else if(condition === "Payment") {
             setFilteredTransactions(transactions.filter(transaction => transaction.type === "Payment"));
+            filterType = "Payment";
         }
         else if(condition === "Refund") {
             setFilteredTransactions(transactions.filter(transaction => transaction.type === "Refund"));
+            filterType = "Refund";
         }
+       
         else if(condition === "NewToOld") {
-            setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date)));
+            if(filterType === "Payment") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .filter(transaction => transaction.type === "Payment"));
+            }
+            else if(filterType === "Refund") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .filter(transaction => transaction.type === "Refund"));
+            }
+            else {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date)));
+            }
         }
+
         else if(condition === "OldToNew") {
-            setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date)));
+            if(filterType === "Payment") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date))
+                .filter(transaction => transaction.type === "Payment"));
+            }
+            else if(filterType === "Refund") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date))
+                .filter(transaction => transaction.type === "Refund"));
+            }
+            else {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date)));
+            }
         }
+
         else if(condition === "HighToLow") {
-            setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount)));
+            if(filterType === "Payment") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))
+                .filter(transaction => transaction.type === "Payment"));
+            }
+            else if(filterType === "Refund") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))
+                .filter(transaction => transaction.type === "Refund"));
+            }
+            else {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount)));
+            }
         }
+
         else if(condition === "LowToHigh") {
-            setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount)));
+            if(filterType === "Payment") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
+                .filter(transaction => transaction.type === "Payment"));
+            }
+            else if(filterType === "Refund") {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
+                .filter(transaction => transaction.type === "Refund"));
+            }
+            else {
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount)));
+            }
         }
     };
 
