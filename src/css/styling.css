@@ -410,4 +410,21 @@ h1 {
 }
 
 
+/* ----------- Progress Graph ------------ */
+.line-graph-container{
+    width: 700px;
+    height: 600px;
+}
+
+.graphs-container {
+    display: flex;
+    justify-content: space-between; /* Optional: Adjust spacing between graphs */
+    gap: 20px; /* Adds space between the graphs */
+}
+
+.graphs-container > * {
+    flex: 1; /* Each graph takes up equal width */
+}
+
+
 
