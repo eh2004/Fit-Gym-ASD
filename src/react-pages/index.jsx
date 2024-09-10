@@ -52,12 +52,26 @@ function App() {
                     Than Yesterday
                 </h1>
                 <div className="gym-home-buttons-container">
-                    <a href="login-register.html" className="gym-home-button gym-home-button-left"><img src="../assets/trainer.jpg" /><span>Login/Register</span></a>
-                    <a href="bookclass.html" className="gym-home-button gym-home-button-right"><img src="../assets/trainer.jpg" /><span>Book a Class</span></a>
-                    <a href="BookTrainer.html" className="gym-home-button gym-home-button-left"><img src="../assets/trainer.jpg" /><span>Book With a Trainer</span></a>
-                    <a href="Dashboard.html" className="gym-home-button gym-home-button-Right"><img src="../assets/trainer.jpg" /><span>View Trainers</span></a>
-                    <a href="AboutUs.html" className="gym-home-button gym-home-button-left"><img src="../assets/trainer.jpg" /><span>About Us</span></a>
-                    
+                    <a href="login-register.html" className="gym-home-button gym-home-button-left">
+                        <img src="../assets/trainer.jpg" alt="Login/Register" />
+                        <span>Login/Register</span>
+                    </a>
+                    <a href="bookclass.html" className="gym-home-button gym-home-button-right">
+                        <img src="../assets/trainer.jpg" alt="Book a Class" />
+                        <span>Book a Class</span>
+                    </a>
+                    <a href="BookTrainer.html" className="gym-home-button gym-home-button-left">
+                        <img src="../assets/trainer.jpg" alt="Book with a Trainer" />
+                        <span>Book With a Trainer</span>
+                    </a>
+                    <a href="Dashboard.html" className="gym-home-button gym-home-button-right">
+                        <img src="../assets/trainer.jpg" alt="View Trainers" />
+                        <span>View Trainers</span>
+                    </a>
+                    <a href="AboutUs.html" className="gym-home-button gym-home-button-left">
+                        <img src="../assets/trainer.jpg" alt="About Us" />
+                        <span>About Us</span>
+                    </a>
                 </div>
             </div>
             <Footer />

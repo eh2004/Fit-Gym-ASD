@@ -375,10 +375,10 @@ p {
 /* Home Page */
 
 .gym-home-header {
-  background-color: #000000;
+  background-color: #ffffff;
   padding: 60px 20px;
   text-align: center;
-  color: #ffffff;
+  color: #ff0000;
   position: relative;
   overflow: hidden;
 }
@@ -411,7 +411,7 @@ p {
   width: 90%; /* Larger button width */
   max-width: 500px; /* Controls the maximum width of each button */
   padding: 30px; /* Larger button padding */
-  color: #ffffff;
+  color: #003cff;
   text-decoration: none;
   border-radius: 25px;
   font-size: 20px;
