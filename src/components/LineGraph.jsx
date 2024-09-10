@@ -15,7 +15,7 @@ import {
 import zoomPlugin from 'chartjs-plugin-zoom';
 import 'chartjs-adapter-moment';
 
-// Register components and plugins
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,8 +24,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  TimeScale, // Register the TimeScale for time-based x-axis
-  zoomPlugin // Register the zoom plugin
+  TimeScale, 
+  zoomPlugin
 );
 
 const ProgressLineGraph = ({ title, data }) => {
@@ -38,7 +38,7 @@ const ProgressLineGraph = ({ title, data }) => {
       },
       title: {
         display: true,
-        text: title, // Use the title passed as a prop
+        text: title, // title being passed through the function
         font: {
           size: 20,
         },
@@ -46,16 +46,16 @@ const ProgressLineGraph = ({ title, data }) => {
       zoom: {
         pan: {
           enabled: true,
-          mode: 'x', // Enable panning along the X-axis
+          mode: 'x', // scrolling across x axis 
         },
         zoom: {
           wheel: {
-            enabled: true, // Enable zooming with the mouse wheel
+            enabled: true, // mouse wheel zoom
           },
           pinch: {
-            enabled: true, // Enable zooming on touch devices
+            enabled: true, // touch device/track pad zoom
           },
-          mode: 'x', // Zoom along the X-axis
+          mode: 'x', 
         },
       },
     },
@@ -63,9 +63,9 @@ const ProgressLineGraph = ({ title, data }) => {
       x: {
         type: 'time', // Use time scale for the x-axis
         time: {
-          unit: 'month', // Display in months
+          unit: 'month', 
           displayFormats: {
-            month: 'MMM YYYY', // Show month and year
+            month: 'MMM YYYY', 
           },
         },
         grid: {
@@ -74,8 +74,8 @@ const ProgressLineGraph = ({ title, data }) => {
         },
         ticks: {
           source: 'auto',
-          autoSkip: true, // Skip some ticks to prevent clutter when zoomed out
-          maxRotation: 0, // Keep labels horizontal
+          autoSkip: true,
+          maxRotation: 0, // make labels straight 
           minRotation: 0,
         },
       },
@@ -89,7 +89,7 @@ const ProgressLineGraph = ({ title, data }) => {
             size: 10,
           },
           callback: function(value) {
-            return value + ' kg'; // Format y-axis values with 'kg'
+            return value + ' kg'; // add 'kg' to y axis 
           },
         },
         title: {
