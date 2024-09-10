@@ -418,13 +418,34 @@ h1 {
 
 .graphs-container {
     display: flex;
-    justify-content: space-between; /* Optional: Adjust spacing between graphs */
-    gap: 20px; /* Adds space between the graphs */
+    justify-content: space-between; 
+    gap: 20px; 
+}
+.graphs-container > * {
+    flex: 1; 
 }
 
-.graphs-container > * {
-    flex: 1; /* Each graph takes up equal width */
-}
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .button-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: #898b89;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .button-container button:hover {
+    background-color: #afb6b0;
+  }
+  
 
 
 
