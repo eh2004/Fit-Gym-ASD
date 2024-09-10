@@ -27,7 +27,7 @@ function Header() {
             <li className="nav-li"><a href="/index.html">Home</a></li>
             <li className="nav-li"><a href="/src/pages/AboutUs.html">About</a></li>
             <li className="nav-li"><a href="/src/pages/Progress.html">Progress</a></li>
-            <li className="nav-li"><a href="/src/pages/.html">Whatcha know bout those</a></li>
+            <li className="nav-li"><a href="/src/pages/ExerciseRecording.html">Rep Counter</a></li>
             <li className="nav-li"><a href="/src/pages/Leaderboard.html">Leaderboard</a></li>
             <li className="nav-li"><a href="/src/pages/BookingType.html">Book</a></li>
             <li className="nav-li"><a href="/src/pages/Dashboard.html">Trainers</a></li>
