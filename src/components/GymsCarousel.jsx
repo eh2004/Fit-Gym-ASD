@@ -18,8 +18,8 @@ function MultipleItems() {
   };
   return (
     <div className="gyms-carousel-div">
-      <Slider {...settings} style={{height: 470}}>
-        <div>
+      <Slider {...settings} style={{height: 500}}>
+        <div className="gym-div">
             <GymContainer imageLink={gym1} location={"Alexandria - Sydney"} phoneNumber={"04 5427 6512"} address="28 Maddox St, Alexandria NSW 2015" addressLink={"https://maps.app.goo.gl/UcY7BxxSXXbswatn8"}/>
         </div>
         <div>

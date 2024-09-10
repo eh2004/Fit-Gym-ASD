@@ -8,7 +8,7 @@ function ProfileDropDown() {
     return (
         <div className="profile-dropdown">
             <a href="">Profile</a>
-            <a href="">Transaction History</a>
+            <a href="/src/pages/Transactions.html">Transaction History</a>
             <a href="">Logout</a>
         </div>
     )
@@ -27,8 +27,9 @@ function Header() {
             <li className="nav-li"><a href="/index.html">Home</a></li>
             <li className="nav-li"><a href="/src/pages/AboutUs.html">About</a></li>
             <li className="nav-li"><a href="/src/pages/Progress.html">Progress</a></li>
+            <li className="nav-li"><a href="/src/pages/ExerciseRecording.html">Rep Counter</a></li>
             <li className="nav-li"><a href="/src/pages/Leaderboard.html">Leaderboard</a></li>
-            <li className="nav-li"><a href="/src/pages/Classes.html">Classes</a></li>
+            <li className="nav-li"><a href="/src/pages/BookingType.html">Book</a></li>
             <li className="nav-li"><a href="/src/pages/Dashboard.html">Trainers</a></li>
             <div className="profile-container">
                 <li><a href=""><img src={profile} id="profile"/></a></li>

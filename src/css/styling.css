@@ -2,7 +2,7 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: Helvetica;
-    letter-spacing: 5px;
+    letter-spacing: 1px;
     background-color: #F8F7F7;
 }
 
@@ -120,7 +120,7 @@ footer img {
 h1 {
     text-align: center;
     margin: 0;
-    padding: 20px 0;
+    padding: 30px 0;
 }
 
 .about-us-info {
@@ -143,6 +143,17 @@ h1 {
 
 /* ----------- Gyms Carousel ------------ */
 
+.gym-div {
+    height: 600px;
+}
+
+.gym-container-no-img {
+    background-color: #D9D9D9;
+    padding-top: 1px;
+    padding-bottom: 20px;
+    border-radius: 0px 0px 20px 20px;
+}
+
 .gym-container img {
     display: block;
     width: 100%;
@@ -154,10 +165,16 @@ h1 {
 }
 
 .gym-container {
-    background-color: #D9D9D9;
+    padding-top: 20px;
+    /* background-color: #D9D9D9; */
     margin: 0px 10px;
     border-radius: 20px;
     height: 470px;
+    transition: transform .25s, visibility .25s ease-in;
+}
+
+.gym-container:hover {
+    transform: scale(1.06);
 }
 
 .gym-container h3 {
@@ -238,15 +255,342 @@ h1 {
 }
 
 .profile-dropdown a:nth-of-type(1):hover {
-    background-color:  #888888;
+    background-color:  #a8a8a8;
     border-radius: 15px 15px 0px 0px;
 }
 
 .profile-dropdown a:nth-last-of-type(1):hover {
-    background-color:  #888888;
+    background-color:  #a8a8a8;
     border-radius: 0px 0px 15px 15px;
 }
 
 .profile-dropdown a:hover {
-    background-color: #888888;
+    background-color: #a8a8a8;
 }
+
+/*---------------Transaction Table----------------*/
+
+.transactions-table {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 3px 6px;
+}
+
+.transactions-table tbody tr:nth-child(2n + 1) {
+    background-image: linear-gradient(to right, #90b3ff , rgb(237, 193, 253));
+}
+
+.transactions-table tbody tr:nth-child(2n) {
+    background-image: linear-gradient(to right, #a2befa , rgb(240, 208, 252));
+}
+
+.transactions-table td, .transactions-table th {
+    padding: 10px 0px;
+    padding-left: 10px;
+    text-align: left;
+    box-shadow: 0px 3px 3px rgb(175, 175, 175);
+}
+
+.transactions-table th {
+    color: white;
+}
+
+.transactions-table thead tr {
+    background-image: linear-gradient(to right, #0139b1 , rgb(155, 0, 216));
+}
+
+.transactions-table tbody tr {
+    height: 45px;
+    transition: transform .25s, visibility .25s ease-in;
+}
+
+.transactions-table tbody tr:hover {
+    background-image: linear-gradient(to right, #6998fd , rgb(230, 161, 255));
+    transform: scale(1.03);
+}
+
+.transactions-table {
+    padding-bottom: 100px;
+}
+
+.transactions-table td:nth-of-type(1), .transactions-table th:nth-of-type(1) {
+    border-radius: 15px 0px 0px 15px;
+}
+
+.transactions-table td:nth-last-of-type(1), .transactions-table th:nth-last-of-type(1) {
+    border-radius: 0px 15px 15px 0px;
+    box-shadow: 5px 3px 3px rgb(175, 175, 175);
+}
+
+/*------------Transactions Sort and Filter--------------*/
+.dropdown-btn {
+    background-image: linear-gradient(to right, #008ad4 , rgb(108, 103, 255));
+    box-shadow: 5px 3px 3px rgb(175, 175, 175);
+    padding: 10px 40px;
+    border: none;
+    font-family: Helvetica;
+    letter-spacing: 5px;
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.dropdown-list {
+    top: 39px;
+    position: absolute;
+    display: none;
+}
+
+.dropdown-btn:hover {
+    background-image: linear-gradient(to right, #032d87 , rgb(101, 0, 138));
+}
+
+.dropdown-container {
+    display: inline-block;
+    position: relative; 
+    /* margin-left: 70px; */
+}
+
+.dropdown-container:hover .dropdown-list {
+    display: block;
+}
+
+
+.dropdown-list button {
+    display: block;
+    text-decoration: none;
+    background-color: #D9D9D9;
+    padding: 10px;
+    width: 270px;
+    border: none;
+    font-family: Helvetica;
+    letter-spacing: 3px;
+    box-shadow: 0px 3px 3px rgb(93, 93, 93);
+    text-align: left;
+}
+
+.filter-list button {
+    width: 200px;
+}
+
+.filter-list {
+    right: -5px;
+}
+
+.filter-dropdown-btn {
+    background-image: linear-gradient(to right, #7d58ff , rgb(208, 78, 255));
+}
+
+.dropdown-list button {
+    border-bottom: 1px solid rgb(118, 118, 118);
+}
+
+.dropdown-list button:hover {
+    background-color: #bebebe;
+}
+
+.dropdown-list button:nth-child(1) {
+    border-radius: 20px 20px 0px 0px;
+}
+
+.dropdown-list button:nth-last-of-type(1) {
+    border-bottom: none;
+    border-radius: 0px 0px 20px 20px;
+}
+
+.sort-filter-container {
+    width: 90%;
+    margin-left: auto ;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* ----------- Line Graph/Progress ------------ */
+.line-graph-container{
+    width: 700px;
+    height: 600px;
+}
+
+.graphs-container {
+    display: flex;
+    justify-content: space-between; 
+    gap: 20px; 
+}
+.graphs-container > * {
+    flex: 1; 
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .button-container button {
+    margin: 0 10px;
+    padding: 10px 20px;
+    background-color: #898b89;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .button-container button:hover {
+    background-color: #afb6b0;
+  }
+
+  .exercise-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px; /* Remove any top padding */
+    margin-top: 0;   /* Ensure no top margin is added */
+  }
+
+  /* Layout styling */
+  .content-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    margin: 0 auto;
+  }
+  
+  /* Form box styling */
+  .exercise-box {
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Form input fields */
+  .input {
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 8px;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Button styling */
+  .add-set-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-set-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .add-set-button:hover:not(:disabled) {
+    background-color: #45a049;
+  }
+  
+  /* Sets table styling */
+  .sets-table {
+    margin-left: 50px;
+    width: 50%;
+  }
+  
+  .sets-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .sets-table th, .sets-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .sets-table th {
+    background-color: #f2f2f2;
+  }
+  
+  .sets-table td {
+    text-align: center;
+  }
+  
+  .sets-table tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  .add-set-button:active {
+    transform: scale(.95); /* Slightly reduce the size on click */
+    transition: transform 0.1s ease-in-out;
+  }
+
+  .input:focus, .checkbox:focus {
+  outline: none;
+  border: 2px solid #007BFF; /* Highlight border color */
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add a subtle shadow */
+  transition: all 0.2s ease-in-out;
+}
+
+tbody tr:hover {
+    background-color: #f0f8ff9c; /* Light background on hover */
+    transition: background-color 0.1s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-in;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centers all items horizontally */
+    justify-content: center; /* Centers all items vertically */
+  }
+  
+  select, input {
+    width: 100%; /* Adjust this width to suit your layout */
+    max-width: 300px; /* Set a maximum width if necessary */
+    margin-bottom: 15px; /* Adds space between inputs */
+    padding: 10px; /* Provides padding for a better look */
+    box-sizing: border-box; /* Ensures padding doesn't affect the width */
+    text-align: center; /* Centers the text inside the boxes */
+  }
+  
+  button {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+  }
+  
+
+
+
