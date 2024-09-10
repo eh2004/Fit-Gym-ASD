@@ -339,7 +339,7 @@ h1 {
 }
 
 .dropdown-list {
-    top: 39px;
+    top: 50px;
     position: absolute;
     display: none;
 }
@@ -358,7 +358,6 @@ h1 {
     display: block;
 }
 
-
 .dropdown-list button {
     display: block;
     text-decoration: none;
@@ -370,6 +369,7 @@ h1 {
     letter-spacing: 3px;
     box-shadow: 0px 3px 3px rgb(93, 93, 93);
     text-align: left;
+    margin: 0px;
 }
 
 .filter-list button {
@@ -590,7 +590,6 @@ tbody tr:hover {
     border: none;
     border-radius: 5px;
   }
-  
 
 
 
