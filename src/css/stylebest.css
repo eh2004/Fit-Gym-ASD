@@ -389,7 +389,7 @@ p {
   line-height: 1.2;
   letter-spacing: 1px;
   opacity: 0;
-  transition: opacity 0.5s ease-out;
+  transition: opacity 1s ease-out;
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
