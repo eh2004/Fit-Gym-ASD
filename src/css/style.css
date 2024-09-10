@@ -292,14 +292,19 @@ td {
   
   /* Styling for the primary and danger buttons */
   .primary-button, .danger-button {
-    margin-right: 10px; /* Adds space between the buttons */
-    padding: 10px 15px; /* Adds padding inside the buttons for better size and feel */
+    margin-right: 10px; 
+    padding: 10px 15px; 
     background-color: #007bff; /* Primary button background color (blue) */
     color: white; /* White text color */
     border: none; /* Removes the default button border */
     border-radius: 4px; /* Rounds the button corners */
     cursor: pointer; /* Changes the cursor to pointer to indicate a clickable element */
     transition: background-color 0.3s; /* Adds a smooth transition when the button color changes */
+  }
+
+  .secondary-button {
+    color: white;
+    padding: 10px 15px; 
   }
   
   /* Hover state for the primary button */
@@ -308,12 +313,12 @@ td {
   }
   
   /* Background color for the danger button (red) */
-  .danger-button {
+  .danger-button, .secondary-button {
     background-color: #dc3545; /* Red background for delete or danger action buttons */
   }
   
   /* Hover state for the danger button */
-  .danger-button:hover {
+  .danger-button, .secondary-button:hover {
     background-color: #c82333; /* Darker red on hover */
   }
   
@@ -356,7 +361,7 @@ td {
   /* Button container inside the modal */
   .modal-buttons {
     display: flex; /* Aligns buttons side by side */
-    justify-content: flex-end; /* Pushes buttons to the right */
+    justify-content: space-between; /* Pushes buttons to the right */
   }
 
   /* Layout for input rows */
