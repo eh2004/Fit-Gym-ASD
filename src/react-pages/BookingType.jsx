@@ -14,10 +14,7 @@ function App() {
                     <img src="../assets/classes.jpg" alt="Classes" className="child bg-one" />
                     <span>Classes</span>
                 </a>
-                <a href="booktrainer.html" className="imgbox-z">
-                    <img src="../assets/trainer.jpg" alt="Trainers" className="child bg-two" />
-                    <span>Trainers</span>
-                </a>
+                <a href="booktrainer.html" className="imgbox-z"><img src="../assets/trainer.jpg" alt="Trainers" className="child bg-two" /><span>Trainers</span></a>
             </div>
             <Footer />
         </React.Fragment>

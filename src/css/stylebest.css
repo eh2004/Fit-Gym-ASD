@@ -322,5 +322,117 @@ p {
     cursor: not-allowed;
   }
 
+  /* Class Booking */
 
-  
+  .gym-booking-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    margin-bottom: 7rem;
+}
+
+.gym-class-card {
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 12px;
+    margin-top: 3.5rem;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #333333;
+}
+
+.gym-class-card:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-2px);
+}
+
+.gym-class-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.gym-class-info {
+    flex-grow: 1;
+    padding-left: 30px; 
+}
+
+.gym-class-title {
+    margin: 0;
+    font-size: 22px;
+    color: #333333;
+}
+
+.gym-class-description {
+    margin: 8px 0 0 0;
+    color: #666666;
+}
+
+/* Home Page */
+
+.gym-home-header {
+  background-color: #000000;
+  padding: 60px 20px;
+  text-align: center;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+
+.gym-home-motto {
+  font-size: 48px;
+  font-weight: bold;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.gym-home-buttons-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: absolute;
+  top: 200px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 800px; /* Controls the maximum width of the container */
+}
+
+.gym-home-button {
+  display: block;
+  width: 90%; /* Larger button width */
+  max-width: 500px; /* Controls the maximum width of each button */
+  padding: 30px; /* Larger button padding */
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 25px;
+  font-size: 20px;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  position: relative;
+}
+
+.gym-home-button-left {
+  align-self: flex-start;
+  margin-left: 10%;
+}
+
+.gym-home-button-right {
+  align-self: flex-end;
+  margin-right: 10%;
+}
+
+.gym-home-button:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
