@@ -1,9 +1,10 @@
 # React + Vite
 
-To run our program you will need to do 2 things in the terminal:
+To run our program you will need to do 3 things in the terminal:
 
-1. npm install chart.js react-chartjs-2 chartjs-plugin-zoom chartjs-adapter-moment moment
-2. npm install react-modal
+1. npm install
+2. npm install chart.js react-chartjs-2 chartjs-plugin-zoom chartjs-adapter-moment moment
+3. npm install react-modal
 
 After this you can then type:
 
