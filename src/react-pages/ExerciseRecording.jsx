@@ -10,22 +10,22 @@ const App = () => {
   const [reps, setReps] = useState('');
   const [log, setLog] = useState(false);
   const [sets, setSets] = useState([]);
-  const [message, setMessage] = useState('');
+  const [message, setMessages] = useState('');
 
 const addSet = () => {
   if (!exercise || weight <=0 || reps <=0 || !Number.isInteger(Number(reps))) {
-    setMessage('Please fill in all text fields correctly.');
+    setMessages('Please fill in all text fields correctly.');
     return;
   }
 
   setSets([...sets, {exercise, weight, reps, log}]);
-  setMessage('Set added!');
+  setMessages('Set added!');
   setExercises('');
   setWeights('');
   setReps('');
   setLog(false);
 
-  setTimeout(() => setMessage(''), 3000);
+  setTimeout(() => setMessages(''), 3000);
 };
 
 return (
