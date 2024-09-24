@@ -32,8 +32,6 @@ function Header() {
             <li className="nav-li"><a href="/src/pages/BookingType.html">Book</a></li>
             <li className="nav-li"><a href="/src/pages/Dashboard.html">Trainers</a></li>
             <li className="nav-li"><a href="/src/pages/CustomerDashboard.html">Customers</a></li>
-
-
             <div className="profile-container">
                 <li><a href=""><img src={profile} id="profile"/></a></li>
                 <ProfileDropDown />

@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom/client";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import UserList from "../components/UserList";
 import "../css/styling.css";
 import ReusableLineGraph from "../components/LineGraph";
 import { armsData, legsData, upperBodyData } from "../data/workoutData"; 
+import AddUserForm from "../components/UserAdd";
+import EditUserForm from "../components/UserEdit";
+
 
 const App = () => {
   const [selectedData, setSelectedData] = useState(legsData); // Default to legs data
@@ -34,6 +38,10 @@ const App = () => {
       <div>
         <h1>Personal Progress</h1>
       </div>
+
+      <UserList/>
+      <AddUserForm/>
+      <EditUserForm/>
 
       {/* Buttons */}
       <div className="button-container">
