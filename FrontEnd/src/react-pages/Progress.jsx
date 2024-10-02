@@ -9,6 +9,8 @@ import { armsData, legsData, upperBodyData } from "../data/workoutData";
 import AddUserForm from "../components/UserAdd";
 import EditUserForm from "../components/UserEdit";
 import CustomerList from "../components/CustomerList";
+import WorkoutList from "../components/WorkoutList";
+import ExerciseList from "../components/ExercisesList";
 
 
 const App = () => {
@@ -39,7 +41,8 @@ const App = () => {
       <div>
         <h1>Personal Progress</h1>
       </div>
-
+      <ExerciseList/>
+      <WorkoutList/>
       <CustomerList/>
       <UserList/>
       <AddUserForm/>

@@ -2,6 +2,9 @@ const express = require('express');
 const sequelize = require('./config/database'); // Your Sequelize instance
 const userRoutes = require('./routes/userRoutes'); // Import user routes
 const customerRoutes = require('./routes/customerRoutes');
+const workoutRoutes = require('./routes/workoutRoutes');
+const setRoutes = require('./routes/setRoutes');
+const exerciseRoutes = require('./routes/exercisesRoutes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cors = require('cors');
@@ -29,6 +32,9 @@ sequelize.authenticate()
 // Use the user routes
 app.use('/api', userRoutes); // All user routes will be prefixed with /api
 app.use('/api', customerRoutes);
+app.use('/api', workoutRoutes);
+app.use('/api', exerciseRoutes);
+//app.use('/api', setRoutes);
 
 
 app.get('/', (req, res) => {
