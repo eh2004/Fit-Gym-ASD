@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-//const Set = require('../models/Set');  // Import the Set model
+const Set = require('../models/Set');  // Import the Set model
 
 // Fetch all sets
 router.get('/sets', async (req, res) => {

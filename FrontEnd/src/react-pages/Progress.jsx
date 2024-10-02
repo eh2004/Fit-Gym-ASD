@@ -11,6 +11,7 @@ import EditUserForm from "../components/UserEdit";
 import CustomerList from "../components/CustomerList";
 import WorkoutList from "../components/WorkoutList";
 import ExerciseList from "../components/ExercisesList";
+import SetList from "../components/SetList";
 
 
 const App = () => {
@@ -41,6 +42,7 @@ const App = () => {
       <div>
         <h1>Personal Progress</h1>
       </div>
+      <SetList/>
       <ExerciseList/>
       <WorkoutList/>
       <CustomerList/>

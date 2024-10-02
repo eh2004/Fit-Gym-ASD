@@ -34,7 +34,7 @@ app.use('/api', userRoutes); // All user routes will be prefixed with /api
 app.use('/api', customerRoutes);
 app.use('/api', workoutRoutes);
 app.use('/api', exerciseRoutes);
-//app.use('/api', setRoutes);
+app.use('/api', setRoutes);
 
 
 app.get('/', (req, res) => {
