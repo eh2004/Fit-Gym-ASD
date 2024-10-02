@@ -29,13 +29,12 @@ function CustomerProfile() {
         return response.json();
       })
       .then((data) => {
-        // Set customer info with fetched data
         const updatedCustomerInfo = {
-          name: data.username,
+          name: data.first_name,
           bio: data.bio || "No bio provided",
           email: data.email_address,
           phone: data.phone_number,
-          address: data.address || "No address provided",
+          address: data.street_address || "No address provided",
           fitnessGoal: "To be added later",
           progress: "To be added later",
         };
@@ -73,12 +72,20 @@ function CustomerProfile() {
     console.log("Sending updated data:", formData); // Log data being sent
 
     // Update the customer info via an API call
-    fetch(`http://localhost:3000/api/customers/1`, { // Use appropriate customer ID
-      method: 'PUT', 
+    fetch(`http://localhost:3000/api/customers/1`, { // Use the appropriate customer ID
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(formData), // Log the body of the request
+      body: JSON.stringify({
+        first_name: formData.name, 
+        last_name: "Doe", // Placeholder, replace this with the actual last name if available
+        email_address: formData.email,
+        phone_number: formData.phone,
+        street_address: formData.address,
+        fitnessGoal: formData.fitnessGoal,
+        progress: formData.progress
+      }),
     })
     .then((response) => {
       if (!response.ok) {
