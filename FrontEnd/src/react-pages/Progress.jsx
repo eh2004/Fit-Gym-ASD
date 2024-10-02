@@ -8,6 +8,7 @@ import ReusableLineGraph from "../components/LineGraph";
 import { armsData, legsData, upperBodyData } from "../data/workoutData"; 
 import AddUserForm from "../components/UserAdd";
 import EditUserForm from "../components/UserEdit";
+import CustomerList from "../components/CustomerList";
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
         <h1>Personal Progress</h1>
       </div>
 
+      <CustomerList/>
       <UserList/>
       <AddUserForm/>
       <EditUserForm/>
