@@ -58,4 +58,8 @@ const Customer = sequelize.define('Customer', {
   timestamps: false,       // Disable createdAt and updatedAt
 });
 
+// Define the association: A Customer has many Workouts
+//Customer.hasMany(require('./Workout'), {foreignKey: 'customer_id', sourceKey: 'customer_id',  // Primary key in the Customers table
+ // });
+
 module.exports = Customer;

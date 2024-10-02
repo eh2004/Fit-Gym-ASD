@@ -4,25 +4,26 @@ const express = require('express');
 const router = express.Router();
 const { Workout } = require('../models'); // Assuming you have a Workout model
 
-// Fetch workouts by user ID
-// Route to fetch workouts by user_id
-router.get('/workouts/:user_id', async (req, res) => {
+// Route to fetch workouts by customer_id
+router.get('/workouts/:customer_id', async (req, res) => {
     try {
-      const { user_id } = req.params;  // Extract user_id from request params
-      
-      if (!user_id) {
-        return res.status(400).json({ error: 'User ID is required' });
+      const { customer_id } = req.params;  // Extract customer_id from request params
+
+      if (!customer_id) {
+        return res.status(400).json({ error: 'Customer ID is required' });
       }
       
       const workouts = await Workout.findAll({
-        where: { user_id: user_id }
+        where: { customer_id: customer_id }
       });
+
       res.json(workouts);
     } catch (error) {
       console.error('Error fetching workouts:', error);
       res.status(500).json({ error: 'Error retrieving workouts' });
     }
-  });
+});
+
 
   // Route to fetch all workouts
 router.get('/workouts', async (req, res) => {

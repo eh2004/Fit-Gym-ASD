@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 const Workout = require('./Workout');  // Assuming you have a Workout model
-const Exercise = require('./Exercise');  // Assuming you have an Exercise model
+const Exercise = require('./Exercise');
 
 const Set = sequelize.define('Set', {
   set_id: {
@@ -13,7 +13,7 @@ const Set = sequelize.define('Set', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Workout, // Reference to Workout model
+      model: 'Workouts', // Reference to Workout model
       key: 'workout_id', // Key in the Workout model
     },
     onDelete: 'CASCADE',  // If a workout is deleted, delete the associated sets
@@ -23,7 +23,7 @@ const Set = sequelize.define('Set', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: Exercise, // Reference to Exercise model
+      model: 'Exercises', // Reference to Exercise model
       key: 'exercise_id', // Key in the Exercise model
     },
     onDelete: 'CASCADE',
@@ -41,5 +41,7 @@ const Set = sequelize.define('Set', {
   timestamps: false,  // Disable createdAt and updatedAt
   tableName: 'Sets',   // Ensure it uses the correct table name
 });
+
+//Set.belongsTo(Workout, { foreignKey: 'workout_id' });
 
 module.exports = Set;

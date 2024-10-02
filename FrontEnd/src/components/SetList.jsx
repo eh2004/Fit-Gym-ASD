@@ -27,7 +27,7 @@ const SetList = () => {
 
   return (
     <div>
-      <h2>Set List</h2>
+      <h1>Set List</h1>
       <ul>
         {sets.map(set => (
           <li key={set.set_id}>
