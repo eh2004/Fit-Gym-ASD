@@ -2,7 +2,7 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import Header from "../components/Header.jsx"
 import Footer from "../components/Footer.jsx"
-
+import { useState } from "react";
 
 function BasicPerks() {
     return (
@@ -56,37 +56,90 @@ function MembershipPlan(props) {
 }
 
 function App() {
+
+    const [first_name, setFirstName] = useState("");
+    const[last_name, setLastName] = useState("");
+    const[email_address, setEmailAddress] = useState("");
+    const[phone_number, setPhoneNumber] = useState("");
+    const[date_of_birth, setDateOfBirth] = useState("");
+    const[gender, setGender] = useState("");
+    const[street_address, setStreetAddress] = useState("");
+    const[city, setCity] = useState("");
+    const[state, setState] = useState("");
+    const[zip_code, setZipCode] = useState("");
+    const[country, setCountry] = useState("");
+    const[username, setUsername] = useState("");
+    const[password, setPassword] = useState("");
+
+    const handleSubmit = async (e) => {
+        
+        const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password };
+          
+        try {
+          const response = await fetch('http://localhost:3000/api/customers', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newCustomer),
+          });
+    
+          if (response.ok) {
+            const addedCustomer = await response.json();
+            console.log('Customer added:', addedCustomer);
+
+            //Clear fields
+            setFirstName("");
+            setLastName("");
+            setEmailAddress("");
+            setPhoneNumber("");
+            setDateOfBirth("");
+            setStreetAddress("");
+            setState("");
+            setZipCode("");
+            setCountry("");
+            setUsername("");
+            setPassword("");
+    
+          } else {
+            console.error('Failed to add customer');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      };
+
     return (
-        <React.Fragment>
+        <React.Fragment>    
         <Header />
         <h1>Sign Up</h1>
-       <form action="">
+       <form onSubmit={handleSubmit}>
         <div className="register-form">
             <div className="field-container">
             <div className="two-col">
                 <div>
                     <label htmlFor="first-name">First Name</label><br/>
-                    <input type="text" id="first-name" name=""/>
+                    <input type="text" id="first-name" value={first_name} onChange={(e) => setFirstName(e.target.value)}/>
                 </div>
                 
                 <div className="div-two">
                     <label htmlFor="last-name">Last Name</label><br/>
-                    <input type="text" id="last-name" name=""/>
+                    <input type="text" id="last-name" value={last_name} onChange={(e) => setLastName(e.target.value)}/>
                 </div>
             </div>
             </div>
             
-            <div className="field-container">
+            <div className="field-container">   
             <div className="email-field">
                 <label htmlFor="email">Email Address</label><br/>
-                <input type="text" id="email" name=""/><br/>
+                <input type="email" id="email" value={email_address} onChange={(e) => setEmailAddress(e.target.value)}/><br/>
             </div>
             </div>
 
             <div className="field-container">
             <div className="phone-field">
                 <label htmlFor="phone">Phone Number</label><br/>
-                <input type="text" id="phone" name=""/><br/>
+                <input type="text" id="phone" value={phone_number} onChange={(e) => setPhoneNumber(e.target.value)}/><br/>
             </div>
             </div>
             
@@ -94,12 +147,12 @@ function App() {
             <div className="two-col">
             <div className="dob-field">
                 <label htmlFor="dob">Date of Birth</label><br/>
-                <input type="date" id="dob" name=""/><br/>
+                <input type="date" id="dob" value={date_of_birth} onChange={(e) => setDateOfBirth(e.target.value)}/><br/>
             </div>
 
             <div className="gender-field div-two">
                 <label htmlFor="gender">Gender</label><br/>
-                <input type="text" id="gender" name=""/><br/>
+                <input type="text" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}/><br/>
             </div>
             </div>
             </div>
@@ -109,7 +162,7 @@ function App() {
             <div className="field-container">
             <div className="email-field">
                 <label htmlFor="street-address">Street Address</label><br/>
-                <input type="text" id="street-address" name=""/><br/>
+                <input type="text" id="street-address" value={street_address} onChange={(e) => setStreetAddress(e.target.value)}/><br/>
             </div>
             </div>
 
@@ -117,12 +170,12 @@ function App() {
             <div className="two-col">
             <div>
                 <label htmlFor="city">City</label><br/>
-                <input type="text" id="city" name=""/><br/>
+                <input type="text" id="city" value={city} onChange={(e) => setCity(e.target.value)}/><br/>
             </div>
 
             <div className="div-two">
                 <label htmlFor="state">State</label><br/>
-                <input type="text" id="state" name=""/><br/>
+                <input type="text" id="state" value={state} onChange={(e) => setState(e.target.value)}/><br/>
             </div>
             </div>
             </div>
@@ -131,12 +184,12 @@ function App() {
             <div className="two-col">
             <div>
                 <label htmlFor="zip-code">Zip Code</label><br/>
-                <input type="text" id="zip-code" name=""/><br/>
+                <input type="text" id="zip-code" value={zip_code} onChange={(e) => setZipCode(e.target.value)}/><br/>
             </div>
            
             <div className="div-two">
                 <label htmlFor="country">Country</label><br/>
-                <input type="text" id="country" name=""/><br/>
+                <input type="text" id="country" value={country} onChange={(e) => setCountry(e.target.value)}/><br/>
             </div>
             </div>
             </div>
@@ -147,12 +200,12 @@ function App() {
             <div className="two-col">
             <div>
                 <label htmlFor="username">Choose a Username</label><br/>
-                <input type="text" id="username" name=""/><br/>
+                <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/><br/>
             </div>
 
             <div className="div-two">
                 <label htmlFor="password">Choose a Password</label><br/>
-                <input type="password" id="password" name=""/><br/>
+                <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/><br/>
             </div>
             </div>
             </div>
@@ -209,4 +262,3 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />)
-
