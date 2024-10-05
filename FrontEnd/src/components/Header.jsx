@@ -14,6 +14,16 @@ function ProfileDropDown() {
     )
 }
 
+function UnregisteredDropDown() {
+    return (
+        <div className="profile-dropdown">
+            <a href="/src/pages/SignUp.html">Sign Up</a>
+            <a href="">Login</a>
+            <a href="">Help</a>
+        </div>
+    )
+}
+
 function Header() {
 
     return (
@@ -34,7 +44,7 @@ function Header() {
             <li className="nav-li"><a href="/src/pages/CustomerDashboard.html">Customers</a></li>
             <div className="profile-container">
                 <li><a href=""><img src={profile} id="profile"/></a></li>
-                <ProfileDropDown />
+                <UnregisteredDropDown />
             </div>
         </ul>
         </nav>
