@@ -18,7 +18,7 @@ function UnregisteredDropDown() {
     return (
         <div className="profile-dropdown">
             <a href="/src/pages/SignUp.html">Sign Up</a>
-            <a href="">Login</a>
+            <a href="/src/pages/Login.html">Login</a>
             <a href="">Help</a>
         </div>
     )

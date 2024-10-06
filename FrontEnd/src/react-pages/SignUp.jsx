@@ -82,7 +82,6 @@ function App() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Plan:", plan);
         
         const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan };
           
