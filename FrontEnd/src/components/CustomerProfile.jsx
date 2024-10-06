@@ -6,6 +6,7 @@ Modal.setAppElement("#root");
 
 function CustomerProfile() {
   const [customerInfo, setCustomerInfo] = useState({
+    id: "", // Add id to the state
     name: "",
     bio: "",
     email: "",
@@ -30,6 +31,7 @@ function CustomerProfile() {
       })
       .then((data) => {
         const updatedCustomerInfo = {
+          id: data.customer_id, // Ensure the customer id is included
           name: data.first_name,
           bio: data.bio || "No bio provided",
           email: data.email_address,
@@ -49,11 +51,29 @@ function CustomerProfile() {
   }, []);
 
   const handleDelete = () => {
-    if (window.confirm("Are you sure you want to delete this customer profile?")) {
-      console.log("Customer profile deleted");
-      // Add code to delete the customer profile via API
-    }
-  };
+  if (window.confirm("Are you sure you want to delete this customer profile?")) {
+    console.log("Attempting to delete customer with ID:", customerInfo.id); // Log the customer ID
+    fetch(`http://localhost:3000/api/customers/${customerInfo.id}`, { // Use the correct customer ID
+      method: "DELETE",
+    })
+      .then((response) => {
+        console.log("Delete response:", response); // Log the response for debugging
+        if (!response.ok) {
+          throw new Error("Failed to delete customer");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Customer deleted successfully:", data);
+        alert("Customer profile deleted.");
+        setCustomerInfo({}); // Clear customer info from the state
+      })
+      .catch((error) => {
+        console.error("Error deleting customer:", error); // Log the actual error
+        alert("There was an issue deleting the profile.");
+      });
+  }
+};
 
   const handleEditToggle = () => {
     setFormData(customerInfo); // Ensure the form data is pre-filled with the latest customer info
@@ -72,7 +92,7 @@ function CustomerProfile() {
     console.log("Sending updated data:", formData); // Log data being sent
 
     // Update the customer info via an API call
-    fetch(`http://localhost:3000/api/customers/1`, { // Use the appropriate customer ID
+    fetch(`http://localhost:3000/api/customers/${customerInfo.id}`, { // Use the appropriate customer ID
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
