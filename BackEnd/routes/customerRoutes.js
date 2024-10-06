@@ -123,7 +123,8 @@ router.post('/customers', async (req, res) => {
     name_on_card,
     card_number,
     cvv,
-    expiration_date
+    expiration_date,
+    plan
   } = req.body;
 
   try {
@@ -140,7 +141,8 @@ router.post('/customers', async (req, res) => {
       zip_code,
       country,
       username,
-      password
+      password,
+      plan
     });
 
     const newPaymentCard = await PaymentCard.create({

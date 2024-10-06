@@ -40,6 +40,7 @@ function PremiumPerks() {
 }
 
 function MembershipPlan(props) {
+
     return (
         <div>
         <h3 className="perk-name">{props.name}</h3>
@@ -49,7 +50,7 @@ function MembershipPlan(props) {
                 <p>/month</p>
             </div>
             {props.perks}
-            <button className="membership-button" style={{background: props.colour}}>Select</button>
+            <div className="membership-button" style={{background: props.colour}} onClick={props.onClick}>Select</div>
         </div>
         </div>
     );
@@ -57,12 +58,12 @@ function MembershipPlan(props) {
 
 function App() {
 
-    const [first_name, setFirstName] = useState("");
+    const[first_name, setFirstName] = useState("");
     const[last_name, setLastName] = useState("");
     const[email_address, setEmailAddress] = useState("");
     const[phone_number, setPhoneNumber] = useState("");
     const[date_of_birth, setDateOfBirth] = useState("");
-    const[gender, setGender] = useState("");
+    const[gender, setGender] = useState("female");
     const[street_address, setStreetAddress] = useState("");
     const[city, setCity] = useState("");
     const[state, setState] = useState("");
@@ -76,9 +77,14 @@ function App() {
     const[cvv, setCVV] = useState("");
     const[expiration_date, setExpirationDate] = useState("");
 
+    const[plan, setPlan] = useState("");
+
+
     const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("Plan:", plan);
         
-        const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date };
+        const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan };
           
         try {
           const response = await fetch('http://localhost:3000/api/customers', {
@@ -99,6 +105,7 @@ function App() {
             setEmailAddress("");
             setPhoneNumber("");
             setDateOfBirth("");
+            setGender("");
             setStreetAddress("");
             setState("");
             setZipCode("");
@@ -109,6 +116,7 @@ function App() {
             setCardNumber("");
             setCVV("");
             setExpirationDate("");
+            setPlan("");
     
           } else {
             console.error('Failed to add customer');
@@ -162,7 +170,7 @@ function App() {
             <div className="gender-field div-two">
                 <label htmlFor="gender">Gender</label><br/>
                 {/* <input type="text" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}/><br/> */}
-                <select class="gender-dropdown" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                <select className="gender-dropdown" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
                     <option value="female">Female</option>
                     <option value="male">Male</option>
                     <option value="other">Other</option>
@@ -229,9 +237,9 @@ function App() {
         <h2 className="form-heading">Membership Plans</h2>
 
         <div className="perks-container">
-            <MembershipPlan name="Basic" price="$40" perks= {<BasicPerks />} colour="linear-gradient(50deg, #3d91ff, #31008b)"/>
-            <div className="standard-plan"><MembershipPlan name="Standard" price="$60" perks= {<StandardPerks />} colour="linear-gradient(50deg, #8fff78, #00422e)" /></div>
-            <MembershipPlan name="Premium" price="$80" perks= {<PremiumPerks />} colour="linear-gradient(50deg, #f0ff64, #9c4600)" />
+            <MembershipPlan name="Basic" price="$40" perks= {<BasicPerks />} colour="linear-gradient(50deg, #3d91ff, #31008b)" onClick={() => setPlan("basic")}/>
+            <div className="standard-plan"><MembershipPlan name="Standard" price="$60" perks= {<StandardPerks />} colour="linear-gradient(50deg, #8fff78, #00422e)" onClick={() => setPlan("standard")}/></div>
+            <MembershipPlan name="Premium" price="$80" perks= {<PremiumPerks />} colour="linear-gradient(50deg, #f0ff64, #9c4600)" onClick={() => setPlan("premium")}/>
         </div>
 
         <div className="big-break">.</div>

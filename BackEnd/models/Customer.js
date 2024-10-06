@@ -53,6 +53,9 @@ const Customer = sequelize.define('Customer', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  plan: {
+    type: DataTypes.STRING,
+  }
 }, {
   tableName: 'Customers',  // Explicit table name
   timestamps: false,       // Disable createdAt and updatedAt
