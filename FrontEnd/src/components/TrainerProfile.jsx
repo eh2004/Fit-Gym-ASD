@@ -5,17 +5,18 @@ import Modal from "react-modal"; // Import the Modal component
 Modal.setAppElement("#root"); // Ensure accessibility for screen readers
 
 // Trainer profile component
-function TrainerProfile() {
-  const [trainerInfo, setTrainerInfo] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    specialty: "",
-    certification: "",
-    language: "",
-    bio: "",
-  });
+  function TrainerProfile() {
+    const [trainerInfo, setTrainerInfo] = useState({
+      id: "", // Make sure the trainer ID is included here
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      specialty: "",
+      certification: "",
+      language: "",
+      bio: "",
+    });
 
   // State for editing the trainer info
   const [isEditing, setIsEditing] = useState(false);
@@ -25,23 +26,25 @@ function TrainerProfile() {
   useEffect(() => {
     const fetchTrainerData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/trainers/1"); // Adjust the ID if needed
+        const response = await fetch("http://localhost:3000/api/trainers/1"); // Adjust ID if necessary
         const data = await response.json();
 
         // Populate trainer info with fetched data
         setTrainerInfo({
+          id: data.trainer_id, // Ensure trainer ID is included
           name: `${data.first_name} ${data.last_name}` || "",
           email: data.email_address || "",
           phone: data.phone_number || "",
           address: data.street_address || "",
-          specialty: "", // Placeholder (add this to your database later)
-          certification: "", // Placeholder (add this to your database later)
-          language: data.language ? data.language.join(", ") : "", // Handle language array
-          bio: "", // Placeholder (add this to your database later)
+          specialty: "", // Placeholder
+          certification: "", // Placeholder
+          language: data.language ? data.language.join(", ") : "",
+          bio: "", // Placeholder
         });
 
         // Set form data to the fetched trainer info
         setFormData({
+          id: data.trainer_id,
           name: `${data.first_name} ${data.last_name}` || "",
           email: data.email_address || "",
           phone: data.phone_number || "",
@@ -62,6 +65,8 @@ function TrainerProfile() {
   // Delete the trainer profile
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this trainer profile?")) {
+      console.log("Attempting to delete trainer with ID:", trainerInfo.id);
+
       fetch(`http://localhost:3000/api/trainers/${trainerInfo.id}`, {
         method: "DELETE",
       })
@@ -73,7 +78,7 @@ function TrainerProfile() {
         })
         .then(() => {
           alert("Trainer profile deleted.");
-          setTrainerInfo({});
+          setTrainerInfo({}); // Clear trainer info
         })
         .catch((error) => {
           console.error("Error deleting trainer:", error);

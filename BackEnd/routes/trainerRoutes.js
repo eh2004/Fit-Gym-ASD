@@ -126,16 +126,18 @@ router.post('/trainers', async (req, res) => {
 // Delete an existing trainer by ID
 router.delete('/trainers/:id', async (req, res) => {
   const { id } = req.params;
+  console.log(`Received request to delete trainer with ID: ${id}`); // Check the ID received
 
   try {
     const trainer = await Trainer.findByPk(id);
     if (!trainer) {
+      console.log('Trainer not found');
       return res.status(404).json({ error: 'Trainer not found' });
     }
 
     // Delete the trainer
     await trainer.destroy();
-
+    console.log('Trainer deleted successfully');
     res.json({ message: 'Trainer deleted successfully' });
   } catch (error) {
     console.error('Error deleting trainer:', error);
