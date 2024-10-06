@@ -5,6 +5,7 @@ const customerRoutes = require('./routes/customerRoutes');
 const workoutRoutes = require('./routes/workoutRoutes');
 const setRoutes = require('./routes/setRoutes');
 const exerciseRoutes = require('./routes/exercisesRoutes');
+const trainerRoutes = require('./routes/TrainerRoutes'); // Import trainer routes
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cors = require('cors');
@@ -29,14 +30,17 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', err);
   });
 
-// Use the user routes
+// Register the routes
 app.use('/api', userRoutes); // All user routes will be prefixed with /api
 app.use('/api', customerRoutes);
 app.use('/api', workoutRoutes);
 app.use('/api', exerciseRoutes);
 app.use('/api', setRoutes);
+app.use('/api', trainerRoutes
+  
+); // Add the trainer routes
 
-
+// Simple route to test the server
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
@@ -45,4 +49,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-

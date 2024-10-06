@@ -10,7 +10,7 @@ function TrainerProfile() {
     name: "",
     email: "",
     phone: "",
-    address: "", // These will be added later
+    address: "",
     specialty: "",
     certification: "",
     language: "",
@@ -25,31 +25,31 @@ function TrainerProfile() {
   useEffect(() => {
     const fetchTrainerData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/users/1"); // Adjust the ID if needed
+        const response = await fetch("http://localhost:3000/api/trainers/1"); // Adjust the ID if needed
         const data = await response.json();
 
         // Populate trainer info with fetched data
         setTrainerInfo({
-          name: data.username || "",
-          email: data.email || "",
-          phone: data.phno || "",
-          address: "", // Placeholder until the data is added
-          specialty: "", // Placeholder
-          certification: "", // Placeholder
-          language: "", // Placeholder
-          bio: "", // Placeholder
+          name: `${data.first_name} ${data.last_name}` || "",
+          email: data.email_address || "",
+          phone: data.phone_number || "",
+          address: data.street_address || "",
+          specialty: "", // Placeholder (add this to your database later)
+          certification: "", // Placeholder (add this to your database later)
+          language: data.language ? data.language.join(", ") : "", // Handle language array
+          bio: "", // Placeholder (add this to your database later)
         });
 
         // Set form data to the fetched trainer info
         setFormData({
-          name: data.username || "",
-          email: data.email || "",
-          phone: data.phno || "",
-          address: "",
-          specialty: "",
-          certification: "",
-          language: "",
-          bio: "",
+          name: `${data.first_name} ${data.last_name}` || "",
+          email: data.email_address || "",
+          phone: data.phone_number || "",
+          address: data.street_address || "",
+          specialty: "", // Placeholder
+          certification: "", // Placeholder
+          language: data.language ? data.language.join(", ") : "",
+          bio: "", // Placeholder
         });
       } catch (error) {
         console.error("Error fetching trainer data:", error);
@@ -59,12 +59,25 @@ function TrainerProfile() {
     fetchTrainerData();
   }, []);
 
-  //  Delete the trainer profile
+  // Delete the trainer profile
   const handleDelete = () => {
-    if (
-      window.confirm("Are you sure you want to delete this trainer profile?")
-    ) {
-      console.log("Trainer profile deleted");
+    if (window.confirm("Are you sure you want to delete this trainer profile?")) {
+      fetch(`http://localhost:3000/api/trainers/${trainerInfo.id}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete trainer");
+          }
+          return response.json();
+        })
+        .then(() => {
+          alert("Trainer profile deleted.");
+          setTrainerInfo({});
+        })
+        .catch((error) => {
+          console.error("Error deleting trainer:", error);
+        });
     }
   };
 
@@ -85,23 +98,25 @@ function TrainerProfile() {
   // Save the updated trainer info
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/users/1`, {
-        // Adjust the ID as needed
+      const response = await fetch(`http://localhost:3000/api/trainers/1`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: formData.name, // Map formData to what the backend expects
-          email: formData.email,
-          phno: formData.phone,
+          first_name: formData.name.split(" ")[0], // First name
+          last_name: formData.name.split(" ")[1] || "", // Last name
+          email_address: formData.email,
+          phone_number: formData.phone,
+          street_address: formData.address,
+          language: formData.language.split(",").map((lang) => lang.trim()), // Convert language to array
         }),
       });
 
       if (response.ok) {
         console.log("Trainer info updated");
         setTrainerInfo(formData); // Update trainerInfo after saving
-        setIsEditing(false)
+        setIsEditing(false);
       } else {
         console.error("Failed to update trainer info");
       }
@@ -151,7 +166,6 @@ function TrainerProfile() {
         </button>
       </div>
 
-      {/* Modal for editing the trainer info */}
       {/* Modal for editing the trainer info */}
       <Modal
         isOpen={isEditing}
