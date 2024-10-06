@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Customer, Workout, Set, Exercise } = require('../models');
+const { Customer, Workout, Set, Exercise, PaymentCard } = require('../models');
 
 // Fetch all customers with associated workouts, sets, and exercises
 router.get('/customers', async (req, res) => {
@@ -104,7 +104,7 @@ router.put('/customers/:id', async (req, res) => {
   }
 });
 
-// Create a new customer
+// Creates a new customer and adds payment card details
 router.post('/customers', async (req, res) => {
   const {
     first_name,
@@ -119,7 +119,11 @@ router.post('/customers', async (req, res) => {
     zip_code,
     country,
     username,
-    password
+    password,
+    name_on_card,
+    card_number,
+    cvv,
+    expiration_date
   } = req.body;
 
   try {
@@ -139,12 +143,26 @@ router.post('/customers', async (req, res) => {
       password
     });
 
-    res.status(201).json({ message: 'Customer created successfully', newCustomer });
+    const newPaymentCard = await PaymentCard.create({
+      name_on_card,
+      card_number,
+      cvv,
+      expiration_date,
+      customer_id: newCustomer.customer_id
+    });
+
+    res.status(201).json({ 
+      message: 'Customer created successfully', 
+      newCustomer, 
+      newPaymentCard 
+    });
+    
   } catch (error) {
     console.error('Error creating customer:', error);
     res.status(500).json({ error: 'Error creating customer' });
   }
 });
+
 
 // Delete an existing customer by ID
 router.delete('/customers/:id', async (req, res) => {
@@ -192,6 +210,5 @@ router.get('/customers/:customerId/workouts', async (req, res) => {
     res.status(500).json({ error: 'Error retrieving workouts' });
   }
 });
-
 
 module.exports = router;

@@ -71,9 +71,14 @@ function App() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
+    const[name_on_card, setNameOnCard] = useState("");
+    const[card_number, setCardNumber] = useState("");
+    const[cvv, setCVV] = useState("");
+    const[expiration_date, setExpirationDate] = useState("");
+
     const handleSubmit = async (e) => {
         
-        const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password };
+        const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date };
           
         try {
           const response = await fetch('http://localhost:3000/api/customers', {
@@ -81,7 +86,7 @@ function App() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify(newCustomer),
+            body: JSON.stringify(newCustomer), 
           });
     
           if (response.ok) {
@@ -100,6 +105,10 @@ function App() {
             setCountry("");
             setUsername("");
             setPassword("");
+            setNameOnCard("");
+            setCardNumber("");
+            setCVV("");
+            setExpirationDate("");
     
           } else {
             console.error('Failed to add customer');
@@ -152,7 +161,12 @@ function App() {
 
             <div className="gender-field div-two">
                 <label htmlFor="gender">Gender</label><br/>
-                <input type="text" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}/><br/>
+                {/* <input type="text" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}/><br/> */}
+                <select class="gender-dropdown" id="gender" value={gender} onChange={(e) => setGender(e.target.value)}>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                    <option value="other">Other</option>
+                </select>
             </div>
             </div>
             </div>
@@ -228,7 +242,7 @@ function App() {
         <div className="field-container">
             <div className="cardname-field">
                 <label htmlFor="card-name">Name on Card</label><br/>
-                <input type="text" id="card-name" name=""/><br/>
+                <input type="text" id="card-name" value={name_on_card} onChange={(e) => setNameOnCard(e.target.value)}/><br/>
             </div> 
         </div>
 
@@ -236,12 +250,12 @@ function App() {
             <div className="two-col">
             <div className="card-number">
                 <label htmlFor="card-number">Card Number</label><br/>
-                <input type="text" id="card-number" name=""/><br/>
+                <input type="text" id="card-number" value={card_number} onChange={(e) => setCardNumber(e.target.value)}/><br/>
             </div>
 
             <div className="cvv">
                 <label htmlFor="cvv">CVV</label><br/>
-                <input type="password" id="cvv" name=""/><br/>
+                <input type="password" id="cvv" value={cvv} onChange={(e) => setCVV(e.target.value)}/><br/>
             </div> 
             </div>
         </div>
@@ -249,7 +263,7 @@ function App() {
         <div className="field-container">
             <div className="expiration-date">
                 <label htmlFor="expiration-date">Expiration Date</label><br/>
-                <input type="date" id="expiration-date" name=""/><br/>
+                <input type="date" id="expiration-date" value={expiration_date} onChange={(e) => setExpirationDate(e.target.value)}/><br/>
             </div> 
         </div>
         </div>

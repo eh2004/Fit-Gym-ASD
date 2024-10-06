@@ -682,6 +682,19 @@ tbody tr:hover {
     padding-bottom: 60px;
    }
 
+   .gender-dropdown {
+    width: 140px;
+    background-color: rgb(233, 233, 233);
+    box-shadow: 2px 3px 2px rgb(194, 194, 194);
+    border-radius: 10px 10px 10px 10px;
+    border: none;
+    text-align: left;
+   }
+
+   .gender-field {
+    padding-left: 90px;
+   }
+
    /*-------------------- Membership Plan -------------------*/
    .membership-container {
     background-color: rgb(255, 255, 255);
