@@ -30,21 +30,22 @@ const App = () => {
     setSelectedData(armsData);
     setSelectedTitle("Arms Progress");
   }
-
-  return (
-    <React.Fragment>
-      <Header />
-      <div>
-        <h1>Personal Progress</h1>
-      </div>
-      <ProgressLineGraphByUser customer={{ id: 1, name: "John Doe" }} />
-      <SetList/>
+/* 
+<SetList/>
       <ExerciseList/>
       <WorkoutList/>
       <CustomerList/>
       <UserList/>
       <AddUserForm/>
       <EditUserForm/>
+*/
+  return (
+    <React.Fragment>
+      <Header />
+      <div>
+        <h1>Personal Progress</h1>
+      </div>
+      <ProgressLineGraphByUser customer={{ id: 1 }} />
       {/* Buttons */}
       <div className="button-container">
         <button onClick={handleSwitchToLegs}>Show Legs Progress</button>
@@ -55,6 +56,7 @@ const App = () => {
       <div className="graphs-container">
         <LineGraph title={selectedTitle} data={selectedData} />
       </div>
+      <EditUserForm/>
       <Footer />
     </React.Fragment>
   );
