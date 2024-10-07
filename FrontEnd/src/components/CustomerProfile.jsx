@@ -33,12 +33,12 @@ function CustomerProfile() {
         const updatedCustomerInfo = {
           id: data.customer_id, // Ensure the customer id is included
           name: data.first_name,
-          bio: data.bio || "No bio provided",
+          bio: data.bio || " Fitness enthusiast", // Placeholder
           email: data.email_address,
           phone: data.phone_number,
           address: data.street_address || "No address provided",
-          fitnessGoal: "To be added later",
-          progress: "To be added later",
+          fitnessGoal: "lose weight", // Placeholder
+          progress: "50%", // Placeholder
         };
         setCustomerInfo(updatedCustomerInfo);
         setFormData(updatedCustomerInfo); // Pre-fill form data
