@@ -11,17 +11,24 @@ steps:
     versionSpec: '16.x' # Adjust the Node.js version as per your project requirement
   displayName: 'Use Node.js'
 
+# Checkout the repository
+- task: Checkout@1
+  displayName: 'Checkout repository code'
+
 # Install NPM dependencies
 - script: |
     npm install
+  workingDirectory: ./ # Ensure the correct path is specified if your package.json is not in the root
   displayName: 'Install NPM dependencies'
 
 # Run the unit test for TrainerProfile
 - script: |
     npm test -- src/test/TrainerProfile.test.js --watchAll=false --reporters=default --reporters=jest-junit
+  workingDirectory: ./ # Ensure the correct path is specified if your package.json is not in the root
   displayName: 'Run TrainerProfile unit test'
 
 # Optional: If you want to collect code coverage reports
-#- script: |
-#    npm test -- --coverage --watchAll=false
-#  displayName: 'Run tests with code coverage'
+# - script: |
+#     npm test -- --coverage --watchAll=false
+#   workingDirectory: ./ # Ensure the correct path is specified
+#   displayName: 'Run tests with code coverage'
