@@ -13,7 +13,7 @@ function App() {
         <CarouselLearning />
         <div className="LearnHub-Description">
             <p className="LearnHub-Description"> This page is designed to provide comprehensive information about the gym, its equipment, and how each piece can help you achieve your fitness goals. Whether you're a beginner or a seasoned athlete, you'll find detailed descriptions of various machines, free weights, and exercise tools, along with explanations of how they work and what muscle groups they target.</p>
-            <p className="LearnHub-Description"> Our goal is to guide you in understanding how to use the equipment safely and effectively, empowering you to make the most out of your workout routines. With clear visuals and step-by-step instructions, this resource is perfect for anyone looking to build strength, improve endurance, or simply learn more about fitness techniques. Start exploring and enhance your fitness journey today!</p>
+            <p className="LearnHub-Description2"> Our goal is to guide you in understanding how to use the equipment safely and effectively, empowering you to make the most out of your workout routines. With clear visuals and step-by-step instructions, this resource is perfect for anyone looking to build strength, improve endurance, or simply learn more about fitness techniques. Start exploring and enhance your fitness journey today!</p>
         </div>
         
         <Footer />
