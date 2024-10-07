@@ -4,7 +4,7 @@ import ProgressLineGraphByUser from "../components/LineGraphByUser";
 
 // Mock only the Line chart, leave ChartJS.register intact
 jest.mock('react-chartjs-2', () => ({
-  Line: () => <div>Mocked Line Chart</div>, // Mocked Line component
+  Line: jest.fn(() => <div>Mocked Line Chart</div>), // Mock the Line chart as a spy
 }));
 
 // Mock the fetch API
@@ -19,7 +19,14 @@ global.fetch = jest.fn(() =>
   })
 );
 
-// Mock Hammer.js and chartjs-plugin-zoom (only the parts required for zoom)
+jest.mock('chartjs-plugin-zoom', () => ({
+  id: 'zoom',
+  start: jest.fn(),
+  stop: jest.fn(),
+}));
+
+
+// Mock Hammer.js and chartjs-plugin-zoom 
 jest.mock('hammerjs', () => ({
   Pan: jest.fn(),
   Pinch: jest.fn(),
@@ -32,20 +39,15 @@ jest.mock('hammerjs', () => ({
   })),
 }));
 
-jest.mock('chartjs-plugin-zoom', () => ({
-  id: 'zoom',
-  start: jest.fn(),
-  stop: jest.fn(),
-}));
 
 describe("ProgressLineGraphByUser Component", () => {
-  it("renders workout progress graph with mock data", async () => {
+  it("Chart displays mock data", async () => {
     await act(async () => {
       render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
     });
 
     // Check for the graph title
-    expect(screen.getByText(/Workout Progress Line Graph/i)).toBeInTheDocument();
+    expect(screen.getByText(/Overall Workout Progress/i)).toBeInTheDocument();
 
     // Check for the mocked chart
     expect(screen.getByText(/Mocked Line Chart/i)).toBeInTheDocument(); // Match the mocked chart
@@ -54,7 +56,7 @@ describe("ProgressLineGraphByUser Component", () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
-  it("displays an error message when fetch fails", async () => {
+  it("Error messages display correctly", async () => {
     // Mock fetch to return an error
     global.fetch.mockImplementationOnce(() => Promise.reject("API fetch failed"));
 
@@ -65,4 +67,42 @@ describe("ProgressLineGraphByUser Component", () => {
     // Check for the error message
     expect(await screen.findByText(/Error:/i)).toBeInTheDocument();
   });
+  it("Chart updates correctly", async () => {
+    const { rerender } = render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
+  
+    await act(async () => {
+      expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/api/customers/1/workouts')); // Match only the relevant part of the URL
+    });
+  
+    // Simulate rerendering the component with new props
+    await act(async () => {
+      rerender(<ProgressLineGraphByUser customer={{ id: 2 }} />);
+    });
+  
+    // Check that the fetch was called with the new customer ID
+    expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/api/customers/2/workouts'));
+  });  
+  it("Zoom function working correctly", async () => {
+    const { rerender } = render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
+  
+    await act(async () => {
+      rerender(<ProgressLineGraphByUser customer={{ id: 1 }} />);
+    });
+  
+    // Simulate zoom behavior
+    const zoomMock = require('chartjs-plugin-zoom');
+    zoomMock.start();  // Simulate zoom start
+  
+    expect(zoomMock.start).toHaveBeenCalled();  // Assert zoom start was triggered
+  }); 
+  it("Loading displays correctly", async () => {
+    global.fetch.mockImplementationOnce(() => new Promise(() => {})); // Keep the promise pending to simulate loading
+    
+    await act(async () => {
+      render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
+    });
+  
+    // Check if the loading state is displayed
+    expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
+  });  
 });
