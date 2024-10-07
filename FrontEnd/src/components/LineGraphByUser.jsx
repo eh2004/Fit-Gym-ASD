@@ -26,15 +26,12 @@ ChartJS.register(
   zoomPlugin
 );
 
-
-// Your component logic here
-
-
-const ProgressLineGraphByUser = ({ customer }) => {
+const ProgressLineGraphByUser = ({ customer, selectedMuscleGroup }) => {
   const customerId = customer.id; // Extract the customer ID from the customer prop
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [chartData, setChartData] = useState(null);
+  const [isSummaryMode, setIsSummaryMode] = useState(true); // Add a state to switch between modes
 
   useEffect(() => {
     // Fetch workouts for a specific customer from the backend
@@ -46,19 +43,18 @@ const ProgressLineGraphByUser = ({ customer }) => {
         return response.json();
       })
       .then((data) => {
-        console.log('API Response for customer:', data); // Log the full response to check structure
         setLoading(false);
-        const formattedData = formatDataForGraph(data);
+        const formattedData = formatDataForGraph(data, isSummaryMode ? null : selectedMuscleGroup);
         setChartData(formattedData); // Set formatted chart data
       })
       .catch((error) => {
         setError(error);
         setLoading(false);
       });
-  }, [customerId]);
+  }, [customerId, selectedMuscleGroup, isSummaryMode]);
 
   // Helper function to format the workout data for the chart
-  const formatDataForGraph = (workouts) => {
+  const formatDataForGraph = (workouts, muscleGroup) => {
     let weightData = [];
 
     // Sort workouts by workout_date in ascending order
@@ -73,19 +69,26 @@ const ProgressLineGraphByUser = ({ customer }) => {
         return;
       }
 
+      // Filter sets based on the selected muscle group, or show all sets in summary mode
+      const filteredSets = muscleGroup
+        ? workout.Sets.filter((set) => set.Exercise.muscle_group === muscleGroup)
+        : workout.Sets;
+
+      if (filteredSets.length === 0) return; // Skip if no sets match the selected muscle group
+
       // Collect the total weight for the workout as a data point
-      const totalWeight = workout.Sets.reduce((sum, set) => {
+      const totalWeight = filteredSets.reduce((sum, set) => {
         const weight = parseFloat(set.weight); // Ensure weight is a valid number
         return sum + (isNaN(weight) ? 0 : weight); // Skip invalid weights
       }, 0);
 
-      const averageWeight = totalWeight / workout.Sets.length;
+      const averageWeight = totalWeight / filteredSets.length;
 
       // Create a data point for this workout with sets information for tooltips
       weightData.push({
         x: workoutDate, // Use the valid Date object
         y: averageWeight, // Average weight for y-axis
-        setsInfo: workout.Sets.map(
+        setsInfo: filteredSets.map(
           (set) => `${set.Exercise.exercise_name} x ${set.reps} for ${set.weight || 0}kg`
         ), // Store sets info for tooltips
       });
@@ -97,7 +100,7 @@ const ProgressLineGraphByUser = ({ customer }) => {
     return {
       datasets: [
         {
-          label: 'Average Weight (kg)',
+          label: muscleGroup ? `${muscleGroup} Workout Progress` : 'Overall Workout Progress',
           data: weightData, // Use the x (date) and y (average weight)
           borderColor: 'rgba(75, 192, 192, 1)',
           borderWidth: 2,
@@ -112,7 +115,14 @@ const ProgressLineGraphByUser = ({ customer }) => {
 
   return (
     <div className="line-chart-container">
-      <h1>Workout Progress Line Graph</h1>
+      <h1>{isSummaryMode ? 'Overall Workout Progress' : `${selectedMuscleGroup} Workout Progress`}</h1>
+      
+      <div>
+        {/* Button to toggle between summary mode and muscle group filter mode */}
+        <button onClick={() => setIsSummaryMode(true)}>Overall Summary</button>
+        <button onClick={() => setIsSummaryMode(false)}>Filter by Muscle Group</button>
+      </div>
+
       {chartData ? (
         <div style={{ height: '400px' }}>
           <Line
