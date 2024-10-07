@@ -10,22 +10,39 @@ function App() {
     const[password, setPassword] = useState("");
     const[userFound, setUserFound] = useState(true);
     const[customersList, setCustomersList] = useState([]);
+    const[loggedIn, setLoggedIn] = useState(false);
+    const[loggedInName, setLoggedInName] = useState("");
 
     useEffect(() => {
         fetch('http://localhost:3000/api/customers')
         .then(response => response.json())
         .then(data => setCustomersList(data))
+
+        const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (storedUser) {
+          console.log("Stored loggedInUser on this page:", storedUser);
+        }
     }, []);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setUserFound(false)
+
         for(let i = 0; i < customersList.length; i++) {
             if(username == customersList[i].username) {
                 if(password == customersList[i].password) {
                     console.log("Found!");
+                    setLoggedIn(true);
                     setUserFound(true);
+                    setLoggedInName(customersList[i].first_name);
+                    const id = customersList[i].customer_id;
+                    localStorage.setItem("loggedInUser", JSON.stringify({id}));
+                    
+                    const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+                    console.log("Stored customer_id:", storedUser.customerId);
+                    
+                    break;
                 }
             }
         }
@@ -39,9 +56,23 @@ function App() {
         setUserFound(true);
     }
 
+    function LoggedInMsg() {
+        return (
+        <React.Fragment>
+        <h1>Welcome back {loggedInName}!</h1>
+        <div className="welcome-msg">
+            <p>Please use the navigation bar to view your data and use our services.</p>
+            <img src="../assets/logo-colour-inverse.png"/>
+        </div>
+        </React.Fragment>
+        );
+    }
+
     return (
         <React.Fragment>
         <Header />
+        {loggedIn ? (<LoggedInMsg />) : (
+        <React.Fragment>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
         <div className="register-form login-form">
@@ -63,6 +94,8 @@ function App() {
         </div>
         <input className="submit-button" type="submit" value="Login"></input>
         </form>
+        </React.Fragment>
+        )}
         <Footer />
         </React.Fragment>
     )
