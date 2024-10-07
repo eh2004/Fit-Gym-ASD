@@ -41,6 +41,10 @@ function App() {
                     
                     const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
                     console.log("Stored customer_id:", storedUser.customerId);
+
+                    setTimeout(() => {
+                        window.location.href = "/src/pages/index.html";
+                    }, 4000);
                     
                     break;
                 }
@@ -61,7 +65,7 @@ function App() {
         <React.Fragment>
         <h1>Welcome back {loggedInName}!</h1>
         <div className="welcome-msg">
-            <p>Please use the navigation bar to view your data and use our services.</p>
+            <p>You will be directed to the home page soon.</p>
             <img src="../assets/logo-colour-inverse.png"/>
         </div>
         </React.Fragment>
@@ -86,7 +90,7 @@ function App() {
             <div className="field-container">
                 <div className="email-field">
                   <label htmlFor="password">Password</label><br/>
-                   <input type="text" id="password" value={password} onChange={(e) => setPassword(e.target.value)} onFocus={handleFocus}/>
+                   <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} onFocus={handleFocus}/>
                 </div>
             </div>
 
