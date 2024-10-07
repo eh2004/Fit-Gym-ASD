@@ -95,7 +95,7 @@ describe("ProgressLineGraphByUser Component", () => {
   
     expect(zoomMock.start).toHaveBeenCalled();  // Assert zoom start was triggered
   }); 
-  it("Loading display correctly", async () => {
+  it("Loading displays correctly", async () => {
     global.fetch.mockImplementationOnce(() => new Promise(() => {})); // Keep the promise pending to simulate loading
     
     await act(async () => {
