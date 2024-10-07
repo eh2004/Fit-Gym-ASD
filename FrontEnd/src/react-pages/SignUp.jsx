@@ -44,7 +44,7 @@ function MembershipPlan(props) {
     return (
         <div>
         <h3 className="perk-name">{props.name}</h3>
-        <div className="membership-container">
+        <div className="membership-container" style={{boxShadow: props.shadow}}>
             <div className="membership-header" style={{background: props.colour}}>
                 <p className="price">{props.price}</p>
                 <p>/month</p>
@@ -97,6 +97,10 @@ function App() {
     const[cvvValid, setCvvValid] = useState(true);
     const[expirationDateValid, setExpirationDateValid] = useState(true);
     const[planValid, setPlanValid] = useState(true);
+
+    const[userRegistered, setUserRegistered] = useState(false);
+
+    const[planSelected, setPlanSelected] = useState(false);
 
     function checkAge(date_of_birth) {
         if(date_of_birth == "") return false;
@@ -280,14 +284,31 @@ function App() {
             } catch (error) {
             console.error('Error:', error);
             }
+
+            setUserRegistered(true);
         }
-      };
+    };
+
+    function RegisteredMessage() {
+        return (
+        <React.Fragment>
+        <h1>Welcome to Fit Gym!</h1>
+        <div className="welcome-msg">
+            <p>Please log in to view all our features.</p>
+            <img src="../assets/logo-colour-inverse.png"/>
+            <a className="goto-login" href="../pages/Login.html">Login</a>
+        </div>
+        </React.Fragment>
+        );
+    }
 
     return (
-        <React.Fragment>    
+        <React.Fragment>
         <Header />
+        {userRegistered ? (<RegisteredMessage />) : (
+        <React.Fragment>
         <h1>Sign Up</h1>
-       <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
         <div className="register-form">
             <div className="field-container">
             <div className="two-col">
@@ -406,9 +427,9 @@ function App() {
         <h2 className="form-heading">Membership Plans</h2>
 
         <div className="perks-container">
-            <MembershipPlan name="Basic" price="$40" perks= {<BasicPerks />} colour="linear-gradient(50deg, #3d91ff, #31008b)" onClick={() => setPlan("basic")}/>
-            <div className="standard-plan"><MembershipPlan name="Standard" price="$60" perks= {<StandardPerks />} colour="linear-gradient(50deg, #8fff78, #00422e)" onClick={() => setPlan("standard")}/></div>
-            <MembershipPlan name="Premium" price="$80" perks= {<PremiumPerks />} colour="linear-gradient(50deg, #f0ff64, #9c4600)" onClick={() => setPlan("premium")}/>
+            <MembershipPlan name="Basic" price="$40" perks= {<BasicPerks />} colour="linear-gradient(50deg, #3d91ff, #31008b)" shadow={plan == "basic" ? "0px 2px  10px rgb(19, 23, 255)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("basic")}/>
+            <div className="standard-plan"><MembershipPlan name="Standard" price="$60" perks= {<StandardPerks />} colour="linear-gradient(50deg, #8fff78, #00422e)" shadow={plan == "standard" ? "0px 2px  10px rgb(0, 92, 49)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("standard")}/></div>
+            <MembershipPlan name="Premium" price="$80" perks= {<PremiumPerks />} colour="linear-gradient(50deg, #f0ff64, #9c4600)" shadow={plan == "premium" ? "0px 2px  10px rgb(196, 160, 0)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("premium")}/>
         </div>
         <div className="error-register" style={{ visibility: planValid ? 'hidden' : 'visible' }}>You must select a plan</div>
 
@@ -452,9 +473,11 @@ function App() {
         <input className="submit-button" type="submit" value="Register"></input>
 
         </form>
+        </React.Fragment>
+        )}
         <Footer />
         </React.Fragment>
-    )
+        );
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />)

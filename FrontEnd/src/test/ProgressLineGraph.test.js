@@ -2,35 +2,10 @@ import React from 'react';
 import { render, screen, act } from "@testing-library/react";
 import ProgressLineGraphByUser from "../components/LineGraphByUser";
 
-// Mock canvas getContext for Chart.js
-beforeAll(() => {
-  HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
-    fillRect: jest.fn(),
-    clearRect: jest.fn(),
-    getImageData: jest.fn(),
-    putImageData: jest.fn(),
-    createImageData: jest.fn(),
-    setTransform: jest.fn(),
-    drawImage: jest.fn(),
-    save: jest.fn(),
-    fillText: jest.fn(),
-    restore: jest.fn(),
-    beginPath: jest.fn(),
-    moveTo: jest.fn(),
-    lineTo: jest.fn(),
-    closePath: jest.fn(),
-    stroke: jest.fn(),
-    translate: jest.fn(),
-    scale: jest.fn(),
-    rotate: jest.fn(),
-    arc: jest.fn(),
-    fill: jest.fn(),
-    measureText: jest.fn().mockReturnValue({ width: 100 }),
-    transform: jest.fn(),
-    rect: jest.fn(),
-    clip: jest.fn(),
-  }));
-});
+// Mock only the Line chart, leave ChartJS.register intact
+jest.mock('react-chartjs-2', () => ({
+  Line: () => <div>Mocked Line Chart</div>, // Mocked Line component
+}));
 
 // Mock the fetch API
 global.fetch = jest.fn(() =>
@@ -44,20 +19,18 @@ global.fetch = jest.fn(() =>
   })
 );
 
-// Mock Hammer.js and chartjs-plugin-zoom
-jest.mock('hammerjs', () => {
-  return {
-    Pan: jest.fn(),
-    Pinch: jest.fn(),
-    Manager: jest.fn().mockImplementation(() => ({
-      add: jest.fn(),
-      set: jest.fn(),
-      on: jest.fn(),
-      off: jest.fn(),
-      destroy: jest.fn(),
-    })),
-  };
-});
+// Mock Hammer.js and chartjs-plugin-zoom (only the parts required for zoom)
+jest.mock('hammerjs', () => ({
+  Pan: jest.fn(),
+  Pinch: jest.fn(),
+  Manager: jest.fn().mockImplementation(() => ({
+    add: jest.fn(),
+    set: jest.fn(),
+    on: jest.fn(),
+    off: jest.fn(),
+    destroy: jest.fn(),
+  })),
+}));
 
 jest.mock('chartjs-plugin-zoom', () => ({
   id: 'zoom',
@@ -71,9 +44,11 @@ describe("ProgressLineGraphByUser Component", () => {
       render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
     });
 
-    // Check for the graph title and canvas
+    // Check for the graph title
     expect(screen.getByText(/Workout Progress Line Graph/i)).toBeInTheDocument();
-    expect(screen.getByRole('img')).toBeInTheDocument(); // Ensure canvas renders
+
+    // Check for the mocked chart
+    expect(screen.getByText(/Mocked Line Chart/i)).toBeInTheDocument(); // Match the mocked chart
 
     // Ensure that the mock fetch was called
     expect(global.fetch).toHaveBeenCalledTimes(1);
