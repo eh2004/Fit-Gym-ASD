@@ -3,8 +3,7 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import TrainerProfile from "../components/TrainerProfile";
 
-//  Mocking the fetch API to simulate the trainer profile data being fetched
-//  Pretends to fetch trainer data.
+// Mocking the fetch API to simulate the trainer profile data being fetched
 global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
@@ -20,15 +19,14 @@ global.fetch = jest.fn(() =>
   })
 );
 
-//  Mocking the react-modal component to avoid issues with accessibility settings in tests
+// Mocking the react-modal component to avoid issues with accessibility settings in tests
 jest.mock('react-modal', () => {
   const Modal = ({ children }) => <div>{children}</div>;
   Modal.setAppElement = () => {};
   return Modal;
 });
 
-//  Mocking window.confirm and alert functions to avoid "not implemented" errors in tests
-//  beforeEach/afterEach: Sets up and cleans up mocks before/after each test.
+// Mocking window.confirm and alert functions to avoid "not implemented" errors in tests
 beforeEach(() => {
   jest.clearAllMocks();
   global.confirm = jest.fn(() => true); // Always return true for confirm dialog
@@ -42,9 +40,8 @@ afterEach(() => {
 });
 
 describe("TrainerProfile Component", () => {
-
+  
   // Test case 1: Check if the trainer profile displays correctly after it's loaded
-  // Verifies that the profile is displayed after loading.
   it("displays trainer profile once loaded", async () => {
     await act(async () => {
       render(
@@ -62,7 +59,7 @@ describe("TrainerProfile Component", () => {
     expect(screen.getByText(/English, Spanish/i)).toBeInTheDocument();
   });
 
-  //  Test case 2: Check if the trainer profile can be edited and saved
+  // Test case 2: Check if the trainer profile can be edited and saved
   it("allows editing the trainer profile", async () => {
     await act(async () => {
       render(
@@ -74,15 +71,21 @@ describe("TrainerProfile Component", () => {
 
     // Click the "Update Info" button to start editing
     const editButton = await screen.findByText(/Update Info/i);
-    fireEvent.click(editButton);
+    await act(async () => {
+      fireEvent.click(editButton);
+    });
 
     // Change the trainer's name to "Jane Doe"
     const nameInput = screen.getByLabelText(/Name/i);
-    fireEvent.change(nameInput, { target: { value: "Jane Doe" } });
+    await act(async () => {
+      fireEvent.change(nameInput, { target: { value: "Jane Doe" } });
+    });
 
     // Save the changes
     const saveButton = screen.getByText(/Save/i);
-    fireEvent.click(saveButton);
+    await act(async () => {
+      fireEvent.click(saveButton);
+    });
 
     // Check if the trainer's name is updated
     expect(await screen.findByText(/Jane Doe/i)).toBeInTheDocument();
@@ -100,22 +103,28 @@ describe("TrainerProfile Component", () => {
 
     // Start editing the profile
     const editButton = await screen.findByText(/Update Info/i);
-    fireEvent.click(editButton);
+    await act(async () => {
+      fireEvent.click(editButton);
+    });
 
     // Change the trainer's name
     const nameInput = screen.getByLabelText(/Name/i);
-    fireEvent.change(nameInput, { target: { value: "Jane Doe" } });
+    await act(async () => {
+      fireEvent.change(nameInput, { target: { value: "Jane Doe" } });
+    });
 
     // Click the "Cancel" button
     const cancelButton = screen.getByText(/Cancel/i);
-    fireEvent.click(cancelButton);
+    await act(async () => {
+      fireEvent.click(cancelButton);
+    });
 
     // Check if the name was not changed
     expect(await screen.findByText(/John Doe/i)).toBeInTheDocument();
     expect(screen.queryByText(/Jane Doe/i)).not.toBeInTheDocument();
   });
 
-  // Test case 4: Check/Confirms if the delete button works and removes the profile
+  // Test case 4: Check if the delete button works and removes the profile
   it("calls deleteProfile when Delete button is clicked", async () => {
     // Mock the fetch call for deletion
     global.fetch = jest.fn(() =>
@@ -135,7 +144,9 @@ describe("TrainerProfile Component", () => {
 
     // Click the "Delete Profile" button
     const deleteButton = await screen.findByText(/Delete Profile/i);
-    fireEvent.click(deleteButton);
+    await act(async () => {
+      fireEvent.click(deleteButton);
+    });
 
     // Confirm the delete action and ensure the fetch call was made
     expect(global.confirm).toHaveBeenCalledTimes(1);
@@ -157,15 +168,18 @@ describe("TrainerProfile Component", () => {
 
     // Start editing the profile
     const editButton = await screen.findByText(/Update Info/i);
-    fireEvent.click(editButton);
+    await act(async () => {
+      fireEvent.click(editButton);
+    });
 
     // Change the trainer's name
     const nameInput = screen.getByLabelText(/Name/i);
-    fireEvent.change(nameInput, { target: { value: "Jane Doe" } });
+    await act(async () => {
+      fireEvent.change(nameInput, { target: { value: "Jane Doe" } });
+    });
 
     // Check if the "Save" button is now enabled
     const saveButton = screen.getByText(/Save/i);
     expect(saveButton).not.toBeDisabled();
   });
-
 });
