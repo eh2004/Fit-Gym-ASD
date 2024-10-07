@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
@@ -10,14 +5,23 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+# Use Node.js version compatible with your project
+- task: UseNode@2
+  inputs:
+    versionSpec: '16.x' # Adjust the Node.js version as per your project requirement
+  displayName: 'Use Node.js'
 
+# Install NPM dependencies
 - script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+    npm install
+  displayName: 'Install NPM dependencies'
 
+# Run the unit test for TrainerProfile
 - script: |
     npm test -- src/test/TrainerProfile.test.js --watchAll=false --reporters=default --reporters=jest-junit
   displayName: 'Run TrainerProfile unit test'
+
+# Optional: If you want to collect code coverage reports
+#- script: |
+#    npm test -- --coverage --watchAll=false
+#  displayName: 'Run tests with code coverage'
