@@ -6,29 +6,29 @@ pool:
 
 steps:
 # Use Node.js version compatible with your project
-- task: NodeTool@0
+- task: NodeTool@1
   inputs:
-    versionSpec: '16.x' # Adjust the Node.js version as per your project requirement
+    versionSpec: '16.x' # Adjust the Node.js version if necessary
   displayName: 'Use Node.js'
 
-# Checkout the repository
-- task: Checkout@1
+# Checkout the repository (Optional: You can remove this if it's unnecessary)
+- checkout: self
   displayName: 'Checkout repository code'
 
 # Install NPM dependencies
 - script: |
     npm install
-  workingDirectory: ./ # Ensure the correct path is specified if your package.json is not in the root
+  workingDirectory: ./ # Update if your package.json is in a subdirectory
   displayName: 'Install NPM dependencies'
 
 # Run the unit test for TrainerProfile
 - script: |
     npm test -- src/test/TrainerProfile.test.js --watchAll=false --reporters=default --reporters=jest-junit
-  workingDirectory: ./ # Ensure the correct path is specified if your package.json is not in the root
+  workingDirectory: ./ # Update if your package.json is in a subdirectory
   displayName: 'Run TrainerProfile unit test'
 
 # Optional: If you want to collect code coverage reports
 # - script: |
 #     npm test -- --coverage --watchAll=false
-#   workingDirectory: ./ # Ensure the correct path is specified
+#   workingDirectory: ./ # Update if your package.json is in a subdirectory
 #   displayName: 'Run tests with code coverage'
