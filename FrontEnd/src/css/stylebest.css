@@ -480,3 +480,32 @@
             width: 100%; /* Full width on small screens */
         }
     }
+
+    /* Learning Hub */
+ 
+    .carousel-image {
+        transition: transform 0.3s ease;
+      }
+      
+      .carousel-link:hover .carousel-image {
+        transform: scale(1.05); /* Slight zoom on hover */
+      }
+
+    .LearnHub-Description{
+        text-align: center;
+        font-size: large;
+        margin: 6rem;
+    }
+      
+    .slide-text {
+        margin-top: 10px; /* Space between image and text */
+        font-size: 20px; /* Adjust font size as needed */
+        color: #fff; /* Text color */
+        text-align: center; /* Center the text */
+        background-color: rgba(0, 0, 0, 0.5); /* Optional: Background for better readability */
+        padding: 10px; /* Optional: Padding for text */
+      }
+   
+      
+    
+      
