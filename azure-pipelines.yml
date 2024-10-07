@@ -29,8 +29,8 @@ steps:
   workingDirectory: ./FrontEnd # Path to package.json and tests
   displayName: 'Run Progression unit test'
 
-  - script: |
-    npm test -- src/test/navigation.spec.test.js --watchAll=false --reporters=default --reporters=jest-junit
+- script: |
+    npm test -- src/test/navigation.test.js --watchAll=false --reporters=default --reporters=jest-junit
   workingDirectory: ./FrontEnd # Path to package.json and tests
   displayName: 'Run NavigationTesting unit test'
 
