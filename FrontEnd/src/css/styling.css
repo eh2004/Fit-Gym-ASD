@@ -695,6 +695,13 @@ tbody tr:hover {
     padding-left: 90px;
    }
 
+   .error-register {
+    padding: 0px;
+    margin: 0px;
+    color: red;
+    font-size: 15px;
+   }
+
    /*-------------------- Membership Plan -------------------*/
    .membership-container {
     background-color: rgb(255, 255, 255);
