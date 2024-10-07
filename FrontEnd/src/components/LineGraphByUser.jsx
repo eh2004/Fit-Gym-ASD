@@ -23,8 +23,12 @@ ChartJS.register(
   Tooltip,
   Legend,
   TimeScale,
-  zoomPlugin // Register the zoom plugin here
+  zoomPlugin
 );
+
+
+// Your component logic here
+
 
 const ProgressLineGraphByUser = ({ customer }) => {
   const customerId = customer.id; // Extract the customer ID from the customer prop
