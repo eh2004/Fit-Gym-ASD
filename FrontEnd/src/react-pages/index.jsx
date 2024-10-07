@@ -5,8 +5,12 @@ import Footer from "../components/Footer.jsx";
 import "../css/stylebest.css";
 
 // Image Imports 
-import trainerImage from '../assets/trainer.jpg';
-import Guy1 from '../assets/Guy1.jpg';
+import aboutus from '../assets/about-us.jpg';
+import calendar from '../assets/calendar.jpg';
+import learning from '../assets/learning.jpg';
+import manwalking from '../assets/man-walking-legs.jpg';
+import slogan from '../assets/slogan.jpg';
+import trainergroup from '../assets/trainer-group.jpg';
 
 function App() {
     
@@ -19,28 +23,31 @@ function App() {
 
                 <div className="gym-home-buttons-container">
                     <a href="login-register.html" className="gym-home-button" style={{ gridColumn: '1' }}>
-                        <img src={trainerImage} alt="Login/Register" />
+                        <img src={manwalking} alt="Login/Register" />
                         <span className="button-text">Login/Register</span>
                     </a>
+
                     <a href="bookclass.html" className="gym-home-button" style={{ gridColumn: '2' }}>
-                        <img src={Guy1} alt="Book a Class" />
-                        <span className="button-text">Book a Class</span>
+                        <img src={calendar} alt="Book a Class" />
+                        <span className="button-text">Book something</span>
                     </a>
+
                     <a href="BookTrainer.html" className="gym-home-button" style={{ gridColumn: '1' }}>
-                        <img src={trainerImage} alt="Book with a Trainer" />
-                        <span className="button-text">Book With a Trainer</span>
+                        <img src={learning} alt="Book with a Trainer" />
+                        <span className="button-text">Learn about the gym</span>
                     </a>
 
                     <a href="Dashboard.html" className="gym-home-button" style={{ gridColumn: '2' }}>
-                        <img src={trainerImage} alt="View Trainers" />
+                        <img src={trainergroup} alt="View Trainers" />
                         <span className="button-text">View Trainers</span>
                     </a>
                     <a href="AboutUs.html" className="gym-home-button" style={{ gridColumn: '1' }}>
-                        <img src={trainerImage} alt="About Us" />
+                        <img src={aboutus} alt="About Us" />
                         <span className="button-text">About Us</span>
                     </a>
 
-                    <h1 className="gym-home-motto gym-home-motto-part">1% Better Everyday</h1>
+                    <img src={slogan} alt="Slogan" />
+
                 </div>
             </div>
             <Footer />
