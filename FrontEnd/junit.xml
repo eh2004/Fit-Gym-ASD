@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.844">
-  <testsuite name="Header Navigation Test" errors="0" failures="0" skipped="0" timestamp="2024-10-07T16:08:23" time="1.181" tests="1">
-    <testcase classname="Header Navigation Test navigates to About Us page when About link is clicked" name="Header Navigation Test navigates to About Us page when About link is clicked" time="0.097">
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.658">
+  <testsuite name="App component" errors="0" failures="0" skipped="0" timestamp="2024-10-07T19:02:59" time="1.186" tests="1">
+    <testcase classname="App component displays validation errors for empty required fields on submit" name="App component displays validation errors for empty required fields on submit" time="0.092">
     </testcase>
   </testsuite>
 </testsuites>
