@@ -22,26 +22,26 @@ function App() {
                 <h2>Welcome to our website, need a hand...?</h2>
 
                 <div className="gym-home-buttons-container">
-                    <a href="login-register.html" className="gym-home-button" style={{ gridColumn: '1' }}>
+                    <a href="../src/pages/Login.html" className="gym-home-button" style={{ gridColumn: '1' }}>
                         <img src={manwalking} alt="Login/Register" />
                         <span className="button-text">Login/Register</span>
                     </a>
 
-                    <a href="bookclass.html" className="gym-home-button" style={{ gridColumn: '2' }}>
+                    <a href="../src/pages/BookingType.html" className="gym-home-button" style={{ gridColumn: '2' }}>
                         <img src={calendar} alt="Book a Class" />
                         <span className="button-text">Book something</span>
                     </a>
 
-                    <a href="BookTrainer.html" className="gym-home-button" style={{ gridColumn: '1' }}>
+                    <a href="../src/pages/LearnHub.html" className="gym-home-button" style={{ gridColumn: '1' }}>
                         <img src={learning} alt="Book with a Trainer" />
                         <span className="button-text">Learn about the gym</span>
                     </a>
 
-                    <a href="Dashboard.html" className="gym-home-button" style={{ gridColumn: '2' }}>
+                    <a href="../src/pages/#.html" className="gym-home-button" style={{ gridColumn: '2' }}>
                         <img src={trainergroup} alt="View Trainers" />
                         <span className="button-text">View Trainers</span>
                     </a>
-                    <a href="AboutUs.html" className="gym-home-button" style={{ gridColumn: '1' }}>
+                    <a href="../src/pages/AboutUs.html" className="gym-home-button" style={{ gridColumn: '1' }}>
                         <img src={aboutus} alt="About Us" />
                         <span className="button-text">About Us</span>
                     </a>
