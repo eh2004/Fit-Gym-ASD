@@ -29,17 +29,17 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
         const response = await fetch("http://localhost:3000/api/trainers/1"); // Adjust ID if necessary
         const data = await response.json();
 
-        // Populate trainer info with fetched data
+     // Populate trainer info with fetched data
         setTrainerInfo({
           id: data.trainer_id, // Ensure trainer ID is included
           name: `${data.first_name} ${data.last_name}` || "",
           email: data.email_address || "",
           phone: data.phone_number || "",
           address: data.street_address || "",
-          specialty: "", // Placeholder
-          certification: "", // Placeholder
+          specialty: "Weight Loss", // Placeholder
+          certification: "IV in Fitness SIS40221-01", // Placeholder
           language: data.language ? data.language.join(", ") : "",
-          bio: "", // Placeholder
+          bio: "a fitness trainer with 5 years of experience, specializing in strength training and nutrition. Passionate about helping clients reach their goals, brings energy and expertise to every session.", // Placeholder
         });
 
         // Set form data to the fetched trainer info
