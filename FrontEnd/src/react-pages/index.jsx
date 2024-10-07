@@ -23,8 +23,8 @@ function App() {
 
                 <div className="gym-home-buttons-container">
                     <a href="../src/pages/Login.html" className="gym-home-button" style={{ gridColumn: '1' }}>
-                        <img src={manwalking} alt="Login/Register" />
-                        <span className="button-text">Login/Register</span>
+                        <img src={manwalking} alt="Login" />
+                        <span className="button-text">Login</span>
                     </a>
 
                     <a href="../src/pages/BookingType.html" className="gym-home-button" style={{ gridColumn: '2' }}>
