@@ -13,6 +13,7 @@ const App = () => {
 
   return (
     <>
+      <Header/>
       <h1>Workout Progress</h1>
       <div>
         <button onClick={handleShowArms}>Show Arms Workouts</button>
@@ -20,6 +21,7 @@ const App = () => {
         <button onClick={handleShowLegs}>Show Leg Workouts</button>
       </div>
       <ProgressLineGraphByUser customer={{ id: 1 }} selectedMuscleGroup={selectedMuscleGroup} />
+      <Footer/>
     </>
   );
 };

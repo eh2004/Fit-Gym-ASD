@@ -47,7 +47,7 @@ describe("ProgressLineGraphByUser Component", () => {
     });
 
     // Check for the graph title
-    expect(screen.getByText(/Workout Progress Line Graph/i)).toBeInTheDocument();
+    expect(screen.getByText(/Overall Workout Progress/i)).toBeInTheDocument();
 
     // Check for the mocked chart
     expect(screen.getByText(/Mocked Line Chart/i)).toBeInTheDocument(); // Match the mocked chart
