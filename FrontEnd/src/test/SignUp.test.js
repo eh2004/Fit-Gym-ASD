@@ -145,15 +145,168 @@ describe('Ensures sign up form inputs meet minimum requirements', () => {
     expect(dobError).not.toBeVisible();
   });
 
-    test('Displays error if inputted dob makes user younger than 16', () => {
-    const dobInput = screen.getByLabelText(/date of birth/i);
+  test('Displays errors if fields do not meet the minimum length requirements', () => {
+    const firstName = screen.getByLabelText(/First Name/i);
+    const lastName = screen.getByLabelText(/Last Name/i);
+    const streetAddress = screen.getByLabelText(/Street Address/i);
+    const city = screen.getByLabelText(/City/i);
+    const state = screen.getByLabelText(/State/i);
+    const zipCode = screen.getByLabelText(/Zip Code/i);
+    const country = screen.getByLabelText(/Country/i);
+    const username = screen.getByLabelText(/Choose a Username/i);
+    const password = screen.getByLabelText(/Choose a Password/i);
+    const nameOnCard = screen.getByLabelText(/Name on Card/i);
+    const cardNumber = screen.getByLabelText(/Card Number/i);
+    const cvv = screen.getByLabelText(/CVV/i);
+
     const submitButton = screen.getByRole('button', { name: /Register/i });
 
-    fireEvent.change(dobInput, { target: { value: '2010-01-01' } });
+    fireEvent.change(firstName, { target: { value: 'a' } });
+    fireEvent.change(lastName, { target: { value: 'a' } });
+    fireEvent.change(streetAddress, { target: { value: 'abc' } });
+    fireEvent.change(city, { target: { value: 'a' } });
+    fireEvent.change(state, { target: { value: 'a' } });
+    fireEvent.change(country, { target: { value: 'a' } });
+    fireEvent.change(zipCode, { target: { value: '123' } });
+    fireEvent.change(username, { target: { value: 'abcd' } });
+    fireEvent.change(password, { target: { value: 'abcd' } });
+    fireEvent.change(nameOnCard, { target: { value: 'abcd' } });
+    fireEvent.change(cardNumber, { target: { value: '12121212121212' } });
+    fireEvent.change(cvv, { target: { value: '12' } });
+
     fireEvent.click(submitButton);
 
-    const dobError = screen.getByText(/You must be at least 16 to enrol/i);
-    expect(dobError).toBeVisible();
+    expect(screen.getByText(/Enter first name/i)).toBeVisible();
+    expect(screen.getByText(/Enter last name/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid street address/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid city/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid state/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid zip code/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid country/i)).toBeVisible();
+    expect(screen.getByText(/Must be 5 characters long/i)).toBeVisible();
+    expect(screen.getByText(/Must contain 3 digits and be 5 characters long/i)).toBeVisible();
+    expect(screen.getByText(/Enter name on card/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid card number/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid cvv/i)).toBeVisible();
   });
+
+  test('Fields do not display errors when filled in correctly (with minimum valid values).', () => {
+    const firstName = screen.getByLabelText(/First Name/i);
+    const lastName = screen.getByLabelText(/Last Name/i);
+    const streetAddress = screen.getByLabelText(/Street Address/i);
+    const city = screen.getByLabelText(/City/i);
+    const state = screen.getByLabelText(/State/i);
+    const zipCode = screen.getByLabelText(/Zip Code/i);
+    const country = screen.getByLabelText(/Country/i);
+    const username = screen.getByLabelText(/Choose a Username/i);
+    const password = screen.getByLabelText(/Choose a Password/i);
+    const nameOnCard = screen.getByLabelText(/Name on Card/i);
+    const cardNumber = screen.getByLabelText(/Card Number/i);
+    const cvv = screen.getByLabelText(/CVV/i);
+
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(firstName, { target: { value: 'ab' } });
+    fireEvent.change(lastName, { target: { value: 'ab' } });
+    fireEvent.change(streetAddress, { target: { value: 'abcd' } });
+    fireEvent.change(city, { target: { value: 'ab' } });
+    fireEvent.change(state, { target: { value: 'ab' } });
+    fireEvent.change(country, { target: { value: 'ab' } });
+    fireEvent.change(zipCode, { target: { value: '1234' } });
+    fireEvent.change(username, { target: { value: 'abcde' } });
+    fireEvent.change(password, { target: { value: 'abcd123' } });
+    fireEvent.change(nameOnCard, { target: { value: 'abcde' } });
+    fireEvent.change(cardNumber, { target: { value: '121212121212121' } });
+    fireEvent.change(cvv, { target: { value: '123' } });
+
+    fireEvent.click(submitButton);
+
+    expect(screen.getByText(/Enter first name/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter last name/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid street address/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid city/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid state/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid zip code/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid country/i)).not.toBeVisible();
+    expect(screen.getByText(/Must be 5 characters long/i)).not.toBeVisible();
+    expect(screen.getByText(/Must contain 3 digits and be 5 characters long/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter name on card/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid card number/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid cvv/i)).not.toBeVisible();
+  });
+
+  test('Displays error if card is expired.', () => {
+    const expirationDate = screen.getByLabelText(/Expiration Date/i);
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(expirationDate, { target: { value: '2023-10-21' } });
+    fireEvent.click(submitButton);
+    expect(screen.getByText(/Card must not be expired/i)).toBeVisible();
+  });
+
+  test('Does not display an error when expiration date is set to a future date.', () => {
+    const expirationDate = screen.getByLabelText(/Expiration Date/i);
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(expirationDate, { target: { value: '2026-10-21' } });
+    fireEvent.click(submitButton);
+    expect(screen.getByText(/Card must not be expired/i)).not.toBeVisible();
+  });
+
+  test('Displays error if phone number, cvv and card number fields contain non-numeric characters.', () => {
+    const phoneNumber = screen.getByLabelText(/Phone Number/i);
+    const cardNumber = screen.getByLabelText(/Card Number/i);
+    const cvv = screen.getByLabelText(/CVV/i);
+
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(phoneNumber, { target: { value: '041234a678' } });
+    fireEvent.change(cardNumber, { target: { value: '123456m890123456' } });
+    fireEvent.change(cvv, { target: { value: '1o3' } });
+    fireEvent.click(submitButton);
+
+    expect(screen.getByText(/Enter a valid card number/i)).toBeVisible();
+    expect(screen.getByText(/Enter a valid cvv/i)).toBeVisible();
+    expect(screen.getByText(/Must contain 10 digits/i)).toBeVisible();
+  });
+
+  test('Does not display errors if phone number, cvv and card number fields contain numeric characters only of a valid length.', () => {
+    const phoneNumber = screen.getByLabelText(/Phone Number/i);
+    const cardNumber = screen.getByLabelText(/Card Number/i);
+    const cvv = screen.getByLabelText(/CVV/i);
+
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(phoneNumber, { target: { value: '0498765432' } });
+    fireEvent.change(cardNumber, { target: { value: '1029384756829384' } });
+    fireEvent.change(cvv, { target: { value: '789' } });
+    fireEvent.click(submitButton);
+
+    expect(screen.getByText(/Enter a valid card number/i)).not.toBeVisible();
+    expect(screen.getByText(/Enter a valid cvv/i)).not.toBeVisible();
+    expect(screen.getByText(/Must contain 10 digits/i)).not.toBeVisible();
+  });
+
+  test('Displays error if password does not contain at least three digits.', () => {
+    const password = screen.getByLabelText(/Choose a Password/);
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(password, {target: { value: 'mypass23' } });
+    fireEvent.click(submitButton);
+    
+    expect(screen.getByText(/Must contain 3 digits and be 5 characters long/i)).toBeVisible();
+  });
+
+  test('Does not display any error if password does contains at least three digits and meets min length requirements.', () => {
+    const password = screen.getByLabelText(/Choose a Password/);
+    const submitButton = screen.getByRole('button', { name: /Register/i });
+
+    fireEvent.change(password, {target: { value: 'mypass123' }});
+    fireEvent.click(submitButton);
+
+    expect(screen.getByText(/Must contain 3 digits and be 5 characters long/i)).not.toBeVisible();
+  });
+
 });
 
+//npm test -- src/test/SignUp.test.js --watchAll=false --reporters=default --reporters=jest-junit

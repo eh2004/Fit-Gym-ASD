@@ -203,7 +203,7 @@ function Register() {
             isValid = false;
         }
 
-        if(cvv.length < 3 || cvv.length > 5) {
+        if(cvv.length < 3 || cvv.length > 5 || !digitOnlyRegex.test(cvv)) {
             setCvvValid(false);
             isValid = false;
         }
