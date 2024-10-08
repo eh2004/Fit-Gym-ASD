@@ -5,9 +5,10 @@ import Footer from "../components/Footer";
 import ProgressLineGraphByUser from "../components/LineGraphByUser";
 
 const App = () => {
-  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState(null); // Default shows all workouts
+  const [selectedMuscleGroup, setSelectedMuscleGroup] = useState(""); // Empty string means show all workouts
   const [loggedInUser, setLoggedInUser] = useState(null); // Store logged in user
-
+  
+  // Simulate logged-in user from localStorage or redirect to login page
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
     if (storedUser) {
@@ -18,6 +19,8 @@ const App = () => {
     }
   }, []);
 
+  // Functions to set muscle group or reset to overall progress
+  const handleShowOverall = () => setSelectedMuscleGroup(""); // Empty string for overall summary
   const handleShowArms = () => setSelectedMuscleGroup('Arms');
   const handleShowChest = () => setSelectedMuscleGroup('Chest');
   const handleShowLegs = () => setSelectedMuscleGroup('Legs');
@@ -30,7 +33,8 @@ const App = () => {
     <>
       <Header/>
       <h1>Workout Progress</h1>
-      <div>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', margin: '20px 0' }}>
+        <button onClick={handleShowOverall}>Overall Summary</button>
         <button onClick={handleShowArms}>Show Arms Workouts</button>
         <button onClick={handleShowChest}>Show Chest Workouts</button>
         <button onClick={handleShowLegs}>Show Leg Workouts</button>

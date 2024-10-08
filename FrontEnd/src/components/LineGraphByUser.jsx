@@ -31,7 +31,6 @@ const ProgressLineGraphByUser = ({ customer, selectedMuscleGroup }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [chartData, setChartData] = useState(null);
-  const [isSummaryMode, setIsSummaryMode] = useState(true); // Add a state to switch between modes
 
   useEffect(() => {
     // Fetch workouts for a specific customer from the backend
@@ -44,14 +43,14 @@ const ProgressLineGraphByUser = ({ customer, selectedMuscleGroup }) => {
       })
       .then((data) => {
         setLoading(false);
-        const formattedData = formatDataForGraph(data, isSummaryMode ? null : selectedMuscleGroup);
+        const formattedData = formatDataForGraph(data, selectedMuscleGroup || null); // Null for overall summary
         setChartData(formattedData); // Set formatted chart data
       })
       .catch((error) => {
         setError(error);
         setLoading(false);
       });
-  }, [customerId, selectedMuscleGroup, isSummaryMode]);
+  }, [customerId, selectedMuscleGroup]);
 
   // Helper function to format the workout data for the chart
   const formatDataForGraph = (workouts, muscleGroup) => {
@@ -115,13 +114,7 @@ const ProgressLineGraphByUser = ({ customer, selectedMuscleGroup }) => {
 
   return (
     <div className="line-chart-container">
-      <h1>{isSummaryMode ? 'Overall Workout Progress' : `${selectedMuscleGroup} Workout Progress`}</h1>
-      
-      <div>
-        {/* Button to toggle between summary mode and muscle group filter mode */}
-        <button onClick={() => setIsSummaryMode(true)}>Overall Summary</button>
-        <button onClick={() => setIsSummaryMode(false)}>Filter by Muscle Group</button>
-      </div>
+      <h1>{selectedMuscleGroup ? `${selectedMuscleGroup} Workout Progress` : 'Overall Workout Progress'}</h1>
 
       {chartData ? (
         <div style={{ height: '400px' }}>
