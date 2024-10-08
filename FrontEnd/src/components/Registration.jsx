@@ -50,7 +50,7 @@ function MembershipPlan(props) {
                 <p>/month</p>
             </div>
             {props.perks}
-            <div className="membership-button" style={{background: props.colour}} onClick={props.onClick}>Select</div>
+            <div className="membership-button" style={{background: props.colour}} onClick={props.onClick}>Select {props.name}</div>
         </div>
         </div>
     );
@@ -257,7 +257,7 @@ function Register() {
         
             if (response.ok) {
                 const addedCustomer = await response.json();
-                console.log('Customer added:', addedCustomer);
+                console.log('Customer added');
 
                 //Clear fields
                 setFirstName("");
@@ -417,7 +417,7 @@ function Register() {
             <div className="div-two">
                 <label htmlFor="password">Choose a Password</label><br/>
                 <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)}/><br/>
-                <div className="error-register" style={{ visibility: passwordValid ? 'hidden' : 'visible' }}>Must contain 3 digits and<br/> be 5 characters longs</div>
+                <div className="error-register" style={{ visibility: passwordValid ? 'hidden' : 'visible' }}>Must contain 3 digits and<br/> be 5 characters long</div>
             </div>
             </div>
             </div>
