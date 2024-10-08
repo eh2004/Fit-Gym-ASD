@@ -9,10 +9,13 @@ import AboutUsPage from "../__mocks__/AboutUs.html"; // Adjust path if necessary
 describe("Header Navigation Test", () => {
   test("navigates to About Us page when About link is clicked", () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter initialEntries={["/"]}>
         <Header />
         <Routes>
-        <Route path="/src/pages/AboutUs.html" component={AboutUsPage} />
+          {/* Default route to avoid warnings */}
+          <Route path="/" element={<div>Home</div>} />
+          {/* Route for About Us page */}
+          <Route path="/src/pages/AboutUs.html" element={<AboutUsPage />} />
         </Routes>
       </MemoryRouter>
     );

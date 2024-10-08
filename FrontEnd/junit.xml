@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="0" errors="0" time="1.658">
-  <testsuite name="App component" errors="0" failures="0" skipped="0" timestamp="2024-10-07T19:02:59" time="1.186" tests="1">
-    <testcase classname="App component displays validation errors for empty required fields on submit" name="App component displays validation errors for empty required fields on submit" time="0.092">
+<testsuites name="jest tests" tests="7" failures="0" errors="0" time="2.375">
+  <testsuite name="Registration" errors="0" failures="0" skipped="0" timestamp="2024-10-08T02:30:05" time="1.912" tests="7">
+    <testcase classname="Registration Error messages for empty fields are displayed on submit" name="Registration Error messages for empty fields are displayed on submit" time="0.193">
+    </testcase>
+    <testcase classname="Registration Successfully submits valid details to db" name="Registration Successfully submits valid details to db" time="0.307">
+    </testcase>
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error for invalid email address" name="Ensures sign up form inputs meet minimum requirements Displays error for invalid email address" time="0.047">
+    </testcase>
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Does not display error for valid email address" name="Ensures sign up form inputs meet minimum requirements Does not display error for valid email address" time="0.031">
+    </testcase>
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" name="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" time="0.032">
+    </testcase>
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Does not display error for valid dob" name="Ensures sign up form inputs meet minimum requirements Does not display error for valid dob" time="0.035">
+    </testcase>
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" name="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" time="0.04">
     </testcase>
   </testsuite>
 </testsuites>
