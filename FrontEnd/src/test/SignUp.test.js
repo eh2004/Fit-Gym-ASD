@@ -64,7 +64,6 @@ describe('Registration', () => {
   
     test('Successfully submits valid details to db', async () => {
       render(<Registration />);
-      screen.debug();
 
       const dummyData = generateDummyData();
       
