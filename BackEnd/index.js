@@ -6,6 +6,7 @@ const workoutRoutes = require('./routes/workoutRoutes');
 const setRoutes = require('./routes/setRoutes');
 const exerciseRoutes = require('./routes/exercisesRoutes');
 const trainerRoutes = require('./routes/TrainerRoutes'); // Import trainer routes
+const leaderboardRoutes = require('./routes/leaderboardRoutes');// Correct path to your routes file
 const app = express();
 const PORT = process.env.PORT || 3000;
 const cors = require('cors');
@@ -36,9 +37,9 @@ app.use('/api', customerRoutes);
 app.use('/api', workoutRoutes);
 app.use('/api', exerciseRoutes);
 app.use('/api', setRoutes);
-app.use('/api', trainerRoutes
-  
-); // Add the trainer routes
+app.use('/api', trainerRoutes);
+app.use('/api', leaderboardRoutes);
+   // Add the trainer routes
 
 // Simple route to test the server
 app.get('/', (req, res) => {

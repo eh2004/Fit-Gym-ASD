@@ -1,21 +1,24 @@
-const sequelize = require('../config/database');
+const Sequelize = require('sequelize'); // Import Sequelize
+const sequelize = require('../config/database'); // Your Sequelize instance
 const User = require('./user');
 const Customer = require('./Customer');
-const Trainer = require('./Trainer'); // Import Trainer model
+const Trainer = require('./Trainer'); 
 const Workout = require('./Workout');
 const Set = require('./Set');
 const Exercise = require('./Exercise');
 const PaymentCard = require('./PaymentCard');
 
+// Create a db object that includes models and the Sequelize instance + Sequelize methods
 const db = {
   User,
   Customer,
-  Trainer, // Add Trainer to db
+  Trainer, 
   Workout,
   Set,
   Exercise,
   PaymentCard,
-  sequelize
+  sequelize, // Export the Sequelize instance
+  Sequelize  // Export Sequelize methods like fn and col
 };
 
 // Associations
@@ -29,6 +32,5 @@ Exercise.hasMany(Set, { foreignKey: 'exercise_id' });
 Customer.hasMany(PaymentCard, { foreignKey: 'customer_id' });
 PaymentCard.belongsTo(Customer, { foreignKey: 'customer_id' });
 
-// Define Trainer associations here if needed (e.g., Trainer can have workouts or classes)
-
+// Export the db object with associations and Sequelize methods
 module.exports = db;
