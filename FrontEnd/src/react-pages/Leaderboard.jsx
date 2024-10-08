@@ -11,9 +11,7 @@ const App = () => {
     return (
         <React.Fragment>
             <Header />
-            <div>
                 <Leaderboard />
-            </div>
             <Footer />
         </React.Fragment>
     );

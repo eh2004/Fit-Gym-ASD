@@ -415,10 +415,65 @@ h1 {
 
 
 /* ----------- Line Graph/Progress ------------ */
-.line-graph-container{
-    width: 700px;
-    height: 600px;
+/* Add these styles to Leaderboard.css */
+
+/* Container for line graph - center the graph vertically and horizontally */
+.line-graph-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Adjust the height to better fit your needs */
+    margin-top: 0; /* Ensure no extra space above */
+    padding: 20px; /* Add some padding to avoid cramped look */
+    box-sizing: border-box;
 }
+
+/* Adjust the h1 title in the leaderboard */
+.leaderboard h1 {
+    margin-top: 0; /* Remove extra top margin */
+    margin-bottom: 20px; /* Add spacing below the title */
+    font-size: 2.5em; /* Adjust font size if needed */
+    text-align: center; /* Ensure the heading is centered */
+}
+
+/* Leaderboard table adjustments */
+.leaderboard {
+    width: 80%; /* You can adjust the table width */
+    margin: 0 auto; /* Center the table horizontally */
+    text-align: center; /* Center-align text */
+}
+
+/* Make sure the table is properly laid out and responsive */
+.leaderboard table {
+    width: 100%; /* Full width within the container */
+    border-collapse: collapse; /* Remove gaps between cells */
+    table-layout: fixed; /* Ensure fixed width for cells */
+    font-size: 18px; /* Adjust font size */
+    margin: 0 auto; /* Ensure the table is centered */
+}
+
+/* Ensure table cells have equal width */
+.leaderboard th, .leaderboard td {
+    border: 1px solid black;
+    padding: 10px;
+    width: 25%; /* This ensures equal width for all columns */
+}
+
+/* For responsive handling, ensuring the layout fits nicely on smaller screens */
+@media (max-width: 768px) {
+    .leaderboard {
+        width: 95%; /* Make the table wider on smaller screens */
+    }
+
+    .leaderboard th, .leaderboard td {
+        font-size: 16px; /* Slightly reduce font size for smaller screens */
+    }
+
+    .line-graph-container {
+        min-height: 60vh; /* Adjust graph height for smaller screens */
+    }
+}
+
 
 .graphs-container {
     display: flex;
