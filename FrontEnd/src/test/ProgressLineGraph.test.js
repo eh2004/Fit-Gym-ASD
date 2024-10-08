@@ -19,33 +19,19 @@ global.fetch = jest.fn(() =>
   })
 );
 
+//mock zoom function 
 jest.mock('chartjs-plugin-zoom', () => ({
   id: 'zoom',
   start: jest.fn(),
   stop: jest.fn(),
 }));
 
-
-// Mock Hammer.js and chartjs-plugin-zoom 
-jest.mock('hammerjs', () => ({
-  Pan: jest.fn(),
-  Pinch: jest.fn(),
-  Manager: jest.fn().mockImplementation(() => ({
-    add: jest.fn(),
-    set: jest.fn(),
-    on: jest.fn(),
-    off: jest.fn(),
-    destroy: jest.fn(),
-  })),
-}));
-
-
 describe("ProgressLineGraphByUser Component", () => {
+  //check graph loads data 
   it("Chart displays mock data", async () => {
     await act(async () => {
       render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
     });
-
     // Check for the graph title
     expect(screen.getByText(/Overall Workout Progress/i)).toBeInTheDocument();
 
@@ -55,7 +41,7 @@ describe("ProgressLineGraphByUser Component", () => {
     // Ensure that the mock fetch was called
     expect(global.fetch).toHaveBeenCalledTimes(1);
   });
-
+  //check error messages are working 
   it("Error messages display correctly", async () => {
     // Mock fetch to return an error
     global.fetch.mockImplementationOnce(() => Promise.reject("API fetch failed"));
@@ -67,6 +53,7 @@ describe("ProgressLineGraphByUser Component", () => {
     // Check for the error message
     expect(await screen.findByText(/Error:/i)).toBeInTheDocument();
   });
+  //check updating using info 
   it("Chart updates correctly", async () => {
     const { rerender } = render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
   
@@ -82,6 +69,7 @@ describe("ProgressLineGraphByUser Component", () => {
     // Check that the fetch was called with the new customer ID
     expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/api/customers/2/workouts'));
   });  
+  //check zoom function 
   it("Zoom function working correctly", async () => {
     const { rerender } = render(<ProgressLineGraphByUser customer={{ id: 1 }} />);
   
@@ -95,6 +83,7 @@ describe("ProgressLineGraphByUser Component", () => {
   
     expect(zoomMock.start).toHaveBeenCalled();  // Assert zoom start was triggered
   }); 
+  //check loaidng anmation 
   it("Loading displays correctly", async () => {
     global.fetch.mockImplementationOnce(() => new Promise(() => {})); // Keep the promise pending to simulate loading
     
