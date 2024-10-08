@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="18" failures="0" errors="0" time="1.425">
-  <testsuite name="Registration" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:30:41" time="0.818" tests="7">
-    <testcase classname="Registration Error messages for empty fields are displayed on submit" name="Registration Error messages for empty fields are displayed on submit" time="0.103" file="src/test/SignUp.test.js">
+<testsuites name="jest tests" tests="18" failures="0" errors="0" time="1.139">
+  <testsuite name="Registration" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:39:45" time="0.661" tests="7">
+    <testcase classname="Registration Error messages for empty fields are displayed on submit" name="Registration Error messages for empty fields are displayed on submit" time="0.099" file="src/test/SignUp.test.js">
     </testcase>
     <testcase classname="Registration Successfully submits valid details to db" name="Registration Successfully submits valid details to db" time="0.123" file="src/test/SignUp.test.js">
     </testcase>
-    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error for invalid email address" name="Ensures sign up form inputs meet minimum requirements Displays error for invalid email address" time="0.024" file="src/test/SignUp.test.js">
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error for invalid email address" name="Ensures sign up form inputs meet minimum requirements Displays error for invalid email address" time="0.023" file="src/test/SignUp.test.js">
     </testcase>
     <testcase classname="Ensures sign up form inputs meet minimum requirements Does not display error for valid email address" name="Ensures sign up form inputs meet minimum requirements Does not display error for valid email address" time="0.018" file="src/test/SignUp.test.js">
     </testcase>
     <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" name="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" time="0.019" file="src/test/SignUp.test.js">
     </testcase>
-    <testcase classname="Ensures sign up form inputs meet minimum requirements Does not display error for valid dob" name="Ensures sign up form inputs meet minimum requirements Does not display error for valid dob" time="0.017" file="src/test/SignUp.test.js">
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Does not display error for valid dob" name="Ensures sign up form inputs meet minimum requirements Does not display error for valid dob" time="0.014" file="src/test/SignUp.test.js">
     </testcase>
-    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" name="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" time="0.018" file="src/test/SignUp.test.js">
+    <testcase classname="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" name="Ensures sign up form inputs meet minimum requirements Displays error if inputted dob makes user younger than 16" time="0.017" file="src/test/SignUp.test.js">
     </testcase>
   </testsuite>
-  <testsuite name="TrainerProfile Component" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:30:42" time="0.118" tests="5">
-    <testcase classname="TrainerProfile Component displays trainer profile once loaded" name="TrainerProfile Component displays trainer profile once loaded" time="0.012" file="src/test/TrainerProfile.test.js">
+  <testsuite name="TrainerProfile Component" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:39:46" time="0.117" tests="5">
+    <testcase classname="TrainerProfile Component displays trainer profile once loaded" name="TrainerProfile Component displays trainer profile once loaded" time="0.01" file="src/test/TrainerProfile.test.js">
     </testcase>
-    <testcase classname="TrainerProfile Component allows editing the trainer profile" name="TrainerProfile Component allows editing the trainer profile" time="0.014" file="src/test/TrainerProfile.test.js">
+    <testcase classname="TrainerProfile Component allows editing the trainer profile" name="TrainerProfile Component allows editing the trainer profile" time="0.017" file="src/test/TrainerProfile.test.js">
     </testcase>
-    <testcase classname="TrainerProfile Component cancels editing the trainer profile" name="TrainerProfile Component cancels editing the trainer profile" time="0.013" file="src/test/TrainerProfile.test.js">
+    <testcase classname="TrainerProfile Component cancels editing the trainer profile" name="TrainerProfile Component cancels editing the trainer profile" time="0.012" file="src/test/TrainerProfile.test.js">
     </testcase>
     <testcase classname="TrainerProfile Component calls deleteProfile when Delete button is clicked" name="TrainerProfile Component calls deleteProfile when Delete button is clicked" time="0.013" file="src/test/TrainerProfile.test.js">
     </testcase>
     <testcase classname="TrainerProfile Component enables the save button only if changes are made" name="TrainerProfile Component enables the save button only if changes are made" time="0.008" file="src/test/TrainerProfile.test.js">
     </testcase>
   </testsuite>
-  <testsuite name="ProgressLineGraphByUser Component" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:30:42" time="0.077" tests="5">
+  <testsuite name="ProgressLineGraphByUser Component" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:39:46" time="0.081" tests="5">
     <testcase classname="ProgressLineGraphByUser Component Chart displays mock data" name="ProgressLineGraphByUser Component Chart displays mock data" time="0.006" file="src/test/ProgressLineGraph.test.js">
     </testcase>
     <testcase classname="ProgressLineGraphByUser Component Error messages display correctly" name="ProgressLineGraphByUser Component Error messages display correctly" time="0.002" file="src/test/ProgressLineGraph.test.js">
     </testcase>
-    <testcase classname="ProgressLineGraphByUser Component Chart updates correctly" name="ProgressLineGraphByUser Component Chart updates correctly" time="0.003" file="src/test/ProgressLineGraph.test.js">
+    <testcase classname="ProgressLineGraphByUser Component Chart updates correctly" name="ProgressLineGraphByUser Component Chart updates correctly" time="0.005" file="src/test/ProgressLineGraph.test.js">
     </testcase>
-    <testcase classname="ProgressLineGraphByUser Component Zoom function working correctly" name="ProgressLineGraphByUser Component Zoom function working correctly" time="0.001" file="src/test/ProgressLineGraph.test.js">
+    <testcase classname="ProgressLineGraphByUser Component Zoom function working correctly" name="ProgressLineGraphByUser Component Zoom function working correctly" time="0.002" file="src/test/ProgressLineGraph.test.js">
     </testcase>
     <testcase classname="ProgressLineGraphByUser Component Loading displays correctly" name="ProgressLineGraphByUser Component Loading displays correctly" time="0.001" file="src/test/ProgressLineGraph.test.js">
     </testcase>
   </testsuite>
-  <testsuite name="Header Navigation Test" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:30:42" time="0.058" tests="1">
+  <testsuite name="Header Navigation Test" errors="0" failures="0" skipped="0" timestamp="2024-10-08T06:39:46" time="0.054" tests="1">
     <testcase classname="Header Navigation Test navigates to About Us page when About link is clicked" name="Header Navigation Test navigates to About Us page when About link is clicked" time="0.006" file="src/test/navigation.test.js">
     </testcase>
   </testsuite>

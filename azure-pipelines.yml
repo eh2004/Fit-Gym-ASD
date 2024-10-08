@@ -20,27 +20,9 @@ steps:
 
 # Run the unit tests for TrainerProfile and append to JUnit report
 - script: |
-    npm test -- src/test/TrainerProfile.test.js --watchAll=false
+    npm test --watchAll=false
   workingDirectory: ./FrontEnd # Path to package.json and tests
-  displayName: 'Run TrainerProfile unit test'
-
-# Run unit tests for ProgressLineGraph and append to JUnit report
-- script: |
-    npm test -- src/test/ProgressLineGraph.test.js --watchAll=false
-  workingDirectory: ./FrontEnd # Path to package.json and tests
-  displayName: 'Run ProgressLineGraph unit test'
-
-# Run unit tests for navigation and append to JUnit report
-- script: |
-    npm test -- src/test/navigation.test.js --watchAll=false
-  workingDirectory: ./FrontEnd # Path to package.json and tests
-  displayName: 'Run Navigation unit test'
-
-# Run unit tests for Sign Up page and append to JUnit report
-- script: |
-    npm test -- src/test/SignUp.test.js --watchAll=false
-  workingDirectory: ./FrontEnd # Path to package.json and tests
-  displayName: 'Run SignUp unit test'
+  displayName: 'Run every unit test'
 
 # Publish the merged JUnit test results
 - task: PublishTestResults@2
