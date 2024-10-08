@@ -45,7 +45,7 @@ steps:
 # Publish the merged JUnit test results
 - task: PublishTestResults@2
   inputs:
-    testResultsFiles: './FrontEnd/test-reports/junit.xml' # Path to JUnit test result file
+    testResultsFiles: './FrontEnd/junit.xml' # Path to JUnit test result file, matches the output directory in package.json
     testRunTitle: 'Merged Test Results'
     mergeTestResults: true
 
