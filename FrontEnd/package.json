@@ -51,7 +51,8 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.26.1",
     "react-slick": "^0.30.2",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "test": "^3.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.7",
