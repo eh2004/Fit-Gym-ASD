@@ -1,17 +1,21 @@
-# React + Vite
+# React + Vite + Node.js
 
-To run our program you will need to do 3 things in the terminal:
+To run our program you will need to do the following in the terminal:
 
-1. npm install
-2. npm install chart.js react-chartjs-2 chartjs-plugin-zoom chartjs-adapter-moment moment
-3. npm install react-modal
+Inside the /Frontend directory
 
-After this you can then type:
+  1. npm install
+  2. npm run dev
 
-1. npm run dev 
+   And the program will give you a localhost address for the website.
 
-And the program will give you a localhost address for the website.
+In a separate Terminal window inside the /Backend directory run the following commands:
 
+  1. npm install
+  2. npm start
+
+
+After completing the following and navigating to the localhost URL from the Frontend directory you will be able to see the website with live data from the DB.
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
