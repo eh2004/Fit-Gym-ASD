@@ -417,6 +417,10 @@ h1 {
 /* ----------- Line Graph/Progress ------------ */
 /* Add these styles to Leaderboard.css */
 
+.leaderboard-container {
+    padding-bottom: 100px;  /* Adds space at the bottom to avoid overlap with the footer */
+  }
+
 /* Container for line graph - center the graph vertically and horizontally */
 .line-graph-container {
     display: flex;

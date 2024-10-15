@@ -27,11 +27,13 @@ const App = () => {
 
     return (
         <>
+        <div class="leaderboard-container footer-space">
             <Header />
-            <LeaderboardUniversal />
-            {/* Pass the logged-in user's id and first_name to LeadboardUser <LeaderboardUser customer={{ id: loggedInUser}} /> */}
-            <PersonalBestLeaderboard customer={{id: loggedInUser}} />
+                <LeaderboardUniversal />
+                {/* Pass the logged-in user's id and first_name to LeadboardUser <LeaderboardUser customer={{ id: loggedInUser}} /> */}
+                <PersonalBestLeaderboard customer={{id: loggedInUser}} />
             <Footer />
+        </div>
         </>
     );
 };
