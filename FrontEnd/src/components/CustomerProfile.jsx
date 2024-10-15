@@ -141,7 +141,7 @@ function CustomerProfile() {
         <button onClick={handleDelete} className="danger-button">Delete Profile</button>
       </div>
 
-      {/* Modal for editing the customer info */}
+      {/* Modal for editing the customer infoooooooooooooooo */}
       <Modal isOpen={isEditing} onRequestClose={handleEditToggle} className="modal" overlayClassName="modal-overlay">
         <h2>Edit Customer Info</h2>
         <div className="modal-content">
