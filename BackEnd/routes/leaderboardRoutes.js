@@ -1,16 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const { Set, Exercise, Customer, Workout, Sequelize } = require('../models');
+const { Op } = require('sequelize');
 
 router.get('/leaderboard', async (req, res) => {
   try {
-    const leaderboardData = await Set.findAll({
+    // Step 1: Find the maximum weight per exercise
+    const maxWeights = await Set.findAll({
       attributes: [
-        'exercise_id', 
-        [Sequelize.fn('MAX', Sequelize.col('weight')), 'best_lift'], // Get max weight
-        'reps',  // Include reps in the attributes
-        'workout_id'
+        'exercise_id',
+        [Sequelize.fn('MAX', Sequelize.col('weight')), 'best_lift']
       ],
+      group: ['exercise_id']
+    });
+
+    // Extract the max weight per exercise
+    const maxWeightsMap = maxWeights.map(weight => ({
+      exercise_id: weight.exercise_id,
+      best_lift: weight.dataValues.best_lift
+    }));
+
+    // Step 2: Fetch the details (reps, workout, customer) corresponding to the max weights
+    const leaderboardData = await Set.findAll({
+      where: {
+        [Op.or]: maxWeightsMap.map(({ exercise_id, best_lift }) => ({
+          exercise_id: exercise_id,
+          weight: best_lift
+        }))
+      },
       include: [
         {
           model: Exercise,
@@ -18,26 +35,14 @@ router.get('/leaderboard', async (req, res) => {
         },
         {
           model: Workout,
-          attributes: ['workout_id', 'customer_id'],  // Include workout_id and customer_id
+          attributes: ['workout_id', 'customer_id'],
           include: {
             model: Customer,
-            attributes: ['customer_id', 'first_name', 'last_name']  // Get customer details
+            attributes: ['customer_id', 'first_name', 'last_name']
           }
         }
       ],
-      group: [
-        'Set.exercise_id', 
-        'Exercise.exercise_id',  // Include exercise_id in GROUP BY
-        'Exercise.exercise_name', 
-        'Set.workout_id',  // Include workout_id in GROUP BY
-        'Workout.workout_id',  // Include workout_id
-        'Workout.customer_id', 
-        'Workout->Customer.customer_id', // Include this field in GROUP BY
-        'Workout->Customer.first_name', 
-        'Workout->Customer.last_name',
-        'Set.reps' // Add reps to the group
-      ],
-      order: [[Sequelize.fn('MAX', Sequelize.col('weight')), 'DESC']]
+      order: [[Sequelize.col('weight'), 'DESC']]
     });
 
     if (!leaderboardData.length) {
