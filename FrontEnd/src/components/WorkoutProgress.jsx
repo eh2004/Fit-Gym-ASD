@@ -1,11 +1,13 @@
 import React from "react";
-import ProgressLineGraphByUser from "../components/LineGraphByUser"; // Correct import path
+import ProgressLineGraphByUser from "../components/LineGraphByUser"; // Correct path for the graph
 
 const WorkoutProgress = ({ customer }) => {
   return (
-    <div className="workout-progress-section">
+    <div className="workout-progress">
       <h3>Workout Progress</h3>
-      <ProgressLineGraphByUser customer={customer} selectedMuscleGroup={null} />
+      <div className="progress-chart-container">
+        <ProgressLineGraphByUser customer={customer} selectedMuscleGroup={null} />
+      </div>
     </div>
   );
 };
