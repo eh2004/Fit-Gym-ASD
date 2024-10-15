@@ -1,14 +1,21 @@
 import React from "react";
 import CustomerProfile from "./CustomerProfile.jsx";
-import Booking from "./Booking"; // Assuming you want booking to appear here too
+import Booking from "./Booking";
+import WorkoutProgress from "./WorkoutProgress"; // Import the workout progress component
 
 function CustomerDashboard() {
+  const customer = {
+    id: 1, // Example customer ID, update it dynamically if needed
+    name: "John Doe",
+    // Other customer details...
+  };
+
   return (
     <div className="dashboard">
       <CustomerProfile />
       <div className="dashboard-content">
         <Booking />
-        {/* You can add other components here, such as tracking workout progress */}
+        <WorkoutProgress customer={customer} />  {/* Add workout progress component */}
       </div>
     </div>
   );
