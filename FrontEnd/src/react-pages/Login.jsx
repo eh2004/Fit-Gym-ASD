@@ -10,13 +10,19 @@ function App() {
     const[password, setPassword] = useState("");
     const[userFound, setUserFound] = useState(true);
     const[customersList, setCustomersList] = useState([]);
+    const[trainersList, setTrainersList] = useState([]);
     const[loggedIn, setLoggedIn] = useState(false);
     const[loggedInName, setLoggedInName] = useState("");
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/customers')
-        .then(response => response.json())
-        .then(data => setCustomersList(data))
+        Promise.all([
+            fetch('http://localhost:3000/api/customers').then((response) => response.json()),
+            fetch('http://localhost:3000/api/trainers').then((response) => response.json()),
+        ])
+        .then(([customerData, trainerData]) => {
+            setCustomersList(customerData);
+            setTrainersList(trainerData);
+        })
 
         const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
         if (storedUser) {
@@ -24,35 +30,49 @@ function App() {
         }
     }, []);
 
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setUserFound(false)
-
-        for(let i = 0; i < customersList.length; i++) {
-            if(username == customersList[i].username) {
-                if(password == customersList[i].password) {
+    function validateUser(list, userType) {
+        let id;
+        for(let i = 0; i < list.length; i++) {
+            if(username == list[i].username) {
+                if(password == list[i].password) {
                     console.log("Found!");
                     setLoggedIn(true);
                     setUserFound(true);
-                    setLoggedInName(customersList[i].first_name);
-                    const id = customersList[i].customer_id;
+                    setLoggedInName(list[i].first_name);
+                    if(userType == "customer") {
+                        id = list[i].customer_id;
+                    }
+                    else if(userType == "trainer") {
+                        id = list[i].trainer_id;
+                    }
                     localStorage.setItem("loggedInUser", JSON.stringify({id}));
                     
                     const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-                    console.log("Stored customer_id:", storedUser.customerId);
+                    console.log("Stored id:", storedUser);
 
                     setTimeout(() => {
                         window.location.href = "/src/pages/index.html";
                     }, 4000);
                     
-                    break;
+                    return true;
                 }
             }
         }
 
-        if(userFound == false) {
-            console.log("Not found");
+        return false;   
+    }
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        const isCustomerFound = validateUser(customersList, "customer");
+        if(!isCustomerFound) {
+            const isTrainerFound = validateUser(trainersList, "trainer");
+            if(!isTrainerFound) {
+                setUserFound(false);
+                console.log("not found");
+            }
         }
     };
 
