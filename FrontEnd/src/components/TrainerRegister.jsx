@@ -1,13 +1,10 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
+import React, { Fragment } from "react"
 import Header from "../components/Header.jsx"
 import Footer from "../components/Footer.jsx"
 import { useState } from "react";
-import { BasicPerks } from "./PlanPerks.jsx";
-import { StandardPerks } from "./PlanPerks.jsx";
-import { PremiumPerks } from "./PlanPerks.jsx";
-import MembershipPlan from "./MembershipPlan.jsx";
 import RegisteredMessage from "./RegisteredMsg.jsx";
+import { v4 as uuidv4 } from 'uuid';
+import AddCertificates from "./AddCertificates.jsx";
 
 function Register() {
 
@@ -49,7 +46,6 @@ function Register() {
     const[cardNumberValid, setCardNumberValid] = useState(true);
     const[cvvValid, setCvvValid] = useState(true);
     const[expirationDateValid, setExpirationDateValid] = useState(true);
-    const[planValid, setPlanValid] = useState(true);
 
     const[userRegistered, setUserRegistered] = useState(false);
 
@@ -166,11 +162,6 @@ function Register() {
             isValid = false;
         }
 
-        if(plan == "") {
-            setPlanValid(false);
-            isValid = false;
-        }
-
         return isValid;
     }
 
@@ -193,7 +184,6 @@ function Register() {
         setCardNumberValid(true);
         setCvvValid(true);
         setExpirationDateValid(true);
-        setPlanValid(true);
 
         const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan);
 
@@ -364,14 +354,8 @@ function Register() {
         </div>
 
         <div className="big-break">.</div>
-        <h2 className="form-heading">Membership Plans</h2>
 
-        <div className="perks-container">
-            <MembershipPlan name="Basic" price="$40" perks= {<BasicPerks />} colour="linear-gradient(50deg, #3d91ff, #31008b)" shadow={plan == "basic" ? "0px 2px  10px rgb(19, 23, 255)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("basic")}/>
-            <div className="standard-plan"><MembershipPlan name="Standard" price="$60" perks= {<StandardPerks />} colour="linear-gradient(50deg, #8fff78, #00422e)" shadow={plan == "standard" ? "0px 2px  10px rgb(0, 92, 49)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("standard")}/></div>
-            <MembershipPlan name="Premium" price="$80" perks= {<PremiumPerks />} colour="linear-gradient(50deg, #f0ff64, #9c4600)" shadow={plan == "premium" ? "0px 2px  10px rgb(196, 160, 0)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("premium")}/>
-        </div>
-        <div className="error-register" style={{ visibility: planValid ? 'hidden' : 'visible' }}>You must select a plan</div>
+        <AddCertificates />
 
         <div className="big-break">.</div>
 
@@ -419,5 +403,6 @@ function Register() {
         </React.Fragment>
         );
 }
+
 
 export default Register;

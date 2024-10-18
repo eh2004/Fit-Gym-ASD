@@ -916,3 +916,88 @@ tbody tr:hover {
     margin-right: auto;
     padding-bottom: 20px;
   }
+
+  /*------------------- Registration Customer or Trainer -------------------*/
+
+.register-outer-div {
+    background-color: #004e6d;
+    height: 200px;
+    border-radius: 20px 20px 20px 20px;
+    width: 400px;
+    display: inline-block;
+}
+
+.register-inner-div {
+    position: absolute; 
+    width: 400px;
+    margin-left: 15px;
+    margin-top: 15px;
+    transition: transform .40s, visibility .40s ease-in;
+}
+
+.register-inner-div:hover {
+    transform: translate(10px, 10px);
+}
+
+.register-inner-div a{
+    display: block;
+    text-align: center;
+    padding: 85px 0px;
+    text-decoration: none;
+    color: black;
+    font-size: 25px;
+    background-image: linear-gradient(50deg, #9dffea, #11aac5);
+    border-radius: 20px 20px 20px 20px;
+}
+
+.options-container {
+    width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.trainer-option {
+    margin-right: 30px;
+}
+
+.customer-option {
+    margin-left: 30px;
+}
+
+/*---------------------- Trainer Registration -----------------------*/
+.remove-button {
+    background-color: rgb(175, 16, 16);
+    color: white;
+    font-weight: bold;
+    width: 35px;
+    border-radius: 30px;
+    float: right;
+    margin-right: 50px;
+    margin-top: 0px;
+}
+
+.cert-number {
+    padding: 0px;
+    padding-left: 50px;
+    margin: 0px;
+}
+
+.cert-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0px;
+    margin-top: 40px;
+}
+
+.add-button {
+    background-color: rgb(26, 94, 26);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    width: 160px;
+}
+
+.cert-dropdown {
+    width: 220px;
+}
