@@ -1,10 +1,11 @@
-import React, { Fragment } from "react"
+import React, { useEffect, useCallback, Fragment } from 'react';
 import Header from "../components/Header.jsx"
 import Footer from "../components/Footer.jsx"
 import { useState } from "react";
 import RegisteredMessage from "./RegisteredMsg.jsx";
 import { v4 as uuidv4 } from 'uuid';
 import AddCertificates from "./AddCertificates.jsx";
+import Languages from "./AddLanguages.jsx";
 
 function Register() {
 
@@ -22,7 +23,7 @@ function Register() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
-    const[languages, setLanguages] = useState("");
+    const[language, setLanguage] = useState(["French", "Chinese"]);
 
     const[name_on_card, setNameOnCard] = useState("");
     const[card_number, setCardNumber] = useState("");
@@ -48,12 +49,19 @@ function Register() {
     const[cardNumberValid, setCardNumberValid] = useState(true);
     const[cvvValid, setCvvValid] = useState(true);
     const[expirationDateValid, setExpirationDateValid] = useState(true);
+    const [languageValid, setLanguageValid] = useState(true);
 
     const[userRegistered, setUserRegistered] = useState(false);
+
 
     const handleCertificatesUpdate = (newCertificates) => {
         setCertificates(newCertificates);
     };
+
+    const handleLanguagesChange = useCallback((languagesArray) => {
+        setLanguage(languagesArray.map((langObj) => langObj.language));
+    }, [setLanguage]);
+    
 
     function checkAge(date_of_birth) {
         if(date_of_birth == "") return false;
@@ -81,10 +89,14 @@ function Register() {
     }
     
 
-    function validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date) {
+    function validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, languageValid) {
         let isValid = true;
         const digitOnlyRegex = /^\d+$/;
         const atLeastThreeDigitsRegex = /^(.*\d){3,}.*$/;
+
+        if(!languageValid) {
+            isValid = false;
+        }
 
         if(first_name.length < 2) {
             setFirstNameValid(false);
@@ -189,10 +201,10 @@ function Register() {
         setCvvValid(true);
         setExpirationDateValid(true);
 
-        const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date);
+        const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, languageValid);
 
         if(isValid) {  
-            const newTrainer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, certificates};
+            const newTrainer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, language, certificates};
             try {
             const response = await fetch('http://localhost:3000/api/trainers', {
                 method: 'POST',
@@ -357,13 +369,7 @@ function Register() {
             
             <div className="break">.</div>
 
-            <div className="field-container">
-                <div  className="language-field">
-                    <label htmlFor="languages">Languages</label><br/>
-                    <input type="text" id="languages" /><br/>
-                    <div className="error-register">Enter at least one language</div>
-                </div>
-            </div>
+            <Languages onLanguagesChange={handleLanguagesChange} setLanguageValid={setLanguageValid}/>
 
         </div>
 

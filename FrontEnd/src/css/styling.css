@@ -1002,6 +1002,21 @@ tbody tr:hover {
     width: 220px;
 }
 
-.language-field {
+.language-container {
     width: 220px;
 }
+
+.delete-language {
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.language-field {
+    margin-bottom: 20px;
+}
+
+.language-error {
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
