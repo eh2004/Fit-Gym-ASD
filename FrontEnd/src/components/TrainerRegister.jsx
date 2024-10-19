@@ -22,12 +22,14 @@ function Register() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
+    const[languages, setLanguages] = useState("");
+
     const[name_on_card, setNameOnCard] = useState("");
     const[card_number, setCardNumber] = useState("");
     const[cvv, setCVV] = useState("");
     const[expiration_date, setExpirationDate] = useState("");
 
-    const[plan, setPlan] = useState("");
+    const[certificates, setCertificates] = useState([]);
 
     //Error message states
     const[firstNameValid, setFirstNameValid] = useState(true);
@@ -49,7 +51,9 @@ function Register() {
 
     const[userRegistered, setUserRegistered] = useState(false);
 
-    const[planSelected, setPlanSelected] = useState(false);
+    const handleCertificatesUpdate = (newCertificates) => {
+        setCertificates(newCertificates);
+    };
 
     function checkAge(date_of_birth) {
         if(date_of_birth == "") return false;
@@ -77,7 +81,7 @@ function Register() {
     }
     
 
-    function validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan) {
+    function validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date) {
         let isValid = true;
         const digitOnlyRegex = /^\d+$/;
         const atLeastThreeDigitsRegex = /^(.*\d){3,}.*$/;
@@ -185,21 +189,21 @@ function Register() {
         setCvvValid(true);
         setExpirationDateValid(true);
 
-        const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan);
+        const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date);
 
         if(isValid) {  
-            const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan };
+            const newTrainer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, certificates};
             try {
-            const response = await fetch('http://localhost:3000/api/customers', {
+            const response = await fetch('http://localhost:3000/api/trainers', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newCustomer), 
+                body: JSON.stringify(newTrainer), 
             });
         
             if (response.ok) {
-                const addedCustomer = await response.json();
+                const addedTrainer = await response.json();
                 console.log('Customer added');
 
                 //Clear fields
@@ -219,10 +223,9 @@ function Register() {
                 setCardNumber("");
                 setCVV("");
                 setExpirationDate("");
-                setPlan("");
         
             } else {
-                console.error('Failed to add customer');
+                console.error('Failed to add trainer');
             }
             } catch (error) {
             console.error('Error:', error);
@@ -351,11 +354,24 @@ function Register() {
             </div>
             </div>
             </div>
+            
+            <div className="break">.</div>
+
+            <div className="field-container">
+                <div  className="language-field">
+                    <label htmlFor="languages">Languages</label><br/>
+                    <input type="text" id="languages" /><br/>
+                    <div className="error-register">Enter at least one language</div>
+                </div>
+            </div>
+
         </div>
 
         <div className="big-break">.</div>
 
-        <AddCertificates />
+        
+
+        <AddCertificates certificates = {certificates} setCertificatesMain={handleCertificatesUpdate} />
 
         <div className="big-break">.</div>
 

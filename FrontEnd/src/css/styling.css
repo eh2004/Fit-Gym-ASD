@@ -1001,3 +1001,7 @@ tbody tr:hover {
 .cert-dropdown {
     width: 220px;
 }
+
+.language-field {
+    width: 220px;
+}
