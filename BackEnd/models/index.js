@@ -7,6 +7,7 @@ const Workout = require('./Workout');
 const Set = require('./Set');
 const Exercise = require('./Exercise');
 const PaymentCard = require('./PaymentCard');
+const TrainerCard = require('./TrainerCard');
 
 // Create a db object that includes models and the Sequelize instance + Sequelize methods
 const db = {
@@ -17,6 +18,7 @@ const db = {
   Set,
   Exercise,
   PaymentCard,
+  TrainerCard,
   sequelize, // Export the Sequelize instance
   Sequelize  // Export Sequelize methods like fn and col
 };
@@ -31,6 +33,9 @@ Exercise.hasMany(Set, { foreignKey: 'exercise_id' });
 
 Customer.hasMany(PaymentCard, { foreignKey: 'customer_id' });
 PaymentCard.belongsTo(Customer, { foreignKey: 'customer_id' });
+
+Trainer.hasMany(TrainerCard, { foreignKey: 'trainer_id' });
+TrainerCard.belongsTo(Trainer, { foreignKey: 'trainer_id' });
 
 // Export the db object with associations and Sequelize methods
 module.exports = db;

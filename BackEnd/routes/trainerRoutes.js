@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Trainer } = require('../models');
+const { Trainer, TrainerCard } = require('../models');
 
 // Fetch all trainers
 router.get('/trainers', async (req, res) => {
@@ -95,6 +95,10 @@ router.post('/trainers', async (req, res) => {
     country,
     username,
     password,
+    name_on_card,
+    card_number,
+    cvv,
+    expiration_date,
     language
   } = req.body;
 
@@ -116,7 +120,19 @@ router.post('/trainers', async (req, res) => {
       language
     });
 
-    res.status(201).json({ message: 'Trainer created successfully', newTrainer });
+    const newPaymentCard = await TrainerCard.create({
+      name_on_card,
+      card_number,
+      cvv,
+      expiration_date,
+      trainer_id: newTrainer.trainer_id
+    });
+
+    res.status(201).json({ 
+      message: 'Trainer created successfully', 
+      newTrainer, 
+      newPaymentCard 
+    });
   } catch (error) {
     console.error('Error creating trainer:', error);
     res.status(500).json({ error: 'Error creating trainer' });
