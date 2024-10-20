@@ -49,18 +49,25 @@ function Register() {
     const[cardNumberValid, setCardNumberValid] = useState(true);
     const[cvvValid, setCvvValid] = useState(true);
     const[expirationDateValid, setExpirationDateValid] = useState(true);
-    const [languageValid, setLanguageValid] = useState(true);
+    const[languageValid, setLanguageValid] = useState(true);
+    const[certificateValid, setCertificateValid] = useState(true);
 
     const[userRegistered, setUserRegistered] = useState(false);
-
-
-    const handleCertificatesUpdate = (newCertificates) => {
-        setCertificates(newCertificates);
-    };
 
     const handleLanguagesChange = useCallback((languagesArray) => {
         setLanguage(languagesArray.map((langObj) => langObj.language));
     }, [setLanguage]);
+
+    const handleCertificatesChange = useCallback((certificatesArray) => {
+        const formattedCertificates = certificatesArray.map((certificate) => ({
+            certificate_name: certificate.certificate_name,
+            certificate_provider: certificate.certificate_provider,
+            certificate_duration: certificate.certificate_duration
+        }));
+        setCertificates(formattedCertificates);
+    
+        console.log("Updated Certificates: ", formattedCertificates);
+    }, [setCertificates]);
     
 
     function checkAge(date_of_birth) {
@@ -377,7 +384,7 @@ function Register() {
 
         
 
-        <AddCertificates certificates = {certificates} setCertificatesMain={handleCertificatesUpdate} />
+        <AddCertificates onCertificatesChange={handleCertificatesChange} setCertificateValid={setCertificateValid}/>
 
         <div className="big-break">.</div>
 

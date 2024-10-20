@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { Trainer, TrainerCard } = require('../models');
+const { Trainer, TrainerCard, Certificate } = require('../models');
 
 // Fetch all trainers
 router.get('/trainers', async (req, res) => {
@@ -99,7 +99,8 @@ router.post('/trainers', async (req, res) => {
     card_number,
     cvv,
     expiration_date,
-    language
+    language,
+    certificates
   } = req.body;
 
   try {
@@ -128,16 +129,28 @@ router.post('/trainers', async (req, res) => {
       trainer_id: newTrainer.trainer_id
     });
 
+    if (certificates && certificates.length > 0) {
+      const newCertificates = await Promise.all(certificates.map(async (cert) => {
+        return Certificate.create({
+          certificate_name: cert.certificate_name,
+          certificate_provider: cert.certificate_provider,
+          certificate_duration: cert.certificate_duration,
+          trainer_id: newTrainer.trainer_id
+        });
+      }));
+    }
+
     res.status(201).json({ 
       message: 'Trainer created successfully', 
       newTrainer, 
-      newPaymentCard 
+      newPaymentCard
     });
   } catch (error) {
     console.error('Error creating trainer:', error);
     res.status(500).json({ error: 'Error creating trainer' });
   }
 });
+
 
 // Delete an existing trainer by ID
 router.delete('/trainers/:id', async (req, res) => {
