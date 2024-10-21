@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, Fragment } from 'react';
+import React from "react"
 import ReactDOM from "react-dom/client"
 import Header from "../components/Header.jsx"
 import Footer from "../components/Footer.jsx"
@@ -55,31 +55,6 @@ function Register() {
 
     const[planSelected, setPlanSelected] = useState(false);
 
-    const[customersList, setCustomersList] = useState([]);
-    const[trainersList, setTrainersList] = useState([]);
-    const[usernameExists, setUsernameExists] = useState(false);
-
-    useEffect(() => {
-        Promise.all([
-            fetch('http://localhost:3000/api/customers').then((response) => response.json()),
-            fetch('http://localhost:3000/api/trainers').then((response) => response.json()),
-        ])
-        .then(([customerData, trainerData]) => {
-            setCustomersList(customerData);
-            setTrainersList(trainerData);
-        })
-    }, []);
-
-    function checkUsernameExists(userList, username) {
-        for(let i = 0; i < userList.length; i ++) {
-            if(username == userList[i].username) {
-                setUsernameExists(true);
-                return true;
-            }
-        }
-        return false;
-    }
-
     function checkAge(date_of_birth) {
         if(date_of_birth == "") return false;
         const today = new Date();
@@ -110,10 +85,6 @@ function Register() {
         let isValid = true;
         const digitOnlyRegex = /^\d+$/;
         const atLeastThreeDigitsRegex = /^(.*\d){3,}.*$/;
-
-        if(checkUsernameExists(customersList, username) || checkUsernameExists(trainersList, username)) {
-            isValid = false;
-        }
 
         if(first_name.length < 2) {
             setFirstNameValid(false);
@@ -223,7 +194,6 @@ function Register() {
         setCvvValid(true);
         setExpirationDateValid(true);
         setPlanValid(true);
-        setUsernameExists(false);
 
         const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan);
 
@@ -381,10 +351,7 @@ function Register() {
             <div>
                 <label htmlFor="username">Choose a Username</label><br/>
                 <input type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)}/><br/>
-                <div className="error-register">
-                    {(!usernameValid && <div>Must be 5 characters long</div>)}
-                    {usernameExists && <div>Another user has this username</div>}
-                 </div>
+                <div className="error-register" style={{ visibility: usernameValid ? 'hidden' : 'visible' }}>Must be 5 characters long</div>
             </div>
 
             <div className="div-two">
