@@ -1,17 +1,116 @@
-import React, { useEffect, useCallback, Fragment, useState } from 'react';
+import React, {useState} from "react"
 import ReactDOM from "react-dom/client"
 import Header from "../components/Header.jsx"
 import Footer from "../components/Footer.jsx"
 import "../css/styling.css"
 
+const transactions = [{
+    id: 1,
+    date: "1/1/24",
+    description: "Standard plan monthly fee",
+    type: "Payment",
+    amount: "60"
+}, {
+    id: 2,
+    date: "1/2/24",
+    description: "Standard plan monthly fee",
+    type: "Payment",
+    amount: "60" 
+}, {
+    id: 3,
+    date: "1/3/24",
+    description: "Standard plan monthly fee",
+    type: "Payment",
+    amount: "60" 
+}, {
+    id: 4,
+    date: "1/4/24",
+    description: "Doesn't like the gym :<",
+    type: "Refund",
+    amount: "60" 
+}, {
+    id: 5,
+    date: "1/5/24",
+    description: "Switched to basic plan",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 6,
+    date: "1/6/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 7,
+    date: "1/7/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 8,
+    date: "1/8/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 9,
+    date: "1/9/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 10,
+    date: "1/10/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 11,
+    date: "1/11/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 12,
+    date: "1/12/24",
+    description: "Basic plan monthly fee",
+    type: "Payment",
+    amount: "40" 
+}, {
+    id: 13,
+    date: "1/1/25",
+    description: "Upgraded to premium plan",
+    type: "Payment",
+    amount: "80" 
+}, {
+    id: 14,
+    date: "1/2/25",
+    description: "Premium plan monthly fee",
+    type: "Payment",
+    amount: "80" 
+}, {
+    id: 15,
+    date: "1/3/25",
+    description: "Premium plan monthly fee",
+    type: "Payment",
+    amount: "80" 
+}, {
+    id: 16,
+    date: "1/4/25",
+    description: "Premium plan monthly fee",
+    type: "Payment",
+    amount: "80" 
+}];
+
+
 function TransactionsTable({transactions}) {
     
     const transactionsList = transactions.map((transaction) =>
-        <tr key={transaction.transaction_id}>
-            <td>{transaction.transaction_date}</td>
-            <td>{transaction.transaction_description}</td>
-            <td>{transaction.transaction_type}</td>
-            <td>{transaction.transaction_amount}</td>
+        <tr key={transaction.id}>
+            <td key={transaction.date}>{transaction.date}</td>
+            <td key={transaction.description}>{transaction.description}</td>
+            <td key={transaction.type}>{transaction.type}</td>
+            <td key={transaction.amount}>{transaction.amount}</td>
         </tr>
     )
 
@@ -62,43 +161,7 @@ function TransactionsFilter({onFilterSort}) {
 var filterType = "none";
 
 function App() {
-    const [filteredTransactions, setFilteredTransactions] = useState([]);
-    
-    const[transactions, setTransactions] = useState([]);
-
-    useEffect(() => {
-        Promise.all([
-            fetch('http://localhost:3000/api/transactions').then((response) => response.json()),
-        ])
-        .then(([transactionData]) => {
-            setTransactions(transactionData);
-            setFilteredTransactions(transactionData);
-
-            const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-            const storedType = JSON.parse(localStorage.getItem("userType"));
-
-            if(storedType == "customer") {
-                for(let i = 0; i < transactions.length; i++) {
-                    if(transactionsList[i].customer_id == storedUser) {
-                        console.log(transactionsList[i].transaction_id);
-                    }
-                }
-            }
-
-            else if(storedType == "trainer") {
-                for(let i = 0; i < transactions.length; i++) {
-                    if(transactionsList[i].trainer_id == storedUser) {
-                        console.log(transactionsList[i].transaction_id);
-                    }
-                }
-            }
-        })
-        // const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-        // if (storedUser) {
-        //   console.log("Stored loggedInUser on this page:", storedUser);
-        // }
-    }, []);
-
+    const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
     const handleFilterSort = (condition) => {
         let transactionsSortCopy = [...transactions];
@@ -107,67 +170,67 @@ function App() {
             filterType= "none";
         }
         else if(condition === "Payment") {
-            setFilteredTransactions(transactions.filter(transaction => transaction.transaction_type === "Payment"));
+            setFilteredTransactions(transactions.filter(transaction => transaction.type === "Payment"));
             filterType = "Payment";
         }
         else if(condition === "Refund") {
-            setFilteredTransactions(transactions.filter(transaction => transaction.transaction_type === "Refund"));
+            setFilteredTransactions(transactions.filter(transaction => transaction.type === "Refund"));
             filterType = "Refund";
         }
        
         else if(condition === "NewToOld") {
             if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Payment"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .filter(transaction => transaction.type === "Payment"));
             }
             else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Refund"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date))
+                .filter(transaction => transaction.type === "Refund"));
             }
             else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date)));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.date) - new Date(a.date)));
             }
         }
 
         else if(condition === "OldToNew") {
             if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Payment"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date))
+                .filter(transaction => transaction.type === "Payment"));
             }
             else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Refund"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date))
+                .filter(transaction => transaction.type === "Refund"));
             }
             else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date)));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.date) - new Date(b.date)));
             }
         }
 
         else if(condition === "HighToLow") {
             if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Payment"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))
+                .filter(transaction => transaction.type === "Payment"));
             }
             else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Refund"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount))
+                .filter(transaction => transaction.type === "Refund"));
             }
             else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount)));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.amount) - parseFloat(a.amount)));
             }
         }
 
         else if(condition === "LowToHigh") {
             if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Payment"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
+                .filter(transaction => transaction.type === "Payment"));
             }
             else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Refund"));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
+                .filter(transaction => transaction.type === "Refund"));
             }
             else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount)));
+                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount)));
             }
         }
     };
