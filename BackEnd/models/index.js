@@ -9,6 +9,7 @@ const Exercise = require('./Exercise');
 const PaymentCard = require('./PaymentCard');
 const TrainerCard = require('./TrainerCard');
 const Certificate = require('./Certificate');
+const Transaction = require('./Transaction');
 
 // Create a db object that includes models and the Sequelize instance + Sequelize methods
 const db = {
@@ -21,6 +22,7 @@ const db = {
   PaymentCard,
   TrainerCard,
   Certificate,
+  Transaction,
   sequelize, // Export the Sequelize instance
   Sequelize  // Export Sequelize methods like fn and col
 };
@@ -41,6 +43,9 @@ TrainerCard.belongsTo(Trainer, { foreignKey: 'trainer_id' });
 
 Trainer.hasMany(Certificate, { foreignKey: 'trainer_id' });
 Certificate.belongsTo(Trainer, { foreignKey: 'trainer_id' });
+
+Transaction.belongsTo(Trainer, { foreignKey: 'trainer_id' });
+Transaction.belongsTo(Customer, { foreignKey: 'customer_id' });
 
 // Export the db object with associations and Sequelize methods
 module.exports = db;
