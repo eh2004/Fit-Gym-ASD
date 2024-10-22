@@ -116,7 +116,7 @@ function App() {
                     ></polygon>
 
                     {/* Abs */}
-                    <polygon id="abs" points="180 310, 320 310, 270 480, 210 480" 
+                    <polygon id="abs" points="180 310, 320 310, 270 480, 21`0 480" 
                         className="body-part"
                         onClick={() => handleMouseEnter("abs")}
                     ></polygon>

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // For navigation
 import "../css/stylebest.css";
 
 function TrainerSelect() {
   const [trainers, setTrainers] = useState([]); // To store the fetched trainers
   const [error, setError] = useState(null); // To handle any errors
+
+  // Check if the user is logged in by checking localStorage
+  const isLoggedIn = localStorage.getItem("loggedInUser");
 
   useEffect(() => {
     // Basic fetch call to retrieve trainers
@@ -23,6 +27,17 @@ function TrainerSelect() {
     fetchTrainers(); // Call the fetch function
   }, []); // Empty dependency array to run only once on component mount
 
+  // Function to handle booking
+  const handleBooking = (trainerId) => {
+    if (isLoggedIn) {
+      // If logged in, navigate to the booking page
+      window.location.href = `/src/pages/guy1book.html?trainerId=${trainerId}`;
+    } else {
+      // If not logged in, navigate to the login page
+      window.location.href = "/src/pages/login.html";
+    }
+  };
+
   // If there's an error, display it
   if (error) {
     return <div>Error: {error}</div>;
@@ -39,14 +54,13 @@ function TrainerSelect() {
       <div className="trainer-list">
         {trainers.map((trainer) => (
           <div className="trainer-card" key={trainer.trainer_id}>
-            <img
-              className="profile-photo"
-              src={trainer.photo_url || '/src/assets/noPFP.jpg'}  // Replace with your actual placeholder path
-              alt={`${trainer.first_name} ${trainer.last_name}`}
-            />
+            <img className="profile-photo" src={trainer.photo_url || '/src/assets/noPFP.jpg'} alt={`${trainer.first_name} ${trainer.last_name}`}/>
             <div className="trainer-bio">
               <h2>{trainer.first_name} {trainer.last_name}</h2>
-              <button className="trainer-book-button">Book with {trainer.first_name}</button>
+              {/* Call handleBooking on button click */}
+              <button className="trainer-book-button" onClick={() => handleBooking(trainer.trainer_id)}>
+                Book with {trainer.first_name}
+              </button>
             </div>
           </div>
         ))}
