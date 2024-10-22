@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API</title>
+</head>
+<body>
+    <h1>Test API Endpoints</h1>
+
+    <!-- Button to test fetching all sets -->
+    <button id="getSetsBtn">Get All Sets</button>
+    <div id="setsResult"></div>
+
+    <script>
+        // Function to fetch all sets
+        document.getElementById('getSetsBtn').addEventListener('click', () => {
+            fetch('http://localhost:3000/api/sets')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    document.getElementById('setsResult').innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
