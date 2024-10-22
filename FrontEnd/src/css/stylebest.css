@@ -192,67 +192,69 @@
 
 
     /* Profile container */
-    .trainer-profile-container {
-        display: flex; 
-        justify-content: space-around; 
-        align-items: flex-start; 
-        padding: 40px;
-        gap: 40px; 
-    }
-    
-    .trainer-profile-left {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        max-width: 300px; 
-    }
-    
-    .profile-photo {
-        width: 200px; 
-        height: 300px;
-        object-fit: cover;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .trainer-bio {
-        text-align: center;
-    }
-    
-    .trainer-bio h2 {
-        font-size: 22px;
-        color: #333;
-        margin-bottom: 10px;
-    }
-    
-    .trainer-bio p {
-        font-size: 14px;
-        color: #555;
-        line-height: 1.6;
-    }
-    
-    .trainer-bio p strong {
-        font-weight: bold;
-    }
-    
-    .trainer-profile-middle {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-    }
-    
-    .trainer-message-box {
-        width: 100%; 
-        height: 200px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        padding: 10px;
-        font-size: 16px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        resize: none; 
-    }
+.trainer-profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px;
+}
 
+/* Trainer list as a grid */
+.trainer-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Adjusts the columns */
+    gap: 20px;
+    width: 100%; /* Ensures the grid spans the whole available space */
+    justify-content: center; /* Centers the grid content */
+    padding: 20px;
+}
+
+/* Trainer card */
+.trainer-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #eee;
+    text-align: center;
+}
+
+/* Profile photo */
+.profile-photo {
+    width: 150px; /* Set a smaller size for profile images */
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 10px;
+    border-radius: 5px; /* Optional rounded corners */
+}
+
+/* Trainer bio */
+.trainer-bio h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.trainer-bio p {
+    font-size: 14px;
+    color: #555;
+}
+
+.trainer-book-button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007bff; /* Customize the color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .trainer-book-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }
 
 
 
@@ -521,7 +523,65 @@
         padding: 10px; /* Optional: Padding for text */
       }
     
-   
-      
+
+      /*Muscle Groups Page*/
+
+      .muscle-map {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-left: 2rem;
+        margin-bottom: 4rem;
+    }
     
-      
+
+svg {
+    width: 400px;
+    height: 800px;
+}
+
+.body-part {
+    fill: transparent;
+    stroke-width: 1;
+    cursor: pointer;
+}
+
+.body-part:hover {
+    fill: rgba(255, 255, 255, 0.3); 
+}
+
+.muscle-info {
+    margin-left: 20px; /* Adjust based on your layout */
+    background-color: #f5f5f5;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+    margin-top: 20rem;
+    margin-right: 20rem;
+}
+
+.muscle-info h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.muscle-info p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+}
+
+.muscle-info.active {
+    display: block;
+}
+   
+.begintext{
+    margin-left: 10rem;
+}
+    
+.grid {
+    background: linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px), 
+                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+    background-size: 50px 50px; /* Adjust grid size */
+  }

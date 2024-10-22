@@ -1,13 +1,11 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
+import React, { useEffect, useCallback, Fragment } from 'react';
 import Header from "../components/Header.jsx"
 import Footer from "../components/Footer.jsx"
 import { useState } from "react";
-import { BasicPerks } from "./PlanPerks.jsx";
-import { StandardPerks } from "./PlanPerks.jsx";
-import { PremiumPerks } from "./PlanPerks.jsx";
-import MembershipPlan from "./MembershipPlan.jsx";
 import RegisteredMessage from "./RegisteredMsg.jsx";
+import { v4 as uuidv4 } from 'uuid';
+import AddCertificates from "./AddCertificates.jsx";
+import Languages from "./AddLanguages.jsx";
 
 function Register() {
 
@@ -25,12 +23,14 @@ function Register() {
     const[username, setUsername] = useState("");
     const[password, setPassword] = useState("");
 
+    const[language, setLanguage] = useState(["French", "Chinese"]);
+
     const[name_on_card, setNameOnCard] = useState("");
     const[card_number, setCardNumber] = useState("");
     const[cvv, setCVV] = useState("");
     const[expiration_date, setExpirationDate] = useState("");
 
-    const[plan, setPlan] = useState("");
+    const[certificates, setCertificates] = useState([]);
 
     //Error message states
     const[firstNameValid, setFirstNameValid] = useState(true);
@@ -49,11 +49,26 @@ function Register() {
     const[cardNumberValid, setCardNumberValid] = useState(true);
     const[cvvValid, setCvvValid] = useState(true);
     const[expirationDateValid, setExpirationDateValid] = useState(true);
-    const[planValid, setPlanValid] = useState(true);
+    const[languageValid, setLanguageValid] = useState(true);
+    const[certificateValid, setCertificateValid] = useState(true);
 
     const[userRegistered, setUserRegistered] = useState(false);
 
-    const[planSelected, setPlanSelected] = useState(false);
+    const handleLanguagesChange = useCallback((languagesArray) => {
+        setLanguage(languagesArray.map((langObj) => langObj.language));
+    }, [setLanguage]);
+
+    const handleCertificatesChange = useCallback((certificatesArray) => {
+        const formattedCertificates = certificatesArray.map((certificate) => ({
+            certificate_name: certificate.certificate_name,
+            certificate_provider: certificate.certificate_provider,
+            certificate_duration: certificate.certificate_duration
+        }));
+        setCertificates(formattedCertificates);
+    
+        console.log("Updated Certificates: ", formattedCertificates);
+    }, [setCertificates]);
+    
 
     function checkAge(date_of_birth) {
         if(date_of_birth == "") return false;
@@ -81,10 +96,14 @@ function Register() {
     }
     
 
-    function validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan) {
+    function validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, languageValid) {
         let isValid = true;
         const digitOnlyRegex = /^\d+$/;
         const atLeastThreeDigitsRegex = /^(.*\d){3,}.*$/;
+
+        if(!languageValid) {
+            isValid = false;
+        }
 
         if(first_name.length < 2) {
             setFirstNameValid(false);
@@ -166,11 +185,6 @@ function Register() {
             isValid = false;
         }
 
-        if(plan == "") {
-            setPlanValid(false);
-            isValid = false;
-        }
-
         return isValid;
     }
 
@@ -193,23 +207,22 @@ function Register() {
         setCardNumberValid(true);
         setCvvValid(true);
         setExpirationDateValid(true);
-        setPlanValid(true);
 
-        const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan);
+        const isValid = validateInput(first_name, last_name, email_address, phone_number, date_of_birth, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, languageValid);
 
         if(isValid) {  
-            const newCustomer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, plan };
+            const newTrainer = { first_name, last_name, email_address, phone_number, date_of_birth, gender, street_address, city, state, zip_code, country, username, password, name_on_card, card_number, cvv, expiration_date, language, certificates};
             try {
-            const response = await fetch('http://localhost:3000/api/customers', {
+            const response = await fetch('http://localhost:3000/api/trainers', {
                 method: 'POST',
                 headers: {
                 'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(newCustomer), 
+                body: JSON.stringify(newTrainer), 
             });
         
             if (response.ok) {
-                const addedCustomer = await response.json();
+                const addedTrainer = await response.json();
                 console.log('Customer added');
 
                 //Clear fields
@@ -229,10 +242,9 @@ function Register() {
                 setCardNumber("");
                 setCVV("");
                 setExpirationDate("");
-                setPlan("");
         
             } else {
-                console.error('Failed to add customer');
+                console.error('Failed to add trainer');
             }
             } catch (error) {
             console.error('Error:', error);
@@ -361,17 +373,18 @@ function Register() {
             </div>
             </div>
             </div>
+            
+            <div className="break">.</div>
+
+            <Languages onLanguagesChange={handleLanguagesChange} setLanguageValid={setLanguageValid}/>
+
         </div>
 
         <div className="big-break">.</div>
-        <h2 className="form-heading">Membership Plans</h2>
 
-        <div className="perks-container">
-            <MembershipPlan name="Basic" price="$40" perks= {<BasicPerks />} colour="linear-gradient(50deg, #3d91ff, #31008b)" shadow={plan == "basic" ? "0px 2px  10px rgb(19, 23, 255)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("basic")}/>
-            <div className="standard-plan"><MembershipPlan name="Standard" price="$60" perks= {<StandardPerks />} colour="linear-gradient(50deg, #8fff78, #00422e)" shadow={plan == "standard" ? "0px 2px  10px rgb(0, 92, 49)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("standard")}/></div>
-            <MembershipPlan name="Premium" price="$80" perks= {<PremiumPerks />} colour="linear-gradient(50deg, #f0ff64, #9c4600)" shadow={plan == "premium" ? "0px 2px  10px rgb(196, 160, 0)" : "0px 2px  10px rgb(139, 139, 139)"} onClick={() => setPlan("premium")}/>
-        </div>
-        <div className="error-register" style={{ visibility: planValid ? 'hidden' : 'visible' }}>You must select a plan</div>
+        
+
+        <AddCertificates onCertificatesChange={handleCertificatesChange} setCertificateValid={setCertificateValid}/>
 
         <div className="big-break">.</div>
 
@@ -419,5 +432,6 @@ function Register() {
         </React.Fragment>
         );
 }
+
 
 export default Register;

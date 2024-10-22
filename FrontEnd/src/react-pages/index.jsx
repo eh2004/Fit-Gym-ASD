@@ -37,7 +37,7 @@ function App() {
                         <span className="button-text">Learn about the gym</span>
                     </a>
 
-                    <a href="../src/pages/#.html" className="gym-home-button" style={{ gridColumn: '2' }}>
+                    <a href="../src/pages/BookTrainer.html" className="gym-home-button" style={{ gridColumn: '2' }}>
                         <img src={trainergroup} alt="View Trainers" />
                         <span className="button-text">View Trainers</span>
                     </a>
