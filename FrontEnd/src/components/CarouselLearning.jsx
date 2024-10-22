@@ -22,19 +22,19 @@ export default function Carousel() {
     <div className="slider">
       <Slider {...settings}>
         <div className="slide">
-          <a href="#" className="carousel-link">
+          <a href="../pages/muscleGroups.html" className="carousel-link">
             <img src={musclegroups} alt="Muscle Groups" className="carousel-image" />
             <div className="slide-text">Learn About Muscle Groups</div>
           </a>
         </div>
         <div className="slide">
-          <a href="#" className="carousel-link">
+          <a href="../pages/exerciseTutorials.html" className="carousel-link">
             <img src={exercisetutorials} alt="Exercise Tutorials" className="carousel-image" />
             <div className="slide-text">Explore Exercise Tutorials</div>
           </a>
         </div>
         <div className="slide">
-          <a href="#" className="carousel-link">
+          <a href="../pages/workoutSplits.html" className="carousel-link">
             <img src={workoutsplits} alt="Workout Splits" className="carousel-image" />
             <div className="slide-text">Discover Workout Splits</div>
           </a>
