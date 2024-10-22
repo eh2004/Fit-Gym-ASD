@@ -25,13 +25,16 @@ function App() {
         })
 
         const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-        if (storedUser) {
-          console.log("Stored loggedInUser on this page:", storedUser);
+        const storedUserType = JSON.parse(localStorage.getItem("userType"));
+
+        if (storedUser && storedUserType) {
+          console.log("Stored loggedInUser on this page:", storedUser, " User type: ", storedUserType);
         }
     }, []);
 
     function validateUser(list, userType) {
         let id;
+        let userTypeVar;
         for(let i = 0; i < list.length; i++) {
             if(username == list[i].username) {
                 if(password == list[i].password) {
@@ -41,14 +44,20 @@ function App() {
                     setLoggedInName(list[i].first_name);
                     if(userType == "customer") {
                         id = list[i].customer_id;
+                        userTypeVar = "customer";
                     }
                     else if(userType == "trainer") {
                         id = list[i].trainer_id;
+                        userTypeVar = "trainer";
                     }
+
                     localStorage.setItem("loggedInUser", JSON.stringify({id}));
+                    localStorage.setItem("userType", JSON.stringify({userTypeVar}));
                     
                     const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-                    console.log("Stored id:", storedUser);
+                    const storedType = JSON.parse(localStorage.getItem("userType"));
+
+                    console.log("Stored id:", storedUser, " User type: ", storedType);
 
                     setTimeout(() => {
                         window.location.href = "/src/pages/index.html";
