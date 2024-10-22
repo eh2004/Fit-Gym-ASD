@@ -60,7 +60,7 @@ function App() {
                     console.log("Stored id:", storedUser, " User type: ", storedType);
 
                     setTimeout(() => {
-                        window.location.href = "/src/pages/index.html";
+                        window.location.href = "/pages/index.html";
                     }, 4000);
                     
                     return true;

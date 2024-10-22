@@ -13,16 +13,24 @@ function App() {
             name: "Neck",
             description: "There are a fair few neck muscles."
         },
+        shoulders: {
+            name: "Shoulders",
+            description: "The shoulders are a muscle group that support arm movement, enabling lifting, rotating, and stabilizing actions."
+        },
         biceps: {
             name: "Biceps",
             description: "The biceps are a muscle group in the upper arm that help with lifting and pulling."
+        },
+        forearms: {
+            name: "Forearms",
+            description: "The forearms are a muscle group in the lower arm that assist with gripping, lifting, and rotating movements of the hand and wrist."
         },
         chest: {
             name: "Chest",
             description: "The chest muscles (pectorals) help with pushing movements."
         },
         abs: {
-            name: "Abs",
+            name: "Abs or Core",
             description: "The abdominal muscles support your core and help with bending movements."
         },
         quadriceps: {
@@ -36,7 +44,6 @@ function App() {
 
         
 
-        // Add more muscles here
     };
 
     const handleMouseEnter = (muscleId) => {
@@ -61,33 +68,45 @@ function App() {
                     <image href="../assets/body.jpg" x="0" y="0" width="500" height="1000" />
 
                     {/* Neck */}
-                    <polygon id="neck" points="230 180, 290 180, 280 230, 220 230" /*TL,TR,BL,BR */
+                    <polygon id="neck" points="260 180, 260 180, 320 230, 180 240" /*TL,TR,BL,BR */
                         className="body-part"
                         onClick={() => handleMouseEnter("neck")}
                     ></polygon>
 
+                    {/* Shoulder L */}
+                    <polygon id="shoulders" points="155 250, 180 245, 180 300, 140 300" 
+                        className="body-part"
+                        onClick={() => handleMouseEnter("shoulders")}
+                    ></polygon>
+
+                    {/* Shoulder R */}
+                    <polygon id="shoulders" points="320 230, 320 270, 360 310, 370 250" /*TL,TR,BR,BL */
+                        className="body-part"
+                        onClick={() => handleMouseEnter("shoulders")}
+                    ></polygon>
+
                     {/* Bicep L */}
-                    <polygon id="biceps" points="220 300, 270 300, 260 400, 230 400"
+                    <polygon id="biceps" points="140 300, 180 300, 170 390, 130 370"
                         className="body-part"
                         onClick={() => handleMouseEnter("biceps")}
                     ></polygon>
 
                     {/* Bicep R */}
-                    <polygon id="biceps" points="220 300, 270 300, 260 400, 230 400"
+                    <polygon id="biceps" points="320 270, 380 310, 385 360, 350 380"
                         className="body-part"
                         onClick={() => handleMouseEnter("biceps")}
                     ></polygon>
 
                     {/* Forearm L */}
-                    <polygon id="biceps" points="220 300, 270 300, 260 400, 230 400"
+                    <polygon id="forearms" points="130 370, 170 390, 100 470, 70 470"
                         className="body-part"
-                        onClick={() => handleMouseEnter("biceps")}
+                        onClick={() => handleMouseEnter("forearms")}
                     ></polygon>
 
                     {/* Forearm R */}
-                    <polygon id="biceps" points="220 300, 270 300, 260 400, 230 400"
+                    <polygon id="forearms" points="350 380, 385 360, 430 470, 400 470"
                         className="body-part"
-                        onClick={() => handleMouseEnter("biceps")}
+                        onClick={() => handleMouseEnter("forearms")}
                     ></polygon>
 
                     {/* Chest */}
@@ -96,20 +115,8 @@ function App() {
                         onClick={() => handleMouseEnter("chest")}
                     ></polygon>
 
-                    {/* Shoulder L */}
-                    <polygon id="chest" points="180 240, 320 240, 320 310, 180 310" 
-                        className="body-part"
-                        onClick={() => handleMouseEnter("chest")}
-                    ></polygon>
-
-                    {/* Shoulder L */}
-                    <polygon id="chest" points="180 240, 320 240, 320 310, 180 310" 
-                        className="body-part"
-                        onClick={() => handleMouseEnter("chest")}
-                    ></polygon>
-
                     {/* Abs */}
-                    <polygon id="abs" points="220 320, 280 320, 270 400, 230 400" 
+                    <polygon id="abs" points="180 310, 320 310, 270 480, 210 480" 
                         className="body-part"
                         onClick={() => handleMouseEnter("abs")}
                     ></polygon>
