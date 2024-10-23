@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Set = require('../models/Set');  // Import the Set model
+const { Set } = require('../models'); // Assuming you have a Workout model
 
 // Fetch all sets
 router.get('/sets', async (req, res) => {
@@ -25,15 +25,26 @@ router.get('/sets/workout/:workoutId', async (req, res) => {
   }
 });
 
-// Create a new set
-router.post('/sets', async (req, res) => {
+// Route to add a new set
+router.post("/sets", async (req, res) => {
   try {
-    const { workout_id, exercise_id, reps, weight } = req.body;
-    const newSet = await Set.create({ workout_id, exercise_id, reps, weight });
+    console.log("Received set data:", req.body);
+
+    const { workout_id, exercise_id, reps, weight, log, set_date } = req.body;
+
+    const newSet = await Set.create({
+      workout_id,
+      exercise_id,
+      reps,
+      weight,
+      log,
+      set_date: set_date || new Date(),
+    });
+
     res.status(201).json(newSet);
   } catch (error) {
-    console.error('Error creating set:', error);
-    res.status(500).json({ error: 'Error creating new set' });
+    console.error('Error adding set:', error);
+    res.status(500).json({ message: "Failed to add set", error: error.message });
   }
 });
 
