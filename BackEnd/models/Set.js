@@ -1,7 +1,5 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
-const Workout = require('./Workout');  // Assuming you have a Workout model
-const Exercise = require('./Exercise');
 
 const Set = sequelize.define('Set', {
   set_id: {
@@ -37,11 +35,15 @@ const Set = sequelize.define('Set', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  // New column for storing the date of the set
+  set_date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,  // Automatically sets the current date
+  },
 }, {
   timestamps: false,  // Disable createdAt and updatedAt
   tableName: 'Sets',   // Ensure it uses the correct table name
 });
-
-//Set.belongsTo(Workout, { foreignKey: 'workout_id' });
 
 module.exports = Set;
