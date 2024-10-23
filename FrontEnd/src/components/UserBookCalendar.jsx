@@ -20,55 +20,64 @@ function UserBookCalendar() {
     setSelectedTime(null); // Reset selected time when date changes
   };
 
+  const getTrainerIdFromUrl = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('trainerId');  // This will return the trainerId from the URL
+  };
+
 
   
   // Function to handle booking
-  const handleBooking = async () => {
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-  
-    if (!loggedInUser) {
-      alert('Customer is not logged in. Please log in to book a workout.');
-      return;  // Stop the function if no loggedInUser is found in localStorage
-    }
-  
-    const customer_id = loggedInUser.id;  // Extract the 'id' from loggedInUser
-  
-    if (selectedDate && selectedTime) {
-      // Combine the selected date and time
-      const workoutDate = new Date(selectedDate);
-      const [hours, minutes] = selectedTime.split(':');  // Assuming selectedTime is in "HH:MM" format
-      workoutDate.setHours(hours);
-      workoutDate.setMinutes(minutes);
-  
-      try {
-        const response = await fetch('http://localhost:3000/api/workouts', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            customer_id: customer_id,  // Use the dynamically retrieved customer_id
-            workout_date: workoutDate.toISOString(),  // Use the combined date and time
-          }),
-        });
-  
-        const data = await response.text();
-  
-        if (response.ok) {
-          const jsonData = JSON.parse(data);
-          alert(`Booking confirmed for ${workoutDate.toDateString()} at ${selectedTime}, please head to your profile to manage this booking`);
-        } else {
-          const jsonData = JSON.parse(data);
-          alert('Error booking workout: ' + (jsonData.error || 'Unexpected error occurred'));
-        }
-      } catch (error) {
-        console.error('Error booking workout:', error);
-        alert('An error occurred while booking the workout.');
+const handleBooking = async () => {
+  const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+
+  if (!loggedInUser) {
+    alert('Customer is not logged in. Please log in to book a session.');
+    return;  // Stop the function if no loggedInUser is found in localStorage
+  }
+
+  const customer_id = loggedInUser.id;  // Extract the 'id' from loggedInUser
+  const trainer_id = getTrainerIdFromUrl();  // Get the trainer ID from the URL
+  const booking_type = 'PT Session';  // Set the booking type
+
+  if (selectedDate && selectedTime) {
+    // Combine the selected date and time
+    const bookingDate = new Date(selectedDate);
+    const [hours, minutes] = selectedTime.split(':');  // Assuming selectedTime is in "HH:MM" format
+    bookingDate.setHours(hours);
+    bookingDate.setMinutes(minutes);
+
+    try {
+      const response = await fetch('http://localhost:3000/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customer_id: customer_id,  // Use the dynamically retrieved customer_id
+          booking_date: bookingDate.toISOString(),  // Use the combined date and time
+          booking_type: booking_type,  // Pass the booking type
+          trainer_id: trainer_id,  // Pass the trainer's ID dynamically from the URL
+        }),
+      });
+
+      const data = await response.text();
+
+      if (response.ok) {
+        const jsonData = JSON.parse(data);
+        alert(`Booking confirmed for ${bookingDate.toDateString()} at ${selectedTime}`);
+      } else {
+        const jsonData = JSON.parse(data);
+        alert('Error creating booking: ' + (jsonData.error || 'Unexpected error occurred'));
       }
-    } else {
-      alert('Please select a date and a time');
+    } catch (error) {
+      console.error('Error creating booking:', error);
+      alert('An error occurred while creating the booking.');
     }
-  };
+  } else {
+    alert('Please select a date and a time');
+  }
+};
   
   
 
