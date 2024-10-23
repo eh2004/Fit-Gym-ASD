@@ -14,6 +14,24 @@ function App() {
     const[loggedIn, setLoggedIn] = useState(false);
     const[loggedInName, setLoggedInName] = useState("");
 
+    // useEffect(() => {
+    //     Promise.all([
+    //         fetch('http://localhost:3000/api/customers').then((response) => response.json()),
+    //         fetch('http://localhost:3000/api/trainers').then((response) => response.json()),
+    //     ])
+    //     .then(([customerData, trainerData]) => {
+    //         setCustomersList(customerData);
+    //         setTrainersList(trainerData);
+    //     })
+
+    //     const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
+    //     const storedUserType = JSON.parse(localStorage.getItem("userType"));
+
+    //     if (storedUser && storedUserType) {
+    //       console.log("Stored loggedInUser on this page:", storedUser, " User type: ", storedUserType);
+    //     }
+    // }, []);
+
     useEffect(() => {
         Promise.all([
             fetch('http://localhost:3000/api/customers').then((response) => response.json()),
@@ -22,13 +40,13 @@ function App() {
         .then(([customerData, trainerData]) => {
             setCustomersList(customerData);
             setTrainersList(trainerData);
-        })
-
-        const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-        const storedUserType = JSON.parse(localStorage.getItem("userType"));
-
+        });
+    
+        const storedUser = localStorage.getItem("loggedInUser"); // No need for JSON.parse
+        const storedUserType = localStorage.getItem("userType"); // No need for JSON.parse
+    
         if (storedUser && storedUserType) {
-          console.log("Stored loggedInUser on this page:", storedUser, " User type: ", storedUserType);
+            console.log("Stored loggedInUser on this page:", storedUser, " User type: ", storedUserType);
         }
     }, []);
 
@@ -36,39 +54,34 @@ function App() {
         let id;
         let userTypeVar;
         for(let i = 0; i < list.length; i++) {
-            if(username == list[i].username) {
-                if(password == list[i].password) {
-                    console.log("Found!");
-                    setLoggedIn(true);
-                    setUserFound(true);
-                    setLoggedInName(list[i].first_name);
-                    if(userType == "customer") {
-                        id = list[i].customer_id;
-                        userTypeVar = "customer";
-                    }
-                    else if(userType == "trainer") {
-                        id = list[i].trainer_id;
-                        userTypeVar = "trainer";
-                    }
-
-                    localStorage.setItem("loggedInUser", JSON.stringify({id}));
-                    localStorage.setItem("userType", JSON.stringify({userTypeVar}));
-                    
-                    const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-                    const storedType = JSON.parse(localStorage.getItem("userType"));
-
-                    console.log("Stored id:", storedUser, " User type: ", storedType);
-
-                    setTimeout(() => {
-                        window.location.href = "/pages/index.html";
-                    }, 4000);
-                    
-                    return true;
+            if(username === list[i].username && password === list[i].password) {
+                console.log("Found!");
+                setLoggedIn(true);
+                setUserFound(true);
+                setLoggedInName(list[i].first_name);
+                
+                if(userType === "customer") {
+                    id = list[i].customer_id;
+                    userTypeVar = "customer";
+                } else if(userType === "trainer") {
+                    id = list[i].trainer_id;
+                    userTypeVar = "trainer";
                 }
+    
+                // Store the ID and user type
+                localStorage.setItem("loggedInUser", id);
+                localStorage.setItem("userType", userTypeVar);
+    
+                // Set a 1-second delay before redirecting
+                setTimeout(() => {
+                    window.location.href = "/pages/index.html";
+                }, 1000);  // 1-second delay
+    
+                return true;
             }
         }
-
-        return false;   
+    
+        return false;
     }
 
 
