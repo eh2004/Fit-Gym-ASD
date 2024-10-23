@@ -59,7 +59,7 @@ function App() {
         <React.Fragment>
             <Header />
             <h1>Learn About The Body:</h1>
-            <h3 className="begintext">Hover over the body to begin:</h3>
+            <h3 className="begintext">Click on a part of the body to see what muscles are there:</h3>
             
              {/* SVG Body Map with Human Image */}
              <div className="muscle-map">
@@ -116,7 +116,7 @@ function App() {
                     ></polygon>
 
                     {/* Abs */}
-                    <polygon id="abs" points="180 310, 320 310, 270 480, 21`0 480" 
+                    <polygon id="abs" points="180 310, 320 310, 270 480, 210 480" 
                         className="body-part"
                         onClick={() => handleMouseEnter("abs")}
                     ></polygon>

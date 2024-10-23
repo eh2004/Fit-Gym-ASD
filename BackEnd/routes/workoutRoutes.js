@@ -51,22 +51,4 @@ router.get('/workouts', async (req, res) => {
     }
   });
   
-
-
-
-  //Evans work:
-
-// Route to book a new workout (POST request)
-
-router.post('/workouts', async (req, res) => {
-  console.log('POST /api/workouts route hit');
-  try {
-    const { customer_id, workout_date } = req.body;
-    const newWorkout = await Workout.create({ customer_id, workout_date });
-    res.status(201).json(newWorkout);
-  } catch (error) {
-    res.status(500).json({ error: 'Error booking workout' });
-  }
-});
-
 module.exports = router;

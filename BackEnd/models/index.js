@@ -10,6 +10,7 @@ const PaymentCard = require('./PaymentCard');
 const TrainerCard = require('./TrainerCard');
 const Certificate = require('./Certificate');
 const Transaction = require('./Transaction');
+const Booking = require('./Booking');
 
 // Create a db object that includes models and the Sequelize instance + Sequelize methods
 const db = {
@@ -23,6 +24,7 @@ const db = {
   TrainerCard,
   Certificate,
   Transaction,
+  Booking,
   sequelize, // Export the Sequelize instance
   Sequelize  // Export Sequelize methods like fn and col
 };
@@ -46,6 +48,13 @@ Certificate.belongsTo(Trainer, { foreignKey: 'trainer_id' });
 
 Transaction.belongsTo(Trainer, { foreignKey: 'trainer_id' });
 Transaction.belongsTo(Customer, { foreignKey: 'customer_id' });
+
+
+// can someone check this makes sense? - Evan
+Customer.hasMany(Booking, { foreignKey: 'customer_id' });
+Booking.belongsTo(Customer, { foreignKey: 'customer_id' });
+
+
 
 // Export the db object with associations and Sequelize methods
 module.exports = db;
