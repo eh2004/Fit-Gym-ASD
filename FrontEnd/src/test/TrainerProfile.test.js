@@ -3,6 +3,11 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import TrainerProfile from "../components/TrainerProfile";
 
+// Mocking localStorage to provide the trainer ID
+beforeEach(() => {
+  Storage.prototype.getItem = jest.fn(() => "1"); // Mock logged-in user ID as "1"
+});
+
 // Mocking the fetch API to simulate the trainer profile data being fetched
 global.fetch = jest.fn(() =>
   Promise.resolve({
@@ -14,7 +19,10 @@ global.fetch = jest.fn(() =>
       email_address: "john@example.com",
       phone_number: "123456789",
       street_address: "123 Main St",
+      specialty: "Strength Training",
+      certification: "IV in Fitness SIS40221-01",
       language: ["English", "Spanish"],
+      bio: "A passionate fitness trainer.",
     }),
   })
 );
@@ -56,7 +64,10 @@ describe("TrainerProfile Component", () => {
     expect(screen.getByText(/john@example.com/i)).toBeInTheDocument();
     expect(screen.getByText(/123456789/i)).toBeInTheDocument();
     expect(screen.getByText(/123 Main St/i)).toBeInTheDocument();
+    expect(screen.getByText(/Strength Training/i)).toBeInTheDocument();
+    expect(screen.getByText(/IV in Fitness SIS40221-01/i)).toBeInTheDocument();
     expect(screen.getByText(/English, Spanish/i)).toBeInTheDocument();
+    expect(screen.getByText(/A passionate fitness trainer/i)).toBeInTheDocument();
   });
 
   // Test case 2: Check if the trainer profile can be edited and saved
