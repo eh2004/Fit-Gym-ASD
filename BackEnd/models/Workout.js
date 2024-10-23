@@ -26,6 +26,7 @@ const Workout = sequelize.define('Workout', {
     allowNull: false
   }
 }, {
+  // tableName: 'Workouts',
   timestamps: false  // Disable createdAt and updatedAt timestamps
 });
 

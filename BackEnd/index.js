@@ -41,7 +41,6 @@ app.use('/api', setRoutes);
 app.use('/api', trainerRoutes);
 app.use('/api', leaderboardRoutes);
 app.use('/api', transactionRoutes);
-   // Add the trainer routes
 
 // Simple route to test the server
 app.get('/', (req, res) => {
