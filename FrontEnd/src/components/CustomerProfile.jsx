@@ -22,7 +22,8 @@ function CustomerProfile() {
 
   // Fetch customer data from the backend when the component loads
   useEffect(() => {
-    fetch("http://localhost:3000/api/customers/1") // Assuming customer with ID 1
+    const customerId = localStorage.getItem("loggedInUser"); // Fetch logged-in customer ID
+    fetch(`http://localhost:3000/api/customers/${customerId}`) // Dynamic customer ID
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch customer data");
@@ -31,17 +32,17 @@ function CustomerProfile() {
       })
       .then((data) => {
         const updatedCustomerInfo = {
-          id: data.customer_id, // Ensure the customer id is included
-          name: data.first_name,
+          id: data.customer_id,
+          name: `${data.first_name} ${data.last_name}` || "", // Concatenate first and last name
           bio: data.bio || " Fitness enthusiast", // Placeholder
           email: data.email_address,
           phone: data.phone_number,
-          address: data.street_address || "No address provided",
-          fitnessGoal: "lose weight", // Placeholder
-          progress: "50%", // Placeholder
+          address: data.street_address || "No address provided", // Placeholder
+          fitnessGoal: data.fitnessGoal || "Lose weight", // Placeholder
+          progress: data.progress || "50%", // Placeholder
         };
         setCustomerInfo(updatedCustomerInfo);
-        setFormData(updatedCustomerInfo); // Pre-fill form data
+        setFormData(updatedCustomerInfo);
         setLoading(false);
       })
       .catch((error) => {
@@ -90,7 +91,12 @@ function CustomerProfile() {
 
   const handleSave = () => {
     console.log("Sending updated data:", formData); // Log data being sent
-
+  
+    // Split the full name into first and last names
+    const nameParts = formData.name.trim().split(" ");
+    const firstName = nameParts[0]; // First part as first name
+    const lastName = nameParts.slice(1).join(" ") || "Doe"; // Remaining parts as last name (default to "Doe" if none)
+  
     // Update the customer info via an API call
     fetch(`http://localhost:3000/api/customers/${customerInfo.id}`, { // Use the appropriate customer ID
       method: 'PUT',
@@ -98,8 +104,8 @@ function CustomerProfile() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        first_name: formData.name, 
-        last_name: "Doe", // Placeholder, replace this with the actual last name if available
+        first_name: firstName, 
+        last_name: lastName, // Properly split last name
         email_address: formData.email,
         phone_number: formData.phone,
         street_address: formData.address,
