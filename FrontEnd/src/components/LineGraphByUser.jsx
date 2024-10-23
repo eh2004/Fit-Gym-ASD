@@ -27,13 +27,22 @@ ChartJS.register(
 );
 
 const ProgressLineGraphByUser = ({ customer, selectedMuscleGroup }) => {
-  const customerId = customer.id; // Extract the customer ID from the customer prop
+  // Try to extract customerId from customer prop, fallback to localStorage if not passed
+  const customerId = customer?.id || localStorage.getItem("loggedInUser");
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
     // Fetch workouts for a specific customer from the backend
+    if (!customerId) {
+      setError(new Error('No customer ID found'));
+      setLoading(false);
+      return;
+    }
+
+    // Fetch workouts for the customer
     fetch(`http://localhost:3000/api/customers/${customerId}/workouts`)
       .then((response) => {
         if (!response.ok) {
@@ -88,8 +97,8 @@ const ProgressLineGraphByUser = ({ customer, selectedMuscleGroup }) => {
         x: workoutDate, // Use the valid Date object
         y: averageWeight, // Average weight for y-axis
         setsInfo: filteredSets.map(
-          (set) => `${set.Exercise.exercise_name} x ${set.reps} for ${set.weight || 0}kg`
-        ), // Store sets info for tooltips
+          (set) => `${set.Exercise.exercise_name} x ${set.reps} for ${set.weight || 0}kg`// Store sets info for tooltips
+        ),
       });
     });
 
