@@ -19,6 +19,7 @@ function CustomerProfile() {
   const [formData, setFormData] = useState(customerInfo);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [certificates, setCertificates] = useState([]); // State for certificates
 
   // Fetch customer data from the backend when the component loads
   useEffect(() => {

@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { Certificate } = require('../models');
 
-// Fetch all certificates
+// Fetch all certificates or filter by trainer_id if provided
 router.get('/certificates', async (req, res) => {
+  const { trainer_id } = req.query;  // Get trainer_id from query parameters
+  
   try {
-    const certificates = await Certificate.findAll();
+    // If trainer_id is provided, filter certificates by trainer_id
+    const certificates = await Certificate.findAll({
+      where: trainer_id ? { trainer_id: trainer_id } : {}  // Ensure trainer_id filter is applied
+    });
     res.json(certificates);
   } catch (error) {
     console.error('Error fetching certificates:', error);
@@ -13,25 +18,10 @@ router.get('/certificates', async (req, res) => {
   }
 });
 
-// Fetch a single certificate by ID
-router.get('/certificates/:id', async (req, res) => {
-  const { id } = req.params;
-  try {
-    const certificate = await Certificate.findByPk(id);
-    if (!certificate) {
-      return res.status(404).json({ error: 'Certificate not found' });
-    }
-    res.json(certificate);
-  } catch (error) {
-    console.error('Error fetching certificate:', error);
-    res.status(500).json({ error: 'Error retrieving certificate' });
-  }
-});
-
 // Create a new certificate
 router.post('/certificates', async (req, res) => {
   const { certificate_name, certificate_provider, certificate_duration, trainer_id } = req.body;
-  
+
   try {
     const newCertificate = await Certificate.create({
       certificate_name,

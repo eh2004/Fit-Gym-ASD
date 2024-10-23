@@ -21,6 +21,7 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
   // State for editing the trainer info
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(trainerInfo);
+  const [certificates, setCertificates] = useState([]); // State for certificates
 
   // Fetch trainer data based on logged-in trainer
   useEffect(() => {
@@ -34,8 +35,16 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           return;
         }
   
-        const response = await fetch(`http://localhost:3000/api/trainers/${trainerId}`);
-        const data = await response.json();
+        // Fetch trainer details
+      const response = await fetch(`http://localhost:3000/api/trainers/${trainerId}`);
+      const data = await response.json();
+
+      // Fetch certificates based on trainer_id
+      const certResponse = await fetch(`http://localhost:3000/api/certificates?trainer_id=${trainerId}`);
+      const certData = await certResponse.json();
+
+      // Do NOT join the certificates repeatedly; reset it every time
+      const certifications = certData.map(cert => cert.certificate_name).join(", ");
   
         // Populate trainer info with fetched data
         setTrainerInfo({
@@ -44,8 +53,8 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           email: data.email_address || "",
           phone: data.phone_number || "",
           address: data.street_address || "",
-          specialty: data.specialty || "Weight Loss", // Placeholder
-          certification: data.certification || "IV in Fitness SIS40221-01", // Placeholder
+          specialty: data.specialty || "Weight Loss",
+          certification: certifications || "No certifications available",  // Use combined certification string
           language: data.language ? data.language.join(", ") : "",
           bio: data.bio || "No bio available",
         });
@@ -58,40 +67,52 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           phone: data.phone_number || "",
           address: data.street_address || "",
           specialty: data.specialty || "",
-          certification: data.certification || "",
+          certification: certifications || "",
           language: data.language ? data.language.join(", ") : "",
           bio: data.bio || "",
         });
-      } catch (error) {
-        console.error("Error fetching trainer data:", error);
-      }
-    };
-  
-    fetchTrainerData();
-  }, []);
+        
+      // Replace certificates (reset state every time)
+      setCertificates(certData);
+    } catch (error) {
+      console.error("Error fetching trainer or certificate data:", error);
+    }
+  };
+
+  fetchTrainerData();
+}, []);
    
 
   // Delete the trainer profile
   const handleDelete = () => {
     if (window.confirm("Are you sure you want to delete this trainer profile?")) {
       console.log("Attempting to delete trainer with ID:", trainerInfo.id);
-
+  
+      // First, delete the trainer profile
       fetch(`http://localhost:3000/api/trainers/${trainerInfo.id}`, {
         method: "DELETE",
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to delete trainer");
-          }
-          return response.json();
-        })
-        .then(() => {
-          alert("Trainer profile deleted.");
-          setTrainerInfo({}); // Clear trainer info
-        })
-        .catch((error) => {
-          console.error("Error deleting trainer:", error);
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete trainer");
+        }
+  
+        // Then delete related certificates (optional)
+        return fetch(`http://localhost:3000/api/certificates?trainer_id=${trainerInfo.id}`, {
+          method: "DELETE",  // Adjust your backend to handle this if needed
         });
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to delete related certificates");
+        }
+  
+        alert("Trainer profile and related certificates deleted.");
+        setTrainerInfo({}); // Clear trainer info
+      })
+      .catch((error) => {
+        console.error("Error deleting trainer or certificates:", error);
+      });
     }
   };
 
@@ -111,32 +132,71 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
 
   // Save the updated trainer info
   const handleSave = async () => {
+  try {
+    // Update the trainer info
+    const trainerResponse = await fetch(`http://localhost:3000/api/trainers/${trainerInfo.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        first_name: formData.name.split(" ")[0], // First name
+        last_name: formData.name.split(" ")[1] || "", // Last name
+        email_address: formData.email,
+        phone_number: formData.phone,
+        street_address: formData.address,
+        language: formData.language.split(",").map((lang) => lang.trim()), // Convert language to array
+      }),
+    });
+    
+    if (!trainerResponse.ok) {
+      throw new Error("Failed to update trainer info");
+    }
+
+    console.log("Trainer info updated");
+
+    // Now we handle updating certificates (only if they exist)
+    await handleCertificatesSave();
+
+    setTrainerInfo(formData); // Update trainerInfo after saving
+    setIsEditing(false);
+
+  } catch (error) {
+    console.error("Error updating trainer info:", error);
+  }
+};
+
+  const handleCertificatesSave = async () => {
     try {
-      // Use the correct trainer ID from trainerInfo
-      const response = await fetch(`http://localhost:3000/api/trainers/${trainerInfo.id}`, { // <- Change here
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          first_name: formData.name.split(" ")[0], // First name
-          last_name: formData.name.split(" ")[1] || "", // Last name
-          email_address: formData.email,
-          phone_number: formData.phone,
-          street_address: formData.address,
-          language: formData.language.split(",").map((lang) => lang.trim()), // Convert language to array
-        }),
-      });
-  
-      if (response.ok) {
-        console.log("Trainer info updated");
-        setTrainerInfo(formData); // Update trainerInfo after saving
-        setIsEditing(false);
+      const certResponse = await fetch(`http://localhost:3000/api/certificates?trainer_id=${trainerInfo.id}`);
+      const certData = await certResponse.json();
+    
+      if (certData.length > 0) {
+        // Loop through existing certificates and update each one
+        for (let cert of certData) {
+          const updateCertResponse = await fetch(`http://localhost:3000/api/certificates/${cert.certificate_id}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              certificate_name: formData.certification,  // Update with form data
+              trainer_id: trainerInfo.id,  // Ensure correct trainer ID
+            }),
+          });
+      
+          if (!updateCertResponse.ok) {
+            throw new Error(`Failed to update certificate with ID: ${cert.certificate_id}`);
+          }
+      
+          console.log(`Certificate with ID: ${cert.certificate_id} updated successfully`);
+        }
       } else {
-        console.error("Failed to update trainer info");
+        console.log("No existing certificates found for this trainer, no new certificates will be created.");
       }
+    
     } catch (error) {
-      console.error("Error updating trainer info:", error);
+      console.error("Error updating certificates:", error);
     }
   };
 
