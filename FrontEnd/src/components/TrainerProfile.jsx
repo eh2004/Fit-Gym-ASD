@@ -22,24 +22,32 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState(trainerInfo);
 
-  // Fetch trainer data from the database on component mount
+  // Fetch trainer data based on logged-in trainer
   useEffect(() => {
     const fetchTrainerData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/trainers/1"); // Adjust ID if necessary
+        // Get the trainer ID dynamically (from localStorage)
+        const trainerId = localStorage.getItem("loggedInUser"); // This should now give you just the trainer ID
+  
+        if (!trainerId) {
+          console.error("No trainer ID found in localStorage");
+          return;
+        }
+  
+        const response = await fetch(`http://localhost:3000/api/trainers/${trainerId}`);
         const data = await response.json();
-
-     // Populate trainer info with fetched data
+  
+        // Populate trainer info with fetched data
         setTrainerInfo({
-          id: data.trainer_id, // Ensure trainer ID is included
+          id: data.trainer_id,
           name: `${data.first_name} ${data.last_name}` || "",
           email: data.email_address || "",
           phone: data.phone_number || "",
           address: data.street_address || "",
-          specialty: "Weight Loss", // Placeholder
-          certification: "IV in Fitness SIS40221-01", // Placeholder
+          specialty: data.specialty || "Weight Loss", // Placeholder
+          certification: data.certification || "IV in Fitness SIS40221-01", // Placeholder
           language: data.language ? data.language.join(", ") : "",
-          bio: "a fitness trainer with 5 years of experience, specializing in strength training and nutrition. Passionate about helping clients reach their goals, brings energy and expertise to every session.", // Placeholder
+          bio: data.bio || "No bio available",
         });
 
         // Set form data to the fetched trainer info
@@ -49,18 +57,19 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           email: data.email_address || "",
           phone: data.phone_number || "",
           address: data.street_address || "",
-          specialty: "", // Placeholder
-          certification: "", // Placeholder
+          specialty: data.specialty || "",
+          certification: data.certification || "",
           language: data.language ? data.language.join(", ") : "",
-          bio: "", // Placeholder
+          bio: data.bio || "",
         });
       } catch (error) {
         console.error("Error fetching trainer data:", error);
       }
     };
-
+  
     fetchTrainerData();
   }, []);
+   
 
   // Delete the trainer profile
   const handleDelete = () => {
@@ -103,7 +112,8 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
   // Save the updated trainer info
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/api/trainers/1`, {
+      // Use the correct trainer ID from trainerInfo
+      const response = await fetch(`http://localhost:3000/api/trainers/${trainerInfo.id}`, { // <- Change here
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -117,7 +127,7 @@ Modal.setAppElement("#root"); // Ensure accessibility for screen readers
           language: formData.language.split(",").map((lang) => lang.trim()), // Convert language to array
         }),
       });
-
+  
       if (response.ok) {
         console.log("Trainer info updated");
         setTrainerInfo(formData); // Update trainerInfo after saving
