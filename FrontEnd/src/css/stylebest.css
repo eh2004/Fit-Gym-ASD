@@ -44,21 +44,21 @@
         transition: all .5s;
     }
 
-    span {
+    .imgbox-z span {
         display: none;
-        font-size: 35px;
-        color: #ffffff;
-        font-family: sans-serif;
-        text-align: center;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        height: 50px;
-        cursor: pointer;
-        text-decoration: none;
+    font-size: 35px;
+    color: #ffffff;
+    font-family: sans-serif;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 50px;
+    cursor: pointer;
+    text-decoration: none;
     }
 
     .imgbox-z:hover .child,
@@ -99,25 +99,7 @@
         z-index: 0;
     }
 
-    span {
-        position: relative; 
-        z-index: 2;
-        display: none;
-        font-size: 35px;
-        color: #ffffff;
-        font-family: sans-serif;
-        text-align: center;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        height: 50px;
-        cursor: pointer;
-        text-decoration: none;
-    }
-
+  
 
     /*Trainer Page*/
     /* Trainer Card Styles */
@@ -334,6 +316,38 @@
     }
     
   
+/*New for calendar - may need to be deleted*/
+/* Ensure the calendar's navigation (month/year and arrows) is displayed properly */
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Add some space between navigation and the calendar */
+}
+
+.react-calendar__navigation__label {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;  /* Ensure font-size is not too small */
+    font-weight: bold;
+    color: #000;      /* Ensure text color is visible */
+}
+
+.react-calendar__navigation__arrow {
+    font-size: 20px;  /* Adjust size of arrows */
+    cursor: pointer;
+}
+.selected {
+    background-color: #0051a8; /* Green background for selected time */
+    color: white;
+    
+}
+
+
+
+
+
+
 
 
 
