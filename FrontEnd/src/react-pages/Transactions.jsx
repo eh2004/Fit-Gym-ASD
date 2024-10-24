@@ -63,128 +63,66 @@ var filterType = "none";
 
 function App() {
     const [filteredTransactions, setFilteredTransactions] = useState([]);
-    
-    const[transactions, setTransactions] = useState([]);
+    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
-        Promise.all([
-            fetch('http://localhost:3000/api/transactions').then((response) => response.json()),
-        ])
-        .then(([transactionData]) => {
-            setTransactions(transactionData);
-            setFilteredTransactions(transactionData);
+        fetch('http://localhost:3000/api/transactions')
+            .then((response) => response.json())
+            .then((transactionData) => {
+                const storedUser = localStorage.getItem("loggedInUser");
+                const storedUserType = localStorage.getItem("userType");
 
-            const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-            const storedType = JSON.parse(localStorage.getItem("userType"));
+                console.log("User type: " + storedUserType + ", User ID: " + storedUser);
 
-            if(storedType == "customer") {
-                for(let i = 0; i < transactions.length; i++) {
-                    if(transactionsList[i].customer_id == storedUser) {
-                        console.log(transactionsList[i].transaction_id);
-                    }
+                let userTransactionsList = [];
+
+                if (storedUserType === "customer") {
+                    userTransactionsList = transactionData.filter(transaction => transaction.customer_id == storedUser);
+                } else if (storedUserType === "trainer") {
+                    userTransactionsList = transactionData.filter(transaction => transaction.trainer_id == storedUser);
                 }
-            }
 
-            else if(storedType == "trainer") {
-                for(let i = 0; i < transactions.length; i++) {
-                    if(transactionsList[i].trainer_id == storedUser) {
-                        console.log(transactionsList[i].transaction_id);
-                    }
-                }
-            }
-        })
-        // const storedUser = JSON.parse(localStorage.getItem("loggedInUser"));
-        // if (storedUser) {
-        //   console.log("Stored loggedInUser on this page:", storedUser);
-        // }
+                setTransactions(userTransactionsList);
+                setFilteredTransactions(userTransactionsList);
+            });
     }, []);
-
 
     const handleFilterSort = (condition) => {
         let transactionsSortCopy = [...transactions];
-        if(condition === "All") {
+        
+        if (condition === "All") {
             setFilteredTransactions(transactions);
-            filterType= "none";
-        }
-        else if(condition === "Payment") {
+            filterType = "none";
+        } else if (condition === "Payment") {
             setFilteredTransactions(transactions.filter(transaction => transaction.transaction_type === "Payment"));
             filterType = "Payment";
-        }
-        else if(condition === "Refund") {
+        } else if (condition === "Refund") {
             setFilteredTransactions(transactions.filter(transaction => transaction.transaction_type === "Refund"));
             filterType = "Refund";
-        }
-       
-        else if(condition === "NewToOld") {
-            if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Payment"));
-            }
-            else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Refund"));
-            }
-            else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date)));
-            }
-        }
-
-        else if(condition === "OldToNew") {
-            if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Payment"));
-            }
-            else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date))
-                .filter(transaction => transaction.transaction_type === "Refund"));
-            }
-            else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date)));
-            }
-        }
-
-        else if(condition === "HighToLow") {
-            if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Payment"));
-            }
-            else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Refund"));
-            }
-            else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount)));
-            }
-        }
-
-        else if(condition === "LowToHigh") {
-            if(filterType === "Payment") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Payment"));
-            }
-            else if(filterType === "Refund") {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount))
-                .filter(transaction => transaction.transaction_type === "Refund"));
-            }
-            else {
-                setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount)));
-            }
+        } else if (condition === "NewToOld") {
+            setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(b.transaction_date) - new Date(a.transaction_date)));
+        } else if (condition === "OldToNew") {
+            setFilteredTransactions(transactionsSortCopy.sort((a, b) => new Date(a.transaction_date) - new Date(b.transaction_date)));
+        } else if (condition === "HighToLow") {
+            setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(b.transaction_amount) - parseFloat(a.transaction_amount)));
+        } else if (condition === "LowToHigh") {
+            setFilteredTransactions(transactionsSortCopy.sort((a, b) => parseFloat(a.transaction_amount) - parseFloat(b.transaction_amount)));
         }
     };
 
     return (
         <React.Fragment>
-        <Header />
-        <h1>Transaction History</h1>
-        <div className="sort-filter-container">
-            <TransactionsSort  onFilterSort={handleFilterSort}/>
-            <TransactionsFilter onFilterSort={handleFilterSort}/>
-        </div>
-        <TransactionsTable transactions={filteredTransactions}/>
-        <Footer />
+            <Header />
+            <h1>Transaction History</h1>
+            <div className="sort-filter-container">
+                <TransactionsSort onFilterSort={handleFilterSort} />
+                <TransactionsFilter onFilterSort={handleFilterSort} />
+            </div>
+            <TransactionsTable transactions={filteredTransactions} />
+            <Footer />
         </React.Fragment>
-    )
+    );
 }
 
-ReactDOM.createRoot(document.getElementById("root")).render(<App />)
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
 
