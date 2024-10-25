@@ -10,7 +10,8 @@ const leaderboardRoutes = require('./routes/leaderboardRoutes');// Correct path 
 const transactionRoutes = require('./routes/transactionRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const certificateRoutes = require('./routes/certificateRoutes'); // Import certificate routes
-const measurementRoutes = require('./measurementRoutes');
+const measurementRoutes = require('./routes/measurementRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;

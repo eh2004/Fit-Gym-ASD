@@ -22,7 +22,16 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Retrieve customer_id from localStorage
+    const customerId = localStorage.getItem('loggedInUser');
+    
+    if (!customerId) {
+      setMessage("Error: Customer ID not found. Please log in.");
+      return;
+    }
+
     const measurementData = {
+      customer_id: customerId,  // Include customer_id in the data being sent
       neck: parseFloat(neck),
       arms: parseFloat(arms),
       forearms: parseFloat(forearms),
