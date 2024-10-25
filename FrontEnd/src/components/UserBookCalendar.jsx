@@ -27,14 +27,14 @@ function UserBookCalendar() {
 
   // Function to handle booking
   const handleBooking = async () => {
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const loggedInUser = localStorage.getItem('loggedInUser');
 
     if (!loggedInUser) {
       alert('Customer is not logged in. Please log in to book a session.');
       return;  // Stop the function if no loggedInUser is found in localStorage
     }
 
-    const customer_id = loggedInUser.id;  // Extract the 'id' from loggedInUser
+    const customer_id = loggedInUser;  // Extract the 'id' from loggedInUser
     const trainer_id = getTrainerIdFromUrl();  // Get the trainer ID from the URL
     const booking_type = 'PT Session';  // Set the booking type
 
