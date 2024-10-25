@@ -11,40 +11,135 @@ function App() {
     const muscles = {
         neck: {
             name: "Neck",
-            description: "There are a fair few neck muscles."
+            description: `
+                The neck muscles include:
+                
+                - **Sternocleidomastoid**: 
+                  Helps in rotating and flexing the head.
+    
+                - **Trapezius (upper portion)**: 
+                  Assists in moving the shoulders and supports neck movement.
+    
+                - **Scalenes**: 
+                  Involved in neck flexion, lateral movement, and rotation.
+    
+                - **Levator Scapulae**: 
+                  Elevates the scapula and assists in neck rotation.
+    
+                These muscles are primarily responsible for head and neck movement.`
         },
         shoulders: {
             name: "Shoulders",
-            description: "The shoulders are a muscle group that support arm movement, enabling lifting, rotating, and stabilizing actions."
+            description: `
+                The shoulder muscles include:
+                
+                - **Deltoid**: 
+                  Facilitates arm abduction, flexion, and extension.
+    
+                - **Rotator Cuff (Supraspinatus, Infraspinatus, Teres Minor)**: 
+                  Provides stability and enables rotation and lifting of the arm.
+    
+                These muscles support arm movement, enabling lifting and rotating.`
         },
         biceps: {
             name: "Biceps",
-            description: "The biceps are a muscle group in the upper arm that help with lifting and pulling."
+            description: `
+                The biceps muscle group includes:
+                
+                - **Biceps Brachii**: 
+                  Involved in elbow flexion and forearm supination.
+    
+                - **Brachialis**: 
+                  Assists in flexing the elbow.
+    
+                - **Brachioradialis**: 
+                  Helps in flexing the elbow, especially in a pronated position.
+    
+                These muscles assist with lifting, pulling, and flexing the elbow joint.`
         },
         forearms: {
             name: "Forearms",
-            description: "The forearms are a muscle group in the lower arm that assist with gripping, lifting, and rotating movements of the hand and wrist."
+            description: `
+                The forearm muscles include:
+                
+                - **Flexor Group**: 
+                  Enables flexion of the wrist and fingers, aiding in gripping.
+    
+                - **Extensor Group**: 
+                  Extends the wrist and fingers, allowing for hand opening and pushing.
+    
+                - **Pronator Teres**: 
+                  Rotates the forearm to a palm-down position (pronation).
+    
+                - **Supinator**: 
+                  Rotates the forearm to a palm-up position (supination).
+    
+                These muscles assist with movements of the hand and wrist.`
         },
         chest: {
             name: "Chest",
-            description: "The chest muscles (pectorals) help with pushing movements."
+            description: `
+                The chest muscles (pectorals) include:
+                
+                - **Pectoralis Major**: 
+                  Responsible for pushing movements, arm flexion, and adduction.
+    
+                - **Pectoralis Minor**: 
+                  Assists in stabilizing the shoulder blades and moving them downward.
+    
+                These muscles help with pushing movements and shoulder stabilization.`
         },
         abs: {
             name: "Abs or Core",
-            description: "The abdominal muscles support your core and help with bending movements."
+            description: `
+                The abdominal muscles include:
+                
+                - **Rectus Abdominis**: 
+                  Known as the "six-pack," it helps with flexion and stabilizing the core.
+    
+                - **Obliques (Internal and External)**: 
+                  Allow for twisting and side bending of the torso.
+    
+                - **Transverse Abdominis**: 
+                  Provides deep core stability and compresses the abdominal cavity.
+    
+                These muscles support your core, helping with stabilizing movements.`
         },
         quadriceps: {
             name: "Quadriceps",
-            description: "The quadriceps are a group of muscles on the front of your thighs that help extend your knee."
+            description: `
+                The quadriceps are on the front of the thighs, muscles include:
+                
+                - **Rectus Femoris**: 
+                  Assists with knee extension and hip flexion.
+    
+                - **Vastus Lateralis**: 
+                  Extends the knee.
+    
+                - **Vastus Medialis**: 
+                  Extends the knee and stabilizes the patella.
+    
+                - **Vastus Intermedius**: 
+                  Also aids in knee extension.
+    
+                These muscles help extend the knee and stabilize the hip.`
         },
         calves: {
             name: "Calves",
-            description: "The calf muscles (gastrocnemius and soleus) are responsible for foot and ankle movement."
+            description: `
+                The calf muscles include:
+                
+                - **Gastrocnemius**: 
+                  The larger calf muscle, responsible for plantarflexion and knee flexion.
+    
+                - **Soleus**: 
+                  Lies underneath the gastrocnemius and also aids in plantarflexion.
+    
+                These muscles are responsible for foot and ankle movement.`
         }
-
-        
-
     };
+    
+    
 
     const handleMouseEnter = (muscleId) => {
         const muscle = muscles[muscleId];

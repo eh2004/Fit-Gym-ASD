@@ -566,56 +566,58 @@
         margin-bottom: 4rem;
     }
     
-
-svg {
-    width: 400px;
-    height: 800px;
-}
-
-.body-part {
-    fill: transparent;
-    stroke-width: 1;
-    cursor: pointer;
-}
-
-.body-part:hover {
-    fill: rgba(255, 255, 255, 0.3); 
-}
-
-.muscle-info {
-    margin-left: 20px; /* Adjust based on your layout */
-    background-color: #f5f5f5;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 200px;
-    margin-top: 20rem;
-    margin-right: 20rem;
-}
-
-.muscle-info h2 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.muscle-info p {
-    margin: 5px 0 0 0;
-    font-size: 14px;
-}
-
-.muscle-info.active {
-    display: block;
-}
-   
-.begintext{
-    margin-left: 10rem;
-}
+    svg {
+        width: 400px;
+        height: 800px;
+    }
     
-.grid {
-    background: linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px), 
-                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
-    background-size: 50px 50px; /* Adjust grid size */
-  }
+    .body-part {
+        fill: transparent;
+        stroke-width: 1;
+        cursor: pointer;
+    }
+    
+    .body-part:hover {
+        fill: rgba(255, 255, 255, 0.3); 
+    }
+    
+    .muscle-info {
+        margin-right: 8rem;
+        background-color: #f5f5f5;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 600px;
+        margin-top: 20px;
+    }
+    
+    .muscle-info h2 {
+        margin: 0;
+        font-size: 24px;
+        color: #333;
+    }
+    
+    .muscle-info p {
+        margin-top: 10px;
+        font-size: 14px;
+        line-height: 1.6;
+        white-space: pre-wrap; /* Preserve line breaks */
+    }
+    
+    .begintext {
+        margin-left: 10rem;
+        font-size: 20px;
+    }
+    
+    .grid {
+        background: linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px),
+                    linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+        background-size: 50px 50px;
+    }
+    
+
+
+  
 
 
   /*Gym Class Pages*/
@@ -642,3 +644,63 @@ svg {
     max-width: 500px;
     line-height: 1.5;
 }
+
+
+
+/* Exercise Tutorials */
+.exercise-tutorials {
+    padding: 20px;
+}
+
+.exercise-tutorials h1 {
+    text-align: center;
+}
+
+.exercise-tutorials section {
+    margin-bottom: 30px;
+}
+
+.exercise-tutorials h2 {
+    margin-top: 5rem;
+    font-size: 25px;
+    margin-left: 5rem;
+    font-weight: 900;
+}
+
+.exercise-box {
+    display: flex;
+    align-items: center;
+    border: 2px solid black;
+    margin-bottom: 15px;
+    padding: 30px;
+    width: 50%; /* Full width with margin */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.video-container {
+    margin-right: 20px;
+    flex-shrink: 0; /* Prevent the video from shrinking */
+}
+
+.video-container iframe {
+    width: 500px;
+    height: 300px;
+}
+
+.description-container {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.description-container p {
+    font-size: 20px;
+    margin-top: 2rem;
+    text-align: left; /* Ensure text stays aligned to the left */
+}
+
+
+  
+  
+
+/*Workout Splits*/
