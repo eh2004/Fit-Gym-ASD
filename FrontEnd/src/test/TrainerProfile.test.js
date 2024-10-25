@@ -3,9 +3,24 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import TrainerProfile from "../components/TrainerProfile";
 
-// Mocking the fetch API to simulate the trainer profile data being fetched
-global.fetch = jest.fn(() =>
-  Promise.resolve({
+// Mocking localStorage to provide the trainer ID
+beforeEach(() => {
+  Storage.prototype.getItem = jest.fn(() => "1"); // Mock logged-in user ID as "1"
+});
+
+// Mocking the fetch API to simulate the trainer profile and certificates data
+global.fetch = jest.fn((url) => {
+  if (url.includes('certificates')) {
+    return Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve([
+        { certificate_id: 1, certificate_name: "First Aid" },
+        { certificate_id: 2, certificate_name: "CPR" }
+      ]),
+    });
+  }
+
+  return Promise.resolve({
     ok: true,
     json: () => Promise.resolve({
       trainer_id: "1",
@@ -14,10 +29,13 @@ global.fetch = jest.fn(() =>
       email_address: "john@example.com",
       phone_number: "123456789",
       street_address: "123 Main St",
+      specialty: "Strength Training",
+      certification: "IV in Fitness SIS40221-01",
       language: ["English", "Spanish"],
+      bio: "A passionate fitness trainer.",
     }),
-  })
-);
+  });
+});
 
 // Mocking the react-modal component to avoid issues with accessibility settings in tests
 jest.mock('react-modal', () => {
@@ -26,11 +44,11 @@ jest.mock('react-modal', () => {
   return Modal;
 });
 
-// Mocking window.confirm and alert functions to avoid "not implemented" errors in tests
+// Mocking window.confirm and alert functions
 beforeEach(() => {
   jest.clearAllMocks();
-  global.confirm = jest.fn(() => true); // Always return true for confirm dialog
-  global.alert = jest.fn(); // Mock alert so it doesn't throw an error
+  global.confirm = jest.fn(() => true);
+  global.alert = jest.fn();
 });
 
 // Clean up mocks after each test
@@ -42,7 +60,7 @@ afterEach(() => {
 describe("TrainerProfile Component", () => {
   
   // Test case 1: Check if the trainer profile displays correctly after it's loaded
-  it("displays trainer profile once loaded", async () => {
+  it("displays trainer profile and certificates once loaded", async () => {
     await act(async () => {
       render(
         <MemoryRouter>
@@ -56,7 +74,11 @@ describe("TrainerProfile Component", () => {
     expect(screen.getByText(/john@example.com/i)).toBeInTheDocument();
     expect(screen.getByText(/123456789/i)).toBeInTheDocument();
     expect(screen.getByText(/123 Main St/i)).toBeInTheDocument();
+    expect(screen.getByText(/Strength Training/i)).toBeInTheDocument();
+    // Update to expect "First Aid, CPR"
+    expect(screen.getByText(/First Aid, CPR/i)).toBeInTheDocument();
     expect(screen.getByText(/English, Spanish/i)).toBeInTheDocument();
+    expect(screen.getByText(/A passionate fitness trainer/i)).toBeInTheDocument();
   });
 
   // Test case 2: Check if the trainer profile can be edited and saved
@@ -127,12 +149,19 @@ describe("TrainerProfile Component", () => {
   // Test case 4: Check if the delete button works and removes the profile
   it("calls deleteProfile when Delete button is clicked", async () => {
     // Mock the fetch call for deletion
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
+    global.fetch = jest.fn((url) => {
+      if (url.includes('certificates')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({ success: true }),
+        });
+      }
+
+      return Promise.resolve({
         ok: true,
         json: () => Promise.resolve({ success: true }),
-      })
-    );
+      });
+    });
 
     await act(async () => {
       render(
@@ -150,7 +179,7 @@ describe("TrainerProfile Component", () => {
 
     // Confirm the delete action and ensure the fetch call was made
     expect(global.confirm).toHaveBeenCalledTimes(1);
-    expect(global.fetch).toHaveBeenCalledTimes(2);
+    expect(global.fetch).toHaveBeenCalledTimes(4); // Adjust the number of calls
 
     // Check if the profile is removed from the screen
     expect(screen.queryByText(/John Doe/i)).not.toBeInTheDocument();

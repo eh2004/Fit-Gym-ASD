@@ -44,21 +44,21 @@
         transition: all .5s;
     }
 
-    span {
+    .imgbox-z span {
         display: none;
-        font-size: 35px;
-        color: #ffffff;
-        font-family: sans-serif;
-        text-align: center;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        height: 50px;
-        cursor: pointer;
-        text-decoration: none;
+    font-size: 35px;
+    color: #ffffff;
+    font-family: sans-serif;
+    text-align: center;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 50px;
+    cursor: pointer;
+    text-decoration: none;
     }
 
     .imgbox-z:hover .child,
@@ -99,25 +99,7 @@
         z-index: 0;
     }
 
-    span {
-        position: relative; 
-        z-index: 2;
-        display: none;
-        font-size: 35px;
-        color: #ffffff;
-        font-family: sans-serif;
-        text-align: center;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        height: 50px;
-        cursor: pointer;
-        text-decoration: none;
-    }
-
+  
 
     /*Trainer Page*/
     /* Trainer Card Styles */
@@ -275,6 +257,12 @@
         max-width: 600px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         text-align: center;
+        margin: 0 auto; /* Center the calendar container */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Aligns the content in the center */
+        justify-content: center; /* Vertically centers the content */
+        margin-bottom: 5rem;
     }
 
     /* Container for the calendar and time slots */
@@ -307,22 +295,65 @@
         cursor: pointer;
         font-size: 14px;
         transition: background-color 0.3s, color 0.3s;
-    }
-    
-    .time-slot-button.available {
         background-color: #007bff;
-        color: #fff;
+        color: #f5f5f5;
+    }
+
+    .time-slot-button:hover {
+        font-size: 14px;
+        background-color: #0051a8;
     }
     
-    .time-slot-button.unavailable {
-        background-color: #ddd;
-        color: #999;
-        cursor: not-allowed;
+    .book-button {
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s, color 0.3s;
+        background-color: #007bff;
+        color: #f5f5f5;
     }
     
-    .time-slot-button:disabled {
-        cursor: not-allowed;
-    }
+  
+/*New for calendar - may need to be deleted*/
+/* Ensure the calendar's navigation (month/year and arrows) is displayed properly */
+.react-calendar__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Add some space between navigation and the calendar */
+}
+
+.react-calendar__navigation__label {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 16px;  /* Ensure font-size is not too small */
+    font-weight: bold;
+    color: #000;      /* Ensure text color is visible */
+}
+
+.react-calendar__navigation__arrow {
+    font-size: 20px;  /* Adjust size of arrows */
+    cursor: pointer;
+}
+.selected {
+    background-color: #0051a8; /* Green background for selected time */
+    color: white;
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+    
 
     /* Class Booking */
 
@@ -585,3 +616,29 @@ svg {
                 linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
     background-size: 50px 50px; /* Adjust grid size */
   }
+
+
+  /*Gym Class Pages*/
+
+.pilates-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    text-align: center;
+}
+
+.pilates-image {
+    width: 500px; /* Adjust the size as necessary */
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 2rem;
+}
+
+.pilates-description {
+    font-size: 16px;
+    color: #000000;
+    max-width: 500px;
+    line-height: 1.5;
+}

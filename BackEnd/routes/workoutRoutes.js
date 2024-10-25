@@ -49,6 +49,6 @@ router.get('/workouts', async (req, res) => {
       console.error('Error fetching workouts:', error);
       res.status(500).json({ error: 'Error retrieving workouts' });
     }
-});
-
+  });
+  
 module.exports = router;

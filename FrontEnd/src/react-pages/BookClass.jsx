@@ -32,7 +32,7 @@ function App() {
     <React.Fragment>
       <Header />
       <div className="gym-booking-container">
-        <a href="../pages/bookPilates" className="gym-class-card" onClick={(e) => handleBooking(e, "Pilates")}>
+        <a href="../pages/bookPilates.html" className="gym-class-card" onClick={(e) => handleBooking(e, "Pilates")}>
           <img src={pilates} alt="Pilates" className="gym-class-image" />
           <div className="gym-class-info">
             <h3 className="gym-class-title">Pilates</h3>

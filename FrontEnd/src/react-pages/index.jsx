@@ -4,6 +4,7 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import "../css/stylebest.css";
 
+
 // Image Imports 
 import aboutus from '../assets/about-us.jpg';
 import calendar from '../assets/calendar.jpg';
@@ -15,6 +16,7 @@ import trainergroup from '../assets/trainer-group.jpg';
 function App() {
     
     return (
+
         <Fragment>
             <Header />
             <div className="gym-home-header">
