@@ -10,6 +10,7 @@ const leaderboardRoutes = require('./routes/leaderboardRoutes');// Correct path 
 const transactionRoutes = require('./routes/transactionRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const certificateRoutes = require('./routes/certificateRoutes'); // Import certificate routes
+const measurementRoutes = require('./measurementRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -46,6 +47,7 @@ app.use('/api', leaderboardRoutes);
 app.use('/api', transactionRoutes);
 app.use('/api', bookingRoutes);
 app.use('/api', certificateRoutes); // Register certificate routes
+app.use('/api', measurementRoutes);
 
 // Simple route to test the server
 app.get('/', (req, res) => {
