@@ -1,4 +1,4 @@
-// models/Workout.js
+// models/Booking.js
 
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database'); // Your Sequelize instance

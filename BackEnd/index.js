@@ -38,6 +38,7 @@ sequelize.authenticate()
   });
 
 // Register the routes
+app.use('/api', bookingRoutes);
 app.use('/api', userRoutes); // All user routes will be prefixed with /api
 app.use('/api', customerRoutes);
 app.use('/api', workoutRoutes);
@@ -46,7 +47,7 @@ app.use('/api', setRoutes);
 app.use('/api', trainerRoutes);
 app.use('/api', leaderboardRoutes);
 app.use('/api', transactionRoutes);
-app.use('/api', bookingRoutes);
+
 app.use('/api', certificateRoutes); // Register certificate routes
 app.use('/api', measurementRoutes);
 

@@ -24,43 +24,39 @@ function BookPilates() {
 
   // Function to handle booking
   const handleBooking = async () => {
-
-    const loggedInUser = localStorage.getItem('loggedInUser');  // This should directly return the ID, not an object
-
-    if (!loggedInUser) {
+    const customer_id = localStorage.getItem('loggedInUser');  // Assuming this is the customer ID
+  
+    if (!customer_id) {
       alert("Customer is not logged in. Please log in to book a session.");
       return;
     }
-
-    const customer_id = loggedInUser;  // Use loggedInUser directly as the customer_id
+  
     const booking_type = "Pilates";  // Set the booking type to Pilates
-    const trainer_name = "Trainer Mike";  // Hardcoded for Pilates
-
+    const trainer_name = "Trainer Mike";  // Hardcoded trainer name for Pilates
+  
     if (selectedDate && selectedTime) {
       const bookingDate = new Date(selectedDate);
       const [hours, minutes] = selectedTime.split(":");
       bookingDate.setHours(hours);
       bookingDate.setMinutes(minutes);
-
+  
+      
       try {
-        console.log(localStorage.getItem('loggedInUser')); // Check what is stored in localStorage
-
         const response = await fetch("http://localhost:3000/api/bookings", {
-            
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            customer_id: customer_id,  // Use the loggedInUser as the customer_id
+            customer_id,
             booking_date: bookingDate.toISOString(),  // Use the combined date and time
-            booking_type: booking_type,  // Pass the booking type
-            trainer_name: trainer_name,  // Hardcoded trainer name for Pilates
+            booking_type,
+            trainer_name,  // Hardcoded trainer name for Pilates
           }),
         });
-
+  
         const data = await response.text();
-
+  
         if (response.ok) {
           alert(`Booking confirmed for Pilates on ${bookingDate.toDateString()} at ${selectedTime}`);
         } else {
@@ -74,6 +70,7 @@ function BookPilates() {
       alert("Please select a date and a time.");
     }
   };
+  
 
   return (
     <React.Fragment>
@@ -86,6 +83,9 @@ function BookPilates() {
         />
         <p className="pilates-description">
           Pilates is a form of low-impact exercise that aims to strengthen muscles while improving postural alignment and flexibility. It's perfect for enhancing core stability.
+        </p>
+        <p className="pilates-description">
+          ALL CLASSES ARE TAKEN BY TRAINER MIKE
         </p>
       </div>
 
