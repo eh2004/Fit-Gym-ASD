@@ -6,28 +6,26 @@ const { Booking, Trainer } = require('../models');
 
 router.post('/bookings', async (req, res) => {
   try {
-    const { customer_id, booking_date, booking_type, trainer_name, trainer_id } = req.body;
+    const { customer_id, booking_date, booking_type, trainer_name } = req.body;
 
-    console.log('Received data:', { customer_id, booking_date, booking_type, trainer_name, trainer_id });
-
-    if (booking_type === "Pilates" && trainer_name === "Trainer Mike") {
-      // Directly create the booking for Pilates
+    // Bypass trainer_id requirement for classes like Pilates, CrossFit, Boxing, etc.
+    if (["Pilates", "CrossFit", "Boxing", "HIIT", "Cardio", "Weight Training",].includes(booking_type)) {
+      // Directly create the booking using the trainer_name
       const newBooking = await Booking.create({
         customer_id,
         booking_date,
         booking_type,
-        trainer_name,  // This will be "Trainer Mike"
+        trainer_name  // Use hardcoded trainer name
       });
-
       return res.status(201).json(newBooking);
     }
 
-    // Ensure trainer_id is provided for other bookings
+    // For other booking types that require a trainer_id
+    const { trainer_id } = req.body;
     if (!trainer_id) {
       return res.status(400).json({ error: 'Trainer ID is required for this booking type.' });
     }
 
-    // Fetch trainer details using trainer_id
     const trainer = await Trainer.findByPk(trainer_id);
 
     if (!trainer) {
@@ -36,12 +34,11 @@ router.post('/bookings', async (req, res) => {
 
     const trainer_full_name = `${trainer.first_name} ${trainer.last_name}`;
 
-    // Create the new booking
     const newBooking = await Booking.create({
       customer_id,
       booking_date,
       booking_type,
-      trainer_name: trainer_full_name,  // Use the trainer's full name
+      trainer_name: trainer_full_name
     });
 
     res.status(201).json(newBooking);
@@ -50,6 +47,7 @@ router.post('/bookings', async (req, res) => {
     res.status(500).json({ error: 'Error creating booking' });
   }
 });
+
 
 
 

@@ -74,7 +74,7 @@ function BookWeightTraining() {
       <Header />
       <div className="pilates-container">
         <img 
-          src="/src/assets/weighttraining.jpg"
+          src="/src/assets/weight-training.jpg"
           alt="Weight Training" 
           className="pilates-image"
         />
