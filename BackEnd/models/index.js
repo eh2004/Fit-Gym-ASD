@@ -11,6 +11,7 @@ const TrainerCard = require('./TrainerCard');
 const Certificate = require('./Certificate');
 const Transaction = require('./Transaction');
 const Booking = require('./Booking');
+const Measurement = require('./Measurement');
 
 // Create a db object that includes models and the Sequelize instance + Sequelize methods
 const db = {
@@ -25,6 +26,7 @@ const db = {
   Certificate,
   Transaction,
   Booking,
+  Measurement,
   sequelize, // Export the Sequelize instance
   Sequelize  // Export Sequelize methods like fn and col
 };
@@ -49,6 +51,8 @@ Certificate.belongsTo(Trainer, { foreignKey: 'trainer_id' });
 Transaction.belongsTo(Trainer, { foreignKey: 'trainer_id' });
 Transaction.belongsTo(Customer, { foreignKey: 'customer_id' });
 
+Customer.hasMany(Measurement, { foreignKey: 'customer_id' });
+Measurement.belongsTo(Customer, { foreignKey: 'customer_id'});
 
 // can someone check this makes sense? - Evan
 Customer.hasMany(Booking, { foreignKey: 'customer_id' });
