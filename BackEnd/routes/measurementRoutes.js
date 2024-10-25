@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Measurement = require('../models/Measurement');  // Import the model
+const { Measurement } = require('../models/');  // Import the model
 
 // Fetch all measurements (optional)
 router.get('/measurements', async (req, res) => {

@@ -1,95 +1,94 @@
 import React, { useState } from 'react';
-import ReactDom from "react-dom/client";
-import Header from "../components/Header.jsx";
-import Footer from "../components/Footer.jsx";
+import ReactDom from 'react-dom/client';
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "../css/styling.css";
 
 const App = () => {
-  const [measurements, setMeasurements] = useState({
-    neck: '',
-    arms: '',
-    forearms: '',
-    chest: '',
-    waist: '',
-    quads: '',
-    calves: ''
-  });
-
   const [unit, setUnit] = useState('cm');
-
-  const handleChange = (e) => {
-    setMeasurements({
-      ...measurements,
-      [e.target.name]: e.target.value
-    });
-  };
+  const [neck, setNeck] = useState('');
+  const [arms, setArms] = useState('');
+  const [forearms, setForearms] = useState('');
+  const [chest, setChest] = useState('');
+  const [waist, setWaist] = useState('');
+  const [quads, setQuads] = useState('');
+  const [calves, setCalves] = useState('');
+  const [message, setMessage] = useState('');
 
   const toggleUnit = () => {
     setUnit(unit === 'cm' ? 'inches' : 'cm');
   };
 
-  const applyChanges = () => {
-    console.log('Changes applied:', measurements, 'Unit:', unit);
-    // Logic for applying changes and storing them
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const discardChanges = () => {
-    setMeasurements({
-      neck: '',
-      arms: '',
-      forearms: '',
-      chest: '',
-      waist: '',
-      quads: '',
-      calves: ''
-    });
+    const measurementData = {
+      neck: parseFloat(neck),
+      arms: parseFloat(arms),
+      forearms: parseFloat(forearms),
+      chest: parseFloat(chest),
+      waist: parseFloat(waist),
+      quads: parseFloat(quads),
+      calves: parseFloat(calves),
+    };
+
+    try {
+      const response = await fetch('http://localhost:3000/api/measurements', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(measurementData),
+      });
+
+      if (response.ok) {
+        setMessage('Measurements saved successfully!');
+      } else {
+        const result = await response.json();
+        setMessage(`Failed to save measurements: ${result.message}`);
+      }
+    } catch (error) {
+      setMessage(`Error: ${error.message}`);
+    }
   };
 
   return (
-    <div className="app-container">  {/* Wrapper around everything */}
-      <Header />  {/* Header component inside the wrapper */}
-      <div className="body-measurement-container">  {/* Centered content */}
-        <h2>Edit Your Measurements</h2>
-        <div className="measurement-unit-toggle">
-          <span>Units: </span>
-          <button onClick={toggleUnit}>
-            {unit === 'cm' ? 'Centimeters' : 'Inches'}
-          </button>
-        </div>
+    <div>
+      <Header />
+      <h2>Body Measurement</h2>
+      <button onClick={toggleUnit}>
+        {unit === 'cm' ? 'Switch to Inches' : 'Switch to Centimeters'}
+      </button>
 
-        <div className="measurements-inputs">
-          <label>Neck ({unit})</label>
-          <input type="number" name="neck" value={measurements.neck} onChange={handleChange} />
-          
-          <label>Arms ({unit})</label>
-          <input type="number" name="arms" value={measurements.arms} onChange={handleChange} />
-          
-          <label>Forearms ({unit})</label>
-          <input type="number" name="forearms" value={measurements.forearms} onChange={handleChange} />
-          
-          <label>Chest ({unit})</label>
-          <input type="number" name="chest" value={measurements.chest} onChange={handleChange} />
-          
-          <label>Waist ({unit})</label>
-          <input type="number" name="waist" value={measurements.waist} onChange={handleChange} />
-          
-          <label>Quads ({unit})</label>
-          <input type="number" name="quads" value={measurements.quads} onChange={handleChange} />
-          
-          <label>Calves ({unit})</label>
-          <input type="number" name="calves" value={measurements.calves} onChange={handleChange} />
-        </div>
+      <form onSubmit={handleSubmit}>
+        <label>Neck:</label>
+        <input type="number" value={neck} onChange={(e) => setNeck(e.target.value)} required />
 
-        <div className="measurement-buttons">
-          <button onClick={discardChanges}>Discard changes</button>
-          <button onClick={applyChanges}>Apply changes</button>
-        </div>
-      </div>
-      <Footer />  {/* Footer component inside the wrapper */}
+        <label>Arms:</label>
+        <input type="number" value={arms} onChange={(e) => setArms(e.target.value)} required />
+
+        <label>Forearms:</label>
+        <input type="number" value={forearms} onChange={(e) => setForearms(e.target.value)} required />
+
+        <label>Chest:</label>
+        <input type="number" value={chest} onChange={(e) => setChest(e.target.value)} required />
+
+        <label>Waist:</label>
+        <input type="number" value={waist} onChange={(e) => setWaist(e.target.value)} required />
+
+        <label>Quads:</label>
+        <input type="number" value={quads} onChange={(e) => setQuads(e.target.value)} required />
+
+        <label>Calves:</label>
+        <input type="number" value={calves} onChange={(e) => setCalves(e.target.value)} required />
+
+        <button type="submit">Submit</button>
+      </form>
+
+      {message && <p>{message}</p>}
+      <Footer />
     </div>
   );
 };
 
-export default App;
-
-ReactDom.createRoot(document.getElementById("root")).render(<App />);
+ReactDom.createRoot(document.getElementById('root')).render(<App />);
