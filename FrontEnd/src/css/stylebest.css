@@ -785,3 +785,72 @@
     margin: 0;
   }
   
+
+
+  /*Actual Split Pages*/
+  /* Container styling */
+.arm-split-container {
+    max-width: 800px;
+    width: 90%;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 40px auto;
+    margin-bottom: 7rem;
+  }
+  
+  /* Titles and subtitles */
+  .arm-split-title {
+    text-align: center;
+    color: #444;
+  }
+  
+  .arm-split-subtitle {
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  /* Exercise list styling */
+  .arm-split-exercise-list {
+    margin-bottom: 30px;
+    list-style: none;
+    padding: 0;
+  }
+  
+  .arm-split-exercise-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Table styling */
+  .arm-split-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .arm-split-table-header {
+    padding: 12px;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  .arm-split-day,
+  .arm-split-workout {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+  
+  .arm-split-day {
+    font-weight: bold;
+    background-color: #fafafa;
+  }
+  
+  .arm-split-workout {
+    background-color: #f9f9f9;
+  }
+  

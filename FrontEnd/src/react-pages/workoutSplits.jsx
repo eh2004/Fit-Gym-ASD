@@ -11,20 +11,13 @@ function App() {
     return (
         <React.Fragment>
             <Header />
-            <div className="workout-splits-grid">
-      <div className="workout-splits-button" style={{ backgroundImage: "../pages/bookPilates.html" }}>
-        <span className="workout-splits-text">Button 1</span>
-      </div>
-      <div className="workout-splits-button" style={{ backgroundImage: "url('image2.jpg')" }}>
-        <span className="workout-splits-text">Button 2</span>
-      </div>
-      <div className="workout-splits-button" style={{ backgroundImage: "url('image3.jpg')" }}>
-        <span className="workout-splits-text">Button 3</span>
-      </div>
-      <div className="workout-splits-button" style={{ backgroundImage: "url('image4.jpg')" }}>
-        <span className="workout-splits-text">Button 4</span>
-      </div>
-    </div>
+            <p className="hometext">Select a focus muscle group:</p>
+            <div className="wrapper">
+                <a href="armSplit.html" className="imgbox-z"><img src="../assets/armMuscles.jpg" alt="armMuscles" className="child bg-one" /><span>Arm Focused Split</span></a>
+                <a href="chestSplit.html" className="imgbox-z"><img src="../assets/chestMuscles.jpg" alt="chestMuscles" className="child bg-two" /><span>Chest Focused Split</span></a>
+                <a href="backSplit.html" className="imgbox-z"><img src="../assets/backMuscles.jpg" alt="backMuscles" className="child bg-one" /><span>Back Focused Split</span></a>
+                <a href="legSplit.html" className="imgbox-z"><img src="../assets/legMuscles.jpg" alt="legMuscles" className="child bg-two" /><span>Leg Focused Split</span></a>
+            </div>
 
             <Footer />
         </React.Fragment>
