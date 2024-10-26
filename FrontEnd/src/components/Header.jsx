@@ -60,7 +60,9 @@ function Header() {
                 <li className="nav-li long-nav-name"><a href="/src/pages/ExerciseRecording.html">Rep Counter</a></li>
                 <li className="nav-li"><a href="/src/pages/BodyMeasurement.html">Measurements</a></li>
                 <li className="nav-li"><a href="/src/pages/Leaderboard.html">Leaderboard</a></li>
+                {userType == "customer" && (
                 <li className="nav-li"><a href="/src/pages/BookingType.html">Book</a></li>
+                )}
                 {userType === "trainer" && (
                 <li className="nav-li"><a href="/src/pages/Dashboard.html">Profile</a></li>
                 )}
