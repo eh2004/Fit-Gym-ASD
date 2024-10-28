@@ -49,7 +49,16 @@ router.get('/leaderboard', async (req, res) => {
       return res.status(404).json({ message: 'No leaderboard data found' });
     }
 
-    res.json(leaderboardData); // Send leaderboard data to the frontend
+    // Step 3: Add calories burned calculation for each set
+    const leaderboardWithCalories = leaderboardData.map(entry => {
+      const caloriesBurned = (entry.reps * entry.weight * 0.1).toFixed(2); // Simple calories formula
+      return {
+        ...entry.toJSON(),
+        caloriesBurned
+      };
+    });
+
+    res.json(leaderboardWithCalories); // Send leaderboard data with calories to the frontend
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
     res.status(500).json({ error: 'Error retrieving leaderboard data' });

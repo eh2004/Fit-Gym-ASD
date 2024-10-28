@@ -21,6 +21,7 @@ const LeaderboardUniversal = () => {
             <th>User</th>
             <th>Best Lift (kg)</th>
             <th>Reps</th>
+            <th>Calories Burned</th> {/* New column for calories burned */}
           </tr>
         </thead>
         <tbody>
@@ -30,6 +31,7 @@ const LeaderboardUniversal = () => {
               <td>{`${row.Workout.Customer.first_name} ${row.Workout.Customer.last_name}`}</td>
               <td>{row.weight}</td>
               <td>{row.reps}</td>
+              <td>{row.caloriesBurned}</td> {/* Displaying the calories burned */}
             </tr>
           ))}
         </tbody>

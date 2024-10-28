@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import '../css/styling.css'; // Adjust the path according to your project structure
+import '../css/styling.css';
 
 const PersonalBestLeaderboard = ({ customer }) => {
-  // Try to extract customerId from the customer prop or from localStorage
   const customerId = customer?.id || JSON.parse(localStorage.getItem("loggedInUser"))?.id;
-  
   const [personalBests, setPersonalBests] = useState([]);
-  
+
   useEffect(() => {
-    // Fetch personal bests only if a valid customerId is found
     if (customerId) {
       fetch(`http://localhost:3000/api/personalbests/${customerId}`)
         .then(res => res.json())
-        .then(data => setPersonalBests(data)) // Use the data directly
+        .then(data => setPersonalBests(data))
         .catch(err => console.error('Error fetching personal bests:', err));
     }
   }, [customerId]);
@@ -27,6 +24,7 @@ const PersonalBestLeaderboard = ({ customer }) => {
             <th>Best Lift (kg)</th>
             <th>Reps</th>
             <th>Date</th>
+            <th>Calories Burned</th> {/* New column for calories */}
           </tr>
         </thead>
         <tbody>
@@ -36,6 +34,7 @@ const PersonalBestLeaderboard = ({ customer }) => {
               <td>{row.best_lift}</td>
               <td>{row.reps}</td>
               <td>{new Date(row.workout_date).toLocaleDateString()}</td>
+              <td>{row.caloriesBurned}</td> {/* Display calories burned */}
             </tr>
           ))}
         </tbody>
