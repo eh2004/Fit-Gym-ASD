@@ -31,6 +31,22 @@ steps:
     testRunTitle: 'Merged Test Results'
     mergeTestResults: true
 
+# Create a ZIP file of the build output
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: './FrontEnd/dist' # Path to the folder you want to zip
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/build-output.zip'
+  displayName: "Create ZIP of build output"
+
+# Upload the ZIP file as an artifact
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/build-output.zip'
+    artifactName: 'build-output'
+    publishLocation: 'Container'
+
 # Optional: If you want to collect code coverage reports
 # - script: |
 #     npm test -- --coverage --watchAll=false
