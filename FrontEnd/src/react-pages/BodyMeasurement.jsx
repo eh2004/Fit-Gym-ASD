@@ -58,6 +58,7 @@ const App = () => {
       }
     } catch (error) {
       setMessage(`Error: ${error.message}`);
+      
     }
   };
 
