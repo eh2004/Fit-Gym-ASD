@@ -31,6 +31,13 @@ steps:
     testRunTitle: 'Merged Test Results'
     mergeTestResults: true
 
+    # Upload build artifact
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: './FrontEnd/dist' # Path to the built files (update as needed)
+    artifactName: 'build-output'
+    publishLocation: 'Container'
+
 # Optional: If you want to collect code coverage reports
 # - script: |
 #     npm test -- --coverage --watchAll=false
