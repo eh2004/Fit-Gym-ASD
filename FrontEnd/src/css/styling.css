@@ -416,6 +416,122 @@ h1 {
 
 /* ----------- Line Graph/Progress ------------ */
 /* Add these styles to Leaderboard.css */
+.streak-display {
+    text-align: center;
+    margin: 20px auto;
+    max-width: 400px; /* Adjust this based on your preference */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+
+  /* Centering the streak display component */
+.streak-display-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px; /* Adjust based on how much space you want around it */
+    margin-bottom: 20px;
+}
+
+/* Styles for the header rows of the tables */
+table thead tr th {
+    background-color: #333; /* Dark background color */
+    color: #fff; /* White text color */
+    font-weight: bold;
+    padding: 10px;
+}
+
+.streak-display {
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Navbar styling - ensure this stays in place */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #000; /* Example color */
+    /* Add more navbar-specific styles */
+  }
+  
+  /* Main content centering and layout */
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px; /* Add space to prevent overlap */
+  }
+  
+  .streak-display, .leaderboard-section {
+    width: 80%; /* Control width here */
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center; /* Center text within these sections */
+  }
+  
+  /* Table styling inside the leaderboard-section */
+  .leaderboard-section table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .leaderboard-section th, .leaderboard-section td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  /* Optional: Styling for titles and text alignment */
+  .leaderboard-section h1, .streak-display h2 {
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  /* Additional styling to improve aesthetics */
+  .leaderboard-section, .streak-display {
+    margin-top: 20px;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .leaderboard-container {
     padding-bottom: 100px;  /* Adds space at the bottom to avoid overlap with the footer */

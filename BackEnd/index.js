@@ -11,6 +11,7 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const certificateRoutes = require('./routes/certificateRoutes'); // Import certificate routes
 const measurementRoutes = require('./routes/measurementRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
 
 
 const app = express();
@@ -47,9 +48,9 @@ app.use('/api', setRoutes);
 app.use('/api', trainerRoutes);
 app.use('/api', leaderboardRoutes);
 app.use('/api', transactionRoutes);
-
 app.use('/api', certificateRoutes); // Register certificate routes
 app.use('/api', measurementRoutes);
+app.use('/api', attendanceRoutes);
 
 // Simple route to test the server
 app.get('/', (req, res) => {
