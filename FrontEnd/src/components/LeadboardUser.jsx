@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import '../css/styling.css'; // Adjust the path according to your project structure
 
-const PersonalBestLeaderboard = () => {
+const PersonalBestLeaderboard = ({ customer }) => {
+  // Try to extract customerId from the customer prop or from localStorage
+  const customerId = customer?.id || JSON.parse(localStorage.getItem("loggedInUser"))?.id;
+  
   const [personalBests, setPersonalBests] = useState([]);
-
+  
   useEffect(() => {
-    // Get the logged-in customer ID from localStorage (assuming you store it there)
-    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-    
-    if (loggedInUser && loggedInUser.id) {
-      fetch(`http://localhost:3000/api/personalbests/${loggedInUser.id}`) // Personal bests API for the logged-in user
+    // Fetch personal bests only if a valid customerId is found
+    if (customerId) {
+      fetch(`http://localhost:3000/api/personalbests/${customerId}`)
         .then(res => res.json())
         .then(data => setPersonalBests(data)) // Use the data directly
         .catch(err => console.error('Error fetching personal bests:', err));
     }
-  }, []);
+  }, [customerId]);
 
   return (
     <div className="leaderboard-container">
