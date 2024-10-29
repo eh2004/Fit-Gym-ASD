@@ -62,7 +62,7 @@ stages:
       vmImage: 'ubuntu-20.04'
     environment: ASD Env
     variables:
-      - group: Release
+      - group: ASD Variable Group
     strategy:
       runOnce:
         deploy:
