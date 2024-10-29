@@ -15,13 +15,13 @@ const App = () => {
 
   // Function to get the current date
   const getCurrentDate = () => {
-    return new Date().toISOString(); // Automatically handles timezones and DST
+    return new Date().toISOString();
   };
 
   // Define the exerciseMap at the top of your file
   const exerciseMap = {
-    Squat: 1,
-    Benchpress: 2,
+    Squat: 2,
+    Benchpress: 1,
     Deadlift: 3
   };
 
@@ -37,7 +37,7 @@ const App = () => {
       });
   
       const newWorkout = await response.json();
-      setCurrentWorkoutId(newWorkout.workout_id);  // Set the generated workout ID
+      setCurrentWorkoutId(newWorkout.workout_id);
     } catch (error) {
       console.error("Failed to start new workout", error);
     }
@@ -54,38 +54,51 @@ const App = () => {
       return;
     }
   
-    const setData = {
-      workout_id: currentWorkoutId,  // This should be the workout ID generated when starting the workout
-      exercise_id: exerciseMap[exercise],  // Map the exercise to its ID
-      reps: Number(reps),
+    const newSet = {
+      exercise,
       weight: Number(weight),
+      reps: Number(reps),
       log,
-      set_date: getCurrentDate(),
     };
-  
-    console.log("Sending set data:", setData);
-  
-    try {
-      const response = await fetch("http://localhost:3000/api/sets", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(setData),
-      });
-  
-      if (response.ok) {
-        setMessages("Set added!");
-      } else {
-        const result = await response.json();
-        console.error("Failed to add set. Server returned:", response.status, result);
-        setMessages("Failed to add set.");
+
+    // Add the set to the frontend table regardless of log status
+    setSets((prevSets) => [...prevSets, newSet]);
+
+    // Only send data to the backend if log is true
+    if (log) {
+      const setData = {
+        workout_id: currentWorkoutId,
+        exercise_id: exerciseMap[exercise],
+        reps: Number(reps),
+        weight: Number(weight),
+        log,
+        set_date: getCurrentDate(),
+      };
+
+      try {
+        const response = await fetch("http://localhost:3000/api/sets", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(setData),
+        });
+    
+        if (response.ok) {
+          setMessages("Set added!");
+        } else {
+          const result = await response.json();
+          console.error("Failed to add set. Server returned:", response.status, result);
+          setMessages("Failed to add set.");
+        }
+      } catch (error) {
+        console.error("Error adding set:", error);
+        setMessages("Error adding set.");
       }
-    } catch (error) {
-      console.error("Error adding set:", error);
-      setMessages("Error adding set.");
+    } else {
+      setMessages("Set information is displayed, but not stored.");
     }
-  
+
     setExercises("");
     setWeights("");
     setReps("");
@@ -98,7 +111,6 @@ const App = () => {
       <Header />
       <h1>Exercise Recording</h1>
       
-      {/* Button to start a new workout */}
       <button onClick={startNewWorkout} className="start-workout-button">Start New Workout</button>
 
       <div className="content-wrapper">
