@@ -231,49 +231,6 @@ router.get('/personalbests/:customerId', async (req, res) => {
       ]
     });
 
-    // Filter to get the highest lift for each exercise
-    const personalBests = {};
-    
-    workouts.forEach(workout => {
-      workout.Sets.forEach(set => {
-        const exerciseName = set.Exercise.exercise_name;
-        if (!personalBests[exerciseName] || set.weight > personalBests[exerciseName].best_lift) {
-          personalBests[exerciseName] = {
-            exercise_name: exerciseName,
-            best_lift: set.weight,
-            reps: set.reps,
-            workout_date: workout.workout_date,
-          };
-        }
-      });
-    });
-
-    // Send the response as an array of personal bests
-    res.json(Object.values(personalBests));
-  } catch (error) {
-    console.error('Error fetching personal bests:', error);
-    res.status(500).json({ error: 'Error fetching personal bests' });
-  }
-});
-
-// Route to get personal best lifts for a customer
-router.get('/personalbests/:customerId', async (req, res) => {
-  const { customerId } = req.params;
-  
-  try {
-    // Fetch all workouts for the customer including related sets and exercises
-    const workouts = await Workout.findAll({
-      where: { customer_id: customerId },
-      include: [
-        {
-          model: Set,
-          include: [
-            { model: Exercise, attributes: ['exercise_name'] } // Include exercise details
-          ]
-        }
-      ]
-    });
-
     // Filter to get the highest lift for each exercise and calculate calories
     const personalBests = {};
     
@@ -301,6 +258,5 @@ router.get('/personalbests/:customerId', async (req, res) => {
     res.status(500).json({ error: 'Error fetching personal bests' });
   }
 });
-
 
 module.exports = router;
