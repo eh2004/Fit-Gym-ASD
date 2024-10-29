@@ -4,50 +4,55 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-# Install Node.js version compatible with your project
-- task: NodeTool@0
-  inputs:
-    versionSpec: "16.x"
-  displayName: "Install Node.js"
-
-# Install NPM dependencies and build the project using Vite
-- script: |
-    npm install
-    npm run build
-  workingDirectory: ./FrontEnd # Make sure the working directory is where package.json exists
-  displayName: "npm install and build"
-
-# Run the unit tests for TrainerProfile and append to JUnit report
-- script: |
-    npm test --watchAll=false
-  workingDirectory: ./FrontEnd # Path to package.json and tests
-  displayName: 'Run every unit test'
-
-# Publish the merged JUnit test results
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: './FrontEnd/junit.xml' # Path to JUnit test result file, matches the output directory in package.json
-    testRunTitle: 'Merged Test Results'
-    mergeTestResults: true
-
-# Create a ZIP file of the build output
-- task: ArchiveFiles@2
-  inputs:
-    rootFolderOrFile: './FrontEnd/dist' # Path to the folder you want to zip
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/build-output.zip'
-  displayName: "Create ZIP of build output"
-
-# Upload the ZIP file as an artifact
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)/build-output.zip'
-    artifactName: 'build-output'
-    publishLocation: 'Container'
-
 stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    # Install Node.js version compatible with your project
+    - task: NodeTool@0
+      inputs:
+        versionSpec: "16.x"
+      displayName: "Install Node.js"
+
+    # Install NPM dependencies and build the project using Vite
+    - script: |
+        npm install
+        npm run build
+      workingDirectory: ./FrontEnd # Make sure the working directory is where package.json exists
+      displayName: "npm install and build"
+
+    # Run the unit tests for TrainerProfile and append to JUnit report
+    - script: |
+        npm test --watchAll=false
+      workingDirectory: ./FrontEnd # Path to package.json and tests
+      displayName: 'Run every unit test'
+
+    # Publish the merged JUnit test results
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFiles: './FrontEnd/junit.xml' # Path to JUnit test result file, matches the output directory in package.json
+        testRunTitle: 'Merged Test Results'
+        mergeTestResults: true
+
+    # Create a ZIP file of the build output
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: './FrontEnd/dist' # Path to the folder you want to zip
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/build-output.zip'
+      displayName: "Create ZIP of build output"
+
+    # Upload the ZIP file as an artifact
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/build-output.zip'
+        artifactName: 'build-output'
+        publishLocation: 'Container'
+
 - stage: Deploy
   displayName: 'Deploy the web application'
   dependsOn: Build
