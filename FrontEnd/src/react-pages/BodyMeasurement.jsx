@@ -22,7 +22,6 @@ const App = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Retrieve customer_id from localStorage
     const customerId = localStorage.getItem('loggedInUser');
     
     if (!customerId) {
@@ -31,7 +30,7 @@ const App = () => {
     }
 
     const measurementData = {
-      customer_id: customerId,  // Include customer_id in the data being sent
+      customer_id: customerId,
       neck: parseFloat(neck),
       arms: parseFloat(arms),
       forearms: parseFloat(forearms),
@@ -62,39 +61,82 @@ const App = () => {
   };
 
   return (
-    <div>
+    <div className="measurement-container">
       <Header />
-      <h2>Body Measurement</h2>
-      <button onClick={toggleUnit}>
+      <h2 className="measurement-title">Body Measurement</h2>
+      
+      <button onClick={toggleUnit} className="unit-toggle-button">
         {unit === 'cm' ? 'Switch to Inches' : 'Switch to Centimeters'}
       </button>
 
-      <form onSubmit={handleSubmit}>
-        <label>Neck:</label>
-        <input type="number" value={neck} onChange={(e) => setNeck(e.target.value)} required />
+      <form onSubmit={handleSubmit} className="measurement-form">
+        <label className="measurement-label">Neck:</label>
+        <input
+          type="number"
+          value={neck}
+          onChange={(e) => setNeck(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <label>Arms:</label>
-        <input type="number" value={arms} onChange={(e) => setArms(e.target.value)} required />
+        <label className="measurement-label">Arms:</label>
+        <input
+          type="number"
+          value={arms}
+          onChange={(e) => setArms(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <label>Forearms:</label>
-        <input type="number" value={forearms} onChange={(e) => setForearms(e.target.value)} required />
+        <label className="measurement-label">Forearms:</label>
+        <input
+          type="number"
+          value={forearms}
+          onChange={(e) => setForearms(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <label>Chest:</label>
-        <input type="number" value={chest} onChange={(e) => setChest(e.target.value)} required />
+        <label className="measurement-label">Chest:</label>
+        <input
+          type="number"
+          value={chest}
+          onChange={(e) => setChest(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <label>Waist:</label>
-        <input type="number" value={waist} onChange={(e) => setWaist(e.target.value)} required />
+        <label className="measurement-label">Waist:</label>
+        <input
+          type="number"
+          value={waist}
+          onChange={(e) => setWaist(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <label>Quads:</label>
-        <input type="number" value={quads} onChange={(e) => setQuads(e.target.value)} required />
+        <label className="measurement-label">Quads:</label>
+        <input
+          type="number"
+          value={quads}
+          onChange={(e) => setQuads(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <label>Calves:</label>
-        <input type="number" value={calves} onChange={(e) => setCalves(e.target.value)} required />
+        <label className="measurement-label">Calves:</label>
+        <input
+          type="number"
+          value={calves}
+          onChange={(e) => setCalves(e.target.value)}
+          required
+          className="measurement-input"
+        />
 
-        <button type="submit">Submit</button>
+        <button type="submit" className="submit-button">Submit</button>
       </form>
 
-      {message && <p>{message}</p>}
+      {message && <p className="message">{message}</p>}
       <Footer />
     </div>
   );
