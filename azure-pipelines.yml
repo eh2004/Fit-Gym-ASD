@@ -73,5 +73,5 @@ stages:
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'ASD Service'
-              appName: '(ASD-Fit-Gym)'
+              appName: '$(ASD-Fit-Gym)'
               package: '$(Pipeline.Workspace)/build-output/*.zip'
