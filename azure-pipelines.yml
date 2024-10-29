@@ -72,6 +72,6 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: website'
             inputs:
-              azureSubscription: 'ASD Service'
+              azureSubscription: 'ASD Service' #correct
               appName: '$(ASD-Fit-Gym)'
               package: '$(Pipeline.Workspace)/build-output/*.zip'
