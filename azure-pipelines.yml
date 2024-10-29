@@ -47,31 +47,26 @@ steps:
     artifactName: 'build-output'
     publishLocation: 'Container'
 
-- stage: 'Deploy'
+stages:
+- stage: Deploy
   displayName: 'Deploy the web application'
   dependsOn: Build
   jobs:
   - deployment: Deploy
     pool:
-    vmImage: 'ubuntu-20.04'
-  environment: dev
-  variables:
-  - group: Release
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - download: current
-          artifact: build-output
-        - task: AzureWebApp@1
-          displayName: 'Azure App Service Deploy: website'
-          inputs:
-            azureSubscription: 'ASD Service'
-            appName: '$(ASD-Fit-Gym)'
-            package: '$(Pipeline.Workspace)/build-output/$(buildConfiguration)/*.zip'
-
-# Optional: If you want to collect code coverage reports
-# - script: |
-#     npm test -- --coverage --watchAll=false
-#   workingDirectory: ./FrontEnd
-#   displayName: 'Run tests with code coverage'
+      vmImage: 'ubuntu-20.04'
+    environment: dev
+    variables:
+      - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: build-output
+          - task: AzureWebApp@1
+            displayName: 'Azure App Service Deploy: website'
+            inputs:
+              azureSubscription: 'ASD Service'
+              appName: 'ASD-Fit-Gym'
+              package: '$(Pipeline.Workspace)/build-output/*.zip'
