@@ -72,6 +72,6 @@ stages:
           - task: AzureWebApp@1
             displayName: 'Azure App Service Deploy: gym'
             inputs:
-              azureSubscription: 'Azure subscription 1' # This should match the name of your Azure subscription
+              azureSubscription: 'New ASD' # Use the new service connection name here
               appName: 'gym' # Your App Service name
               package: '$(Pipeline.Workspace)/build-output/*.zip'
