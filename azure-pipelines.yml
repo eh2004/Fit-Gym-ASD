@@ -21,26 +21,26 @@ stages:
     - script: |
         npm install
         npm run build
-      workingDirectory: ./FrontEnd # Make sure the working directory is where package.json exists
+      workingDirectory: ./FrontEnd # Ensure the path is correct for your setup
       displayName: "npm install and build"
 
     # Run the unit tests for TrainerProfile and append to JUnit report
     - script: |
         npm test --watchAll=false
-      workingDirectory: ./FrontEnd # Path to package.json and tests
+      workingDirectory: ./FrontEnd
       displayName: 'Run every unit test'
 
     # Publish the merged JUnit test results
     - task: PublishTestResults@2
       inputs:
-        testResultsFiles: './FrontEnd/junit.xml' # Path to JUnit test result file, matches the output directory in package.json
+        testResultsFiles: './FrontEnd/junit.xml' # Adjust path as needed
         testRunTitle: 'Merged Test Results'
         mergeTestResults: true
 
     # Create a ZIP file of the build output
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: './FrontEnd/dist' # Path to the folder you want to zip
+        rootFolderOrFile: './FrontEnd/dist' # Adjust path as needed
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/build-output.zip'
@@ -70,8 +70,8 @@ stages:
           - download: current
             artifact: build-output
           - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: gym'
+            displayName: 'Azure App Service Deploy: asd-fit-gym-website'
             inputs:
-              azureSubscription: 'New ASD' # Use the new service connection name here
-              appName: 'gym' # Your App Service name
+              azureSubscription: 'New Nee ASD' # Updated service connection name
+              appName: 'asd-fit-gym-website' # Your exact App Service name
               package: '$(Pipeline.Workspace)/build-output/*.zip'
