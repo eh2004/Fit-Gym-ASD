@@ -29,6 +29,11 @@ stages:
       workingDirectory: ./FrontEnd
       displayName: "npm install and build"
 
+    # Copy web.config to the dist folder
+    - script: |
+        cp ./FrontEnd/web.config ./FrontEnd/dist/web.config
+      displayName: "Copy web.config to dist folder"
+
     # Verify directory structure after build
     - script: |
         pwd
