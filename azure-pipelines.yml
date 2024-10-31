@@ -7,6 +7,7 @@ pool:
 variables:
   APP_NAME: 'fitgymasd-ekcge9fqfebydsbr'  # Your Azure App Service exact name
   RESOURCE_GROUP: 'ASDFitGym_group'  # Your Azure resource group name
+  # Ensure PUBLISH_PROFILE is added as a secret in Azure DevOps with the full publish profile XML content
 
 stages:
 - stage: BuildAndDeploy
@@ -75,10 +76,10 @@ stages:
             PUBLISH_USERNAME=$(echo "$PUBLISH_PROFILE" | grep -oP '(?<=userName=")[^"]+')
             PUBLISH_PASSWORD=$(echo "$PUBLISH_PROFILE" | grep -oP '(?<=userPWD=")[^"]+')
             
-            # Deploy using curl with the Kudu API
+            # Use the exact domain with region suffix for deployment
             curl -X POST -u "$PUBLISH_USERNAME:$PUBLISH_PASSWORD" \
                  -F "package=@$(Build.ArtifactStagingDirectory)/app.zip" \
-                 https://fitgymasd-ekcge9fqfebydsbr.scm.azurewebsites.net/api/zipdeploy
+                 https://fitgymasd-ekcge9fqfebydsbr.scm.australiacentral-01.azurewebsites.net/api/zipdeploy
             
             echo "Deployment to Azure App Service complete!"
         env:
