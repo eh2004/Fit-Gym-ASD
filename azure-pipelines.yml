@@ -41,23 +41,32 @@ stages:
       workingDirectory: ./BackEnd
       displayName: "Install Backend dependencies"
 
-    # Verify directory structure after build
-    - script: |
-        pwd
-        ls -R ./FrontEnd
-        ls -R ./BackEnd
-      displayName: "List Directory Structure After Build"
+    # Create a ZIP archive of the Backend directory, including frontend build files
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'  # Path to backend folder with public
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'  # Output zip file path
+        verbose: true
+      displayName: "Archive Backend and Frontend build into ZIP"
 
-    # FTP Upload Backend (including public frontend files) to Azure App Service root directory
+    # Upload the ZIP file to Azure App Service via FTP
     - task: FtpUpload@2
       inputs:
         credentialsOption: 'inputs'
         serverUrl: '$(FTPS_URL)'  # FTPS URL
         username: '$(FTP_USERNAME)'  # FTPS Username
         password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
-        rootDirectory: '$(System.DefaultWorkingDirectory)/BackEnd'  # Path to backend folder with public
-        filePatterns: '**/*'
+        rootDirectory: '$(Build.ArtifactStagingDirectory)'  # Path where ZIP is located
+        filePatterns: 'backend.zip'  # Upload only the ZIP file
         remoteDirectory: '/site/wwwroot'  # Target root directory in App Service
         clean: true  # Clears out the target folder before uploading
         overwrite: true
-      displayName: 'FTP Upload Backend (with Frontend build) to Azure App Service'
+      displayName: 'FTP Upload ZIP to Azure App Service'
+
+    # Unzip the archive on the server using a custom Kudu script
+    - script: |
+        curl -X POST "https://<YOUR_APP_NAME>.scm.azurewebsites.net/api/command" -u "$FTP_USERNAME:$FTP_PASSWORD" \
+        -d '{ "command": "unzip /site/wwwroot/backend.zip -d /site/wwwroot" }'
+      displayName: "Unzip deployment on Azure"
