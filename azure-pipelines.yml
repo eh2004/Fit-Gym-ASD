@@ -6,7 +6,7 @@ pool:
 
 variables:
   FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
-  FTP_USERNAME: 'gym\\$gym'  # FTPS Username (escape `$` with `\\` if required)
+  FTP_USERNAME: 'gym\$gym'  # FTPS Username (escape `$` with `\\` if required)
 
 stages:
 - stage: Build
