@@ -5,9 +5,9 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  FTPS_URL: 'ftps://gym-hkdtbzfbg4fjeyad.canadacentral-01.azurewebsites.net/site/wwwroot'  # Corrected FTPS Endpoint
+  FTPS_URL: 'https://gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net/api/zipdeploy'  # Corrected FTPS Endpoint
   FTP_USERNAME: 'gym\$gym'  # FTPS Username
-  # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
+  # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps for security
 
 stages:
 - stage: BuildAndDeploy
@@ -51,25 +51,22 @@ stages:
         verbose: true
       displayName: "Archive Backend and Frontend build into ZIP"
 
-    # Verify ZIP file contents
-    - script: |
-        echo "Verifying ZIP contents:"
-        unzip -l $(Build.ArtifactStagingDirectory)/backend.zip
-      displayName: "Verify ZIP file contents"
-
     # Deploy the ZIP file to Azure App Service via Kudu API with retry logic
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           RETRIES=5
+          SUCCESS=false
           while [ $RETRIES -gt 0 ]; do
             echo "Attempting deployment via Kudu API..."
             curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
               -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
-              https://gym-hkdtbzfbg4fjeyad.scm.azurewebsites.net/api/zipdeploy
+              "$(FTPS_URL)"
+            
             if [ $? -eq 0 ]; then
               echo "Deployment successful."
+              SUCCESS=true
               break
             else
               echo "Deployment failed. Retrying in 10 seconds..."
@@ -77,7 +74,8 @@ stages:
               sleep 10
             fi
           done
-          if [ $RETRIES -eq 0 ]; then
+          
+          if [ "$SUCCESS" = false ]; then
             echo "Deployment failed after multiple attempts."
             exit 1
           fi
