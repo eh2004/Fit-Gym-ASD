@@ -5,7 +5,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
+  FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.net/site/wwwroot'  # FTPS Endpoint
   FTP_USERNAME: 'gym\$gym'  # FTPS Username
   # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
 
@@ -41,37 +41,38 @@ stages:
       workingDirectory: ./BackEnd
       displayName: "Install Backend dependencies"
 
-    # Create a ZIP archive of the Backend directory, including frontend build files
+    # Create a ZIP archive of the Backend directory, including frontend build files, and exclude unnecessary files
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'  # Path to backend folder with public
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'  # Output zip file path
+        archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
         verbose: true
+        excludeFiles: '**/.zipignore'  # Exclude unnecessary files specified in .zipignore
       displayName: "Archive Backend and Frontend build into ZIP"
 
     # Upload the ZIP file to Azure App Service via FTP
     - task: FtpUpload@2
       inputs:
         credentialsOption: 'inputs'
-        serverUrl: '$(FTPS_URL)'  # FTPS URL
-        username: '$(FTP_USERNAME)'  # FTPS Username
-        password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
-        rootDirectory: '$(Build.ArtifactStagingDirectory)'  # Path where ZIP is located
-        filePatterns: 'backend.zip'  # Upload only the ZIP file
-        remoteDirectory: '/site/wwwroot'  # Target root directory in App Service
-        clean: true  # Clears out the target folder before uploading
+        serverUrl: '$(FTPS_URL)'
+        username: '$(FTP_USERNAME)'
+        password: '$(FTP_PASSWORD)'
+        rootDirectory: '$(Build.ArtifactStagingDirectory)'
+        filePatterns: 'backend.zip'
+        remoteDirectory: '/site/wwwroot'
+        clean: true
         overwrite: true
       displayName: 'FTP Upload ZIP to Azure App Service'
 
-    # Unzip the archive on the server using Kudu API
+    # Unzip the archive and clean up the ZIP file on Azure
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
             -H "Content-Type: application/json" \
-            -d '{ "command": "unzip /site/wwwroot/backend.zip -d /site/wwwroot" }' \
+            -d '{ "command": "unzip -o /site/wwwroot/backend.zip -d /site/wwwroot && rm /site/wwwroot/backend.zip" }' \
             https://gym-hkdtbzfbg4fjeyad.scm.azurewebsites.net/api/command
-      displayName: "Unzip deployment on Azure"
+      displayName: "Unzip and Cleanup on Azure"
