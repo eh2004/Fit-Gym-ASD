@@ -1,22 +1,23 @@
 const express = require('express');
+const path = require('path');
+const cors = require('cors');
 const sequelize = require('./config/database'); // Your Sequelize instance
-const userRoutes = require('./routes/userRoutes'); // Import user routes
+// Import routes
+const userRoutes = require('./routes/userRoutes');
 const customerRoutes = require('./routes/customerRoutes');
 const workoutRoutes = require('./routes/workoutRoutes');
 const setRoutes = require('./routes/setRoutes');
 const exerciseRoutes = require('./routes/exercisesRoutes');
-const trainerRoutes = require('./routes/trainerRoutes'); // Import trainer routes
-const leaderboardRoutes = require('./routes/leaderboardRoutes');// Correct path to your routes file
+const trainerRoutes = require('./routes/trainerRoutes');
+const leaderboardRoutes = require('./routes/leaderboardRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
-const certificateRoutes = require('./routes/certificateRoutes'); // Import certificate routes
+const certificateRoutes = require('./routes/certificateRoutes');
 const measurementRoutes = require('./routes/measurementRoutes');
 const attendanceRoutes = require('./routes/attendanceRoutes');
 
-
 const app = express();
 const PORT = process.env.PORT || 3000;
-const cors = require('cors');
 
 // Enable CORS for all routes
 app.use(cors());
@@ -38,9 +39,11 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', err);
   });
 
-// Register the routes
-app.use('/api', bookingRoutes);
-app.use('/api', userRoutes); // All user routes will be prefixed with /api
+// Serve static files from the frontend's dist folder
+app.use(express.static(path.join(__dirname, '../FrontEnd/dist')));
+
+// Register API routes, prefixed with /api
+app.use('/api', userRoutes);
 app.use('/api', customerRoutes);
 app.use('/api', workoutRoutes);
 app.use('/api', exerciseRoutes);
@@ -48,13 +51,19 @@ app.use('/api', setRoutes);
 app.use('/api', trainerRoutes);
 app.use('/api', leaderboardRoutes);
 app.use('/api', transactionRoutes);
-app.use('/api', certificateRoutes); // Register certificate routes
+app.use('/api', bookingRoutes);
+app.use('/api', certificateRoutes);
 app.use('/api', measurementRoutes);
 app.use('/api', attendanceRoutes);
 
 // Simple route to test the server
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
+app.get('/api/health', (req, res) => {
+  res.send('API is working');
+});
+
+// Catch-all route to serve index.html for any non-API routes (client-side routing support)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../FrontEnd/dist/index.html'));
 });
 
 // Start the server

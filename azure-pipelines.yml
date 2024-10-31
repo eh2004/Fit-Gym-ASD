@@ -7,7 +7,7 @@ pool:
 variables:
   FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
   FTP_USERNAME: 'gym\$gym'  # FTPS Username
-  # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
+  # Ensure FTP_PASSWORD is stored as a secret in Azure DevOps
 
 stages:
 - stage: BuildAndDeploy
@@ -22,34 +22,42 @@ stages:
         versionSpec: "18.x"
       displayName: "Install Node.js"
 
-    # Install NPM dependencies and build
+    # Install frontend dependencies and build
     - script: |
         npm install
         npm run build
       workingDirectory: ./FrontEnd
-      displayName: "npm install and build"
+      displayName: "Install and build Frontend"
 
-    # Copy web.config to the dist folder
+    # Copy built frontend (dist) to backend public directory
     - script: |
-        cp ./FrontEnd/web.config ./FrontEnd/dist/web.config
-      displayName: "Copy web.config to dist folder"
+        mkdir -p ./BackEnd/public
+        cp -r ./FrontEnd/dist/* ./BackEnd/public/
+      displayName: "Copy Frontend build to Backend public directory"
+
+    # Install backend dependencies
+    - script: |
+        npm install
+      workingDirectory: ./BackEnd
+      displayName: "Install Backend dependencies"
 
     # Verify directory structure after build
     - script: |
         pwd
         ls -R ./FrontEnd
+        ls -R ./BackEnd
       displayName: "List Directory Structure After Build"
 
-    # FTP Upload from ./FrontEnd/dist
+    # FTP Upload Backend (including public frontend files) to Azure App Service root directory
     - task: FtpUpload@2
       inputs:
         credentialsOption: 'inputs'
         serverUrl: '$(FTPS_URL)'  # FTPS URL
         username: '$(FTP_USERNAME)'  # FTPS Username
         password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
-        rootDirectory: '$(System.DefaultWorkingDirectory)/FrontEnd/dist'  # Full path to dist folder
+        rootDirectory: '$(System.DefaultWorkingDirectory)/BackEnd'  # Path to backend folder with public
         filePatterns: '**/*'
-        remoteDirectory: '/site/wwwroot'  # Target directory in App Service
+        remoteDirectory: '/site/wwwroot'  # Target root directory in App Service
         clean: true  # Clears out the target folder before uploading
         overwrite: true
-      displayName: 'FTP Upload to Azure App Service'
+      displayName: 'FTP Upload Backend (with Frontend build) to Azure App Service'
