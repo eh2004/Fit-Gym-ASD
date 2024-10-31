@@ -7,7 +7,6 @@ pool:
 variables:
   APP_NAME: 'fitgymasd-ekcge9fqfebydsbr'  # Your Azure App Service exact name
   RESOURCE_GROUP: 'ASDFitGym_group'  # Your Azure resource group name
-  # Ensure PUBLISH_PROFILE is added as a secret in Azure DevOps with the full publish profile XML content
 
 stages:
 - stage: BuildAndDeploy
@@ -16,11 +15,11 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-      # Install Node.js for both frontend and backend
+      # Install Node.js 18 to meet dependency requirements
       - task: NodeTool@0
         inputs:
-          versionSpec: '16.x'
-        displayName: 'Install Node.js'
+          versionSpec: '18.x'  # Updated to Node.js 18
+        displayName: 'Install Node.js 18.x'
 
       # Install backend dependencies
       - script: |
