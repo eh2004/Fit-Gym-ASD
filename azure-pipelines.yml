@@ -65,8 +65,13 @@ stages:
         overwrite: true
       displayName: 'FTP Upload ZIP to Azure App Service'
 
-    # Unzip the archive on the server using a custom Kudu script
-    - script: |
-        curl -X POST "https://gym.scm.azurewebsites.net/api/command" -u "$FTP_USERNAME:$FTP_PASSWORD" \
-        -d '{ "command": "unzip /site/wwwroot/backend.zip -d /site/wwwroot" }'
+    # Unzip the archive on the server using Kudu API
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
+            -H "Content-Type: application/json" \
+            -d '{ "command": "unzip /site/wwwroot/backend.zip -d /site/wwwroot" }' \
+            https://gym-hkdtbzfbg4fjeyad.scm.azurewebsites.net/api/command
       displayName: "Unzip deployment on Azure"
