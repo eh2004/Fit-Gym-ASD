@@ -6,8 +6,8 @@ pool:
 
 variables:
   AZURE_WEB_APP_NAME: 'gym'
-  FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'
-  FTP_USERNAME: 'gym\$gym'
+  KUDU_API_URL: 'https://gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net'
+  FTP_USERNAME: 'gym\$gym'  # Use correct username format
   # Ensure FTP_PASSWORD is stored securely as a secret in Azure DevOps
 
 stages:
@@ -42,31 +42,46 @@ stages:
       workingDirectory: ./BackEnd
       displayName: "Install Backend dependencies"
 
-    # Verify contents of BackEnd directory before FTP upload
-    - script: |
-        echo "Contents of BackEnd directory before upload:"
-        ls -R ./BackEnd
-      displayName: "Verify BackEnd Directory Contents"
-
-    # Deploy files to Azure App Service via FTP
-    - task: FtpUpload@2
+    # Create a ZIP file of the Backend directory (using .zipignore to skip large files)
+    - task: ArchiveFiles@2
       inputs:
-        credentialsOption: 'inputs'
-        serverUrl: '$(FTPS_URL)'
-        username: '$(FTP_USERNAME)'
-        password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
-        rootDirectory: '$(System.DefaultWorkingDirectory)/BackEnd'
-        filePatterns: '**/*'
-        remoteDirectory: '/site/wwwroot'  # Target directory in App Service
-        clean: true  # Clears out the target folder before uploading
-        overwrite: true
-      displayName: 'FTP Upload to Azure App Service'
+        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
+        verbose: true
+        excludeFiles: '**/.zipignore'  # Use .zipignore to exclude unnecessary files
+      displayName: "Create ZIP of Backend and Frontend build output"
 
-    # Verify contents of /site/wwwroot on Azure App Service after deployment
+    # Upload the ZIP file as an artifact
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/backend.zip'
+        artifactName: 'backend'
+        publishLocation: 'Container'
+      displayName: "Publish ZIP as Build Artifact"
+
+    # Deploy the ZIP file to Azure App Service via Kudu API with retry logic
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
-          echo "Checking deployed files on Azure App Service:"
-          curl -u "$FTP_USERNAME:$FTP_PASSWORD" $(KUDU_API_URL)/api/vfs/site/wwwroot/ -s | jq .
-      displayName: "Verify Deployment on Azure App Service"
+          RETRIES=5
+          while [ $RETRIES -gt 0 ]; do
+            curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
+              -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
+              $(KUDU_API_URL)/api/zipdeploy
+            if [ $? -eq 0 ]; then
+              echo "Deployment successful."
+              break
+            else
+              echo "Deployment failed. Retrying..."
+              RETRIES=$((RETRIES - 1))
+              sleep 10
+            fi
+          done
+          if [ $RETRIES -eq 0 ]; then
+            echo "Deployment failed after multiple attempts."
+            exit 1
+          fi
+      displayName: "Deploy ZIP to Azure App Service via Kudu API"
