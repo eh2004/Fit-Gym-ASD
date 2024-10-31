@@ -5,7 +5,8 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  APP_NAME: 'gym-hkdtbzfbg4fjeyad'  # Set your app name
+  FTPS_URL: 'ftps://gym-hkdtbzfbg4fjeyad.canadacentral-01.azurewebsites.net/site/wwwroot'  # Corrected FTPS Endpoint
+  FTP_USERNAME: 'gym\$gym'  # FTPS Username
   # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
 
 stages:
@@ -40,7 +41,7 @@ stages:
       workingDirectory: ./BackEnd
       displayName: "Install Backend dependencies"
 
-    # Create a ZIP archive of the Backend directory, including frontend build files, and exclude unnecessary files
+    # Create a ZIP archive of the Backend directory, including frontend build files
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
@@ -48,21 +49,29 @@ stages:
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
         verbose: true
-        excludeFiles: '**/.zipignore'  # Exclude unnecessary files specified in .zipignore
       displayName: "Archive Backend and Frontend build into ZIP"
 
-    # Deploy the ZIP file to Azure App Service via Kudu API
+    # Deploy the ZIP file to Azure App Service via Kudu API with retry logic
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
-          curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
-            -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
-            https://$(APP_NAME).scm.azurewebsites.net/api/zipdeploy
+          RETRIES=5
+          while [ $RETRIES -gt 0 ]; do
+            curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
+              -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
+              https://gym-hkdtbzfbg4fjeyad.canadacentral-01.azurewebsites.net/api/zipdeploy
+            if [ $? -eq 0 ]; then
+              echo "Deployment successful."
+              break
+            else
+              echo "Deployment failed. Retrying..."
+              RETRIES=$((RETRIES - 1))
+              sleep 10
+            fi
+          done
+          if [ $RETRIES -eq 0 ]; then
+            echo "Deployment failed after multiple attempts."
+            exit 1
+          fi
       displayName: "Deploy ZIP to Azure App Service via Kudu"
-
-    # Optional: Verify deployment and cleanup
-    - script: |
-        echo "Deployment completed successfully."
-        # Add any additional verification or cleanup steps if needed
-      displayName: "Verify and finalize deployment"
