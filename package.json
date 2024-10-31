@@ -8,5 +8,12 @@
     "@testing-library/react": "^16.0.1",
     "express": "^4.21.1",
     "jest-fetch-mock": "^3.0.3"
+  },
+  "scripts": {
+    "start": "node BackEnd/index.js", 
+    "build": "cd FrontEnd && npm install && npm run build" 
+  },
+  "engines": {
+    "node": ">=18.x" 
   }
 }
