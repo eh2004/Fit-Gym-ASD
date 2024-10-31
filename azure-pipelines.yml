@@ -6,7 +6,8 @@ pool:
 
 variables:
   FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
-  FTP_USERNAME: 'gym\$gym'  # FTPS Username (escape `$` with `\\` if required)
+  FTP_USERNAME: 'gym\$gym'  # FTPS Username
+  # Ensure FTP_PASSWORD is set in the Azure DevOps pipeline as a secret variable
 
 stages:
 - stage: Build
@@ -28,22 +29,6 @@ stages:
       workingDirectory: ./FrontEnd # Ensure the path is correct for your setup
       displayName: "npm install and build"
 
-    # Create a ZIP file of the build output
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: './FrontEnd/dist' # Adjust path as needed
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/build-output.zip'
-      displayName: "Create ZIP of build output"
-
-    # Publish the ZIP file as an artifact
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/build-output.zip'
-        artifactName: 'build-output'
-        publishLocation: 'Container'
-
 - stage: Deploy
   displayName: 'Deploy the web application'
   dependsOn: Build
@@ -61,9 +46,9 @@ stages:
         serverUrl: '$(FTPS_URL)'  # FTPS URL
         username: '$(FTP_USERNAME)'  # FTPS Username
         password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
-        rootDirectory: '$(Pipeline.Workspace)/build-output'  # Path to the artifact
+        rootDirectory: './FrontEnd/dist'  # Directly from build output folder
         filePatterns: '**/*'
         remoteDirectory: '/site/wwwroot'  # Target directory in App Service
-        clean: true  # Optional: clears out the target folder before uploading
+        clean: true  # Clears out the target folder before uploading
         overwrite: true
       displayName: 'FTP Upload to Azure App Service'
