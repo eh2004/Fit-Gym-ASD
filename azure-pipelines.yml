@@ -51,6 +51,12 @@ stages:
         verbose: true
       displayName: "Archive Backend and Frontend build into ZIP"
 
+    # Verify ZIP file contents
+    - script: |
+        echo "Verifying ZIP contents:"
+        unzip -l $(Build.ArtifactStagingDirectory)/backend.zip
+      displayName: "Verify ZIP file contents"
+
     # Deploy the ZIP file to Azure App Service via Kudu API with retry logic
     - task: Bash@3
       inputs:
@@ -58,14 +64,15 @@ stages:
         script: |
           RETRIES=5
           while [ $RETRIES -gt 0 ]; do
+            echo "Attempting deployment via Kudu API..."
             curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
               -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
-              https://gym-hkdtbzfbg4fjeyad.canadacentral-01.azurewebsites.net/api/zipdeploy
+              https://gym-hkdtbzfbg4fjeyad.scm.azurewebsites.net/api/zipdeploy
             if [ $? -eq 0 ]; then
               echo "Deployment successful."
               break
             else
-              echo "Deployment failed. Retrying..."
+              echo "Deployment failed. Retrying in 10 seconds..."
               RETRIES=$((RETRIES - 1))
               sleep 10
             fi
