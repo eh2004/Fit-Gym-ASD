@@ -7,7 +7,7 @@ pool:
 variables:
   APP_NAME: 'FitGymASD'  # Your Azure App Service name for both frontend and backend
   RESOURCE_GROUP: 'ASDFitGym_group'  # Your Azure resource group name
-  # Ensure PUBLISH_PROFILE is added as a secret in Azure DevOps with the full publish profile XML content
+  PUBLISH_PROFILE: $(PUBLISH_PROFILE)  # Store the Publish Profile securely in Azure DevOps as a secret
 
 stages:
 - stage: BuildAndDeploy
@@ -65,14 +65,23 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Combined Backend and Frontend for Deployment'
 
-      # Deploy to Azure App Service using Publish Profile via az webapp deploy
+      # Deploy to Azure App Service using Publish Profile via Curl and Kudu API
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
             echo "Starting deployment using Publish Profile..."
-            echo "$PUBLISH_PROFILE" > publishProfile.publishsettings
-            az webapp deploy --resource-group $(RESOURCE_GROUP) --name $(APP_NAME) --src-path $(Build.ArtifactStagingDirectory)/app.zip --publish-profile publishProfile.publishsettings
+            
+            # Extract username and password from the publish profile
+            PUBLISH_USERNAME=$(echo "$PUBLISH_PROFILE" | grep -oP '(?<=userName=")[^"]+')
+            PUBLISH_PASSWORD=$(echo "$PUBLISH_PROFILE" | grep -oP '(?<=userPWD=")[^"]+')
+            
+            # Deploy using curl with the Kudu API
+            curl -X POST -u "$PUBLISH_USERNAME:$PUBLISH_PASSWORD" \
+                 -F "package=@$(Build.ArtifactStagingDirectory)/app.zip" \
+                 https://$APP_NAME.scm.azurewebsites.net/api/zipdeploy
+            
+            echo "Deployment to Azure App Service complete!"
         env:
           PUBLISH_PROFILE: $(PUBLISH_PROFILE)  # Explicitly map the secret as an environment variable
-        displayName: 'Deploy to Azure App Service using Publish Profile'
+        displayName: 'Deploy to Azure App Service using Publish Profile and Curl'
