@@ -6,8 +6,7 @@ pool:
 
 variables:
   AZURE_WEB_APP_NAME: 'gym'
-  KUDU_API_URL: 'https://gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net'
-  AZURE_WEB_APP_PACKAGE_PATH: '$(Build.ArtifactStagingDirectory)/backend.zip'
+  FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'
   FTP_USERNAME: 'gym\$gym'
   # Ensure FTP_PASSWORD is stored securely as a secret in Azure DevOps
 
@@ -43,52 +42,25 @@ stages:
       workingDirectory: ./BackEnd
       displayName: "Install Backend dependencies"
 
-    # Verify contents of BackEnd directory before zipping
+    # Verify contents of BackEnd directory before FTP upload
     - script: |
-        echo "Contents of BackEnd directory before zipping:"
+        echo "Contents of BackEnd directory before upload:"
         ls -R ./BackEnd
       displayName: "Verify BackEnd Directory Contents"
 
-    # Create a ZIP archive of the Backend directory, including frontend build files
-    - task: ArchiveFiles@2
+    # Deploy files to Azure App Service via FTP
+    - task: FtpUpload@2
       inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
-        includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
-        verbose: true
-      displayName: "Archive Backend and Frontend build into ZIP"
-
-    # Verify that ZIP file was created successfully
-    - script: |
-        echo "Contents of the Artifact Staging Directory:"
-        ls -R $(Build.ArtifactStagingDirectory)
-      displayName: "Verify ZIP Creation"
-
-    # Deploy the ZIP file to Azure App Service via Kudu API
-    - task: Bash@3
-      inputs:
-        targetType: 'inline'
-        script: |
-          RETRIES=5
-          while [ $RETRIES -gt 0 ]; do
-            curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
-              -F "package=@$(AZURE_WEB_APP_PACKAGE_PATH)" \
-              $(KUDU_API_URL)/api/zipdeploy
-            if [ $? -eq 0 ]; then
-              echo "Deployment successful."
-              break
-            else
-              echo "Deployment failed. Retrying..."
-              RETRIES=$((RETRIES - 1))
-              sleep 10
-            fi
-          done
-          if [ $RETRIES -eq 0 ]; then
-            echo "Deployment failed after multiple attempts."
-            exit 1
-          fi
-      displayName: "Deploy ZIP to Azure App Service via Kudu API"
+        credentialsOption: 'inputs'
+        serverUrl: '$(FTPS_URL)'
+        username: '$(FTP_USERNAME)'
+        password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
+        rootDirectory: '$(System.DefaultWorkingDirectory)/BackEnd'
+        filePatterns: '**/*'
+        remoteDirectory: '/site/wwwroot'  # Target directory in App Service
+        clean: true  # Clears out the target folder before uploading
+        overwrite: true
+      displayName: 'FTP Upload to Azure App Service'
 
     # Verify contents of /site/wwwroot on Azure App Service after deployment
     - task: Bash@3
@@ -98,4 +70,3 @@ stages:
           echo "Checking deployed files on Azure App Service:"
           curl -u "$FTP_USERNAME:$FTP_PASSWORD" $(KUDU_API_URL)/api/vfs/site/wwwroot/ -s | jq .
       displayName: "Verify Deployment on Azure App Service"
-
