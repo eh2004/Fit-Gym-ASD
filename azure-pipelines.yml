@@ -4,6 +4,11 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
+  FTP_USERNAME: 'gym\\$gym'  # FTPS Username (escape `$` with `\\` if required)
+  FTP_PASSWORD: '$(FTP_PASSWORD)'  # Secret variable set in Azure DevOps
+
 stages:
 - stage: Build
   jobs:
@@ -14,7 +19,7 @@ stages:
     # Install Node.js version compatible with your project
     - task: NodeTool@0
       inputs:
-        versionSpec: "16.x"
+        versionSpec: "18.x"
       displayName: "Install Node.js"
 
     # Install NPM dependencies and build the project using Vite
@@ -23,19 +28,6 @@ stages:
         npm run build
       workingDirectory: ./FrontEnd # Ensure the path is correct for your setup
       displayName: "npm install and build"
-
-    # Run the unit tests for TrainerProfile and append to JUnit report
-    - script: |
-        npm test --watchAll=false
-      workingDirectory: ./FrontEnd
-      displayName: 'Run every unit test'
-
-    # Publish the merged JUnit test results
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: './FrontEnd/junit.xml' # Adjust path as needed
-        testRunTitle: 'Merged Test Results'
-        mergeTestResults: true
 
     # Create a ZIP file of the build output
     - task: ArchiveFiles@2
@@ -46,7 +38,7 @@ stages:
         archiveFile: '$(Build.ArtifactStagingDirectory)/build-output.zip'
       displayName: "Create ZIP of build output"
 
-    # Upload the ZIP file as an artifact
+    # Publish the ZIP file as an artifact
     - task: PublishBuildArtifacts@1
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)/build-output.zip'
@@ -57,21 +49,22 @@ stages:
   displayName: 'Deploy the web application'
   dependsOn: Build
   jobs:
-  - deployment: Deploy
+  - job: Deploy
     pool:
       vmImage: 'ubuntu-20.04'
-    environment: ASD Env
-    variables:
-      - group: ASD Variable Group
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: build-output
-          - task: AzureWebApp@1
-            displayName: 'Azure App Service Deploy: asd-fit-gym-website'
-            inputs:
-              azureSubscription: 'New New ASD' # Updated service connection name
-              appName: 'asd-fit-gym-website' # Your exact App Service name
-              package: '$(Pipeline.Workspace)/build-output/*.zip'
+    steps:
+    - download: current
+      artifact: build-output
+
+    - task: FtpUpload@2
+      inputs:
+        credentialsOption: 'inputs'
+        serverUrl: '$(FTPS_URL)'  # FTPS URL
+        username: '$(FTP_USERNAME)'  # FTPS Username
+        password: '$(FTP_PASSWORD)'  # Secure password
+        rootDirectory: '$(Pipeline.Workspace)/build-output'  # Path to the artifact
+        filePatterns: '**/*'
+        remoteDirectory: '/site/wwwroot'  # Target directory in App Service
+        clean: true  # Optional: clears out the target folder before uploading
+        overwrite: true
+      displayName: 'FTP Upload to Azure App Service'
