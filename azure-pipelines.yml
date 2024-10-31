@@ -7,7 +7,6 @@ pool:
 variables:
   FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
   FTP_USERNAME: 'gym\\$gym'  # FTPS Username (escape `$` with `\\` if required)
-  FTP_PASSWORD: '$(FTP_PASSWORD)'  # Secret variable set in Azure DevOps
 
 stages:
 - stage: Build
@@ -61,7 +60,7 @@ stages:
         credentialsOption: 'inputs'
         serverUrl: '$(FTPS_URL)'  # FTPS URL
         username: '$(FTP_USERNAME)'  # FTPS Username
-        password: '$(FTP_PASSWORD)'  # Secure password
+        password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
         rootDirectory: '$(Pipeline.Workspace)/build-output'  # Path to the artifact
         filePatterns: '**/*'
         remoteDirectory: '/site/wwwroot'  # Target directory in App Service
