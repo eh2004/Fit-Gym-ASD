@@ -7,7 +7,7 @@ pool:
 variables:
   FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
   FTP_USERNAME: 'gym\$gym'  # FTPS Username
-  # Ensure FTP_PASSWORD is stored as a secret in Azure DevOps
+  # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
 
 stages:
 - stage: BuildAndDeploy
@@ -67,6 +67,6 @@ stages:
 
     # Unzip the archive on the server using a custom Kudu script
     - script: |
-        curl -X POST "https://<YOUR_APP_NAME>.scm.azurewebsites.net/api/command" -u "$FTP_USERNAME:$FTP_PASSWORD" \
+        curl -X POST "https://gym.scm.azurewebsites.net/api/command" -u "$FTP_USERNAME:$FTP_PASSWORD" \
         -d '{ "command": "unzip /site/wwwroot/backend.zip -d /site/wwwroot" }'
       displayName: "Unzip deployment on Azure"
