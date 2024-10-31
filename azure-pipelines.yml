@@ -7,7 +7,7 @@ pool:
 variables:
   APP_NAME: 'FitGymASD'  # Your Azure App Service name for both frontend and backend
   RESOURCE_GROUP: 'ASDFitGym_group'  # Your Azure resource group name
-  PUBLISH_PROFILE: $(PUBLISH_PROFILE)  # Publish Profile secret for deployment
+  PUBLISH_PROFILE: $(PUBLISH_PROFILE)  # Store the Publish Profile securely in Azure DevOps as a secret
 
 stages:
 - stage: BuildAndDeploy
@@ -65,11 +65,13 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Combined Backend and Frontend for Deployment'
 
-      # Deploy to Azure App Service using Publish Profile
-      - task: AzureWebApp@1
+      # Deploy to Azure App Service using Publish Profile via Azure CLI
+      - task: AzureCLI@2
         inputs:
-          appName: $(APP_NAME)
-          package: $(Build.ArtifactStagingDirectory)/app.zip
-          publishProfile: $(PUBLISH_PROFILE)
-          customPublishProfile: true
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            echo "Starting deployment using Publish Profile..."
+            echo "$PUBLISH_PROFILE" > publishProfile.publishsettings
+            az webapp deployment source config-zip --resource-group $(RESOURCE_GROUP) --name $(APP_NAME) --src $(Build.ArtifactStagingDirectory)/app.zip
         displayName: 'Deploy to Azure App Service using Publish Profile'
