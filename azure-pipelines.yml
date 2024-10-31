@@ -5,62 +5,32 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  APP_NAME_BACKEND: 'FitGymASD-Backend'  # Azure App Service name for backend
-  APP_NAME_FRONTEND: 'FitGymASD-Frontend'  # Azure App Service name for frontend
+  APP_NAME: 'FitGymASD'  # Your Azure App Service name for both frontend and backend
   RESOURCE_GROUP: 'ASDFitGym_group'  # Your Azure resource group name
-  AZURE_SUBSCRIPTION: 'Azure for Students'  # Your Azure DevOps service connection name
-  BACKEND_START_COMMAND: 'npm start'  # Command to start backend server
-  FRONTEND_BUILD_COMMAND: 'npm run build'  # Command to build frontend
+  AZURE_SUBSCRIPTION: 'Azure for Students'  # Azure DevOps service connection name
+  PUBLISH_PROFILE: $(PUBLISH_PROFILE)  # Store the Publish Profile securely in Azure DevOps as a secret
 
 stages:
-- stage: BuildTestDeploy
+- stage: BuildAndDeploy
   jobs:
-  - job: Backend
+  - job: BuildDeploy
     pool:
       vmImage: ubuntu-latest
     steps:
-      # Install backend dependencies and start
+      # Install Node.js for both frontend and backend
       - task: NodeTool@0
         inputs:
           versionSpec: '16.x'
-        displayName: 'Install Node.js for Backend'
+        displayName: 'Install Node.js'
 
+      # Install backend dependencies
       - script: |
           cd BackEnd
           npm install
           npm install express
-          echo "Starting backend build..."
-        displayName: 'Install and set up backend dependencies'
+        displayName: 'Install Backend Dependencies'
 
-      # Archive the backend code and deploy it to Azure
-      - task: ArchiveFiles@2
-        inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
-        displayName: 'Archive Backend for Deployment'
-
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: $(AZURE_SUBSCRIPTION)
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            echo "Deploying backend..."
-            az webapp deployment source config-zip --resource-group $(RESOURCE_GROUP) --name $(APP_NAME_BACKEND) --src $(Build.ArtifactStagingDirectory)/backend.zip
-        displayName: 'Deploy Backend to Azure App Service'
-
-  - job: Frontend
-    pool:
-      vmImage: ubuntu-latest
-    steps:
       # Install frontend dependencies and run unit tests
-      - task: NodeTool@0
-        inputs:
-          versionSpec: '16.x'
-        displayName: 'Install Node.js for Frontend'
-
       - script: |
           cd FrontEnd
           npm install
@@ -70,7 +40,7 @@ stages:
       # Publish the merged JUnit test results
       - task: PublishTestResults@2
         inputs:
-          testResultsFiles: './FrontEnd/junit.xml'  # Path to JUnit test result file, matches the output directory in package.json
+          testResultsFiles: './FrontEnd/junit.xml'  # Path to JUnit test result file, adjust if needed
           testRunTitle: 'Frontend Unit Test Results'
           mergeTestResults: true
         displayName: 'Publish Unit Test Results'
@@ -79,24 +49,28 @@ stages:
       - script: |
           cd FrontEnd
           npm run build
-          echo "Frontend build complete."
-        displayName: 'Build Frontend with Vite'
+        displayName: 'Build Frontend'
 
-      # Archive the frontend build and deploy it to Azure
+      # Copy frontend build output to backend public directory
+      - script: |
+          mkdir -p BackEnd/public
+          cp -r FrontEnd/dist/* BackEnd/public/
+        displayName: 'Copy Frontend Build to Backend Public Directory'
+
+      # Archive the entire backend (including frontend build files) for deployment
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/FrontEnd/dist'
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
           includeRootFolder: false
           archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
-        displayName: 'Archive Frontend for Deployment'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
+        displayName: 'Archive Combined Backend and Frontend for Deployment'
 
-      - task: AzureCLI@2
+      # Deploy to Azure App Service using Publish Profile
+      - task: AzureWebApp@1
         inputs:
           azureSubscription: $(AZURE_SUBSCRIPTION)
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            echo "Deploying frontend..."
-            az webapp deployment source config-zip --resource-group $(RESOURCE_GROUP) --name $(APP_NAME_FRONTEND) --src $(Build.ArtifactStagingDirectory)/frontend.zip
-        displayName: 'Deploy Frontend to Azure App Service'
+          appName: $(APP_NAME)
+          package: $(Build.ArtifactStagingDirectory)/app.zip
+          publishProfile: $(PUBLISH_PROFILE)
+        displayName: 'Deploy to Azure App Service using Publish Profile'
