@@ -37,9 +37,6 @@ stages:
     pool:
       vmImage: 'ubuntu-20.04'
     steps:
-    - download: current
-      artifact: build-output
-
     - task: FtpUpload@2
       inputs:
         credentialsOption: 'inputs'
