@@ -29,6 +29,10 @@ stages:
       workingDirectory: ./FrontEnd # Ensure the path is correct for your setup
       displayName: "npm install and build"
 
+    # List directory structure to verify output path
+    - script: ls -R ./FrontEnd
+      displayName: "List FrontEnd Directory Structure"
+
 - stage: Deploy
   displayName: 'Deploy the web application'
   dependsOn: Build
