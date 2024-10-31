@@ -65,13 +65,14 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Combined Backend and Frontend for Deployment'
 
-      # Deploy to Azure App Service using Publish Profile via Azure CLI
-      - task: AzureCLI@2
+      # Deploy to Azure App Service using Publish Profile via Bash
+      - task: Bash@3
         inputs:
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
+          targetType: 'inline'
+          script: |
             echo "Starting deployment using Publish Profile..."
             echo "$PUBLISH_PROFILE" > publishProfile.publishsettings
             az webapp deployment source config-zip --resource-group $(RESOURCE_GROUP) --name $(APP_NAME) --src $(Build.ArtifactStagingDirectory)/app.zip
+        env:
+          PUBLISH_PROFILE: $(PUBLISH_PROFILE)  # Explicitly map the secret as an environment variable
         displayName: 'Deploy to Azure App Service using Publish Profile'
