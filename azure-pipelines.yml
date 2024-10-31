@@ -5,9 +5,9 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  FTPS_URL: 'https://gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net/api/zipdeploy'  # Corrected FTPS Endpoint
-  FTP_USERNAME: 'gym\$gym'  # FTPS Username
-  # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps for security
+  KUDU_DEPLOY_URL: 'https://gym-hkdtbzfbg4fjeyad.scm.azurewebsites.net/api/zipdeploy'  # Corrected Kudu deployment URL
+  KUDU_USERNAME: 'gym\$gym'  # Kudu Username
+  # Make sure KUDU_PASSWORD is stored as a secret in Azure DevOps
 
 stages:
 - stage: BuildAndDeploy
@@ -60,9 +60,9 @@ stages:
           SUCCESS=false
           while [ $RETRIES -gt 0 ]; do
             echo "Attempting deployment via Kudu API..."
-            curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
+            curl -X POST -u "$KUDU_USERNAME:$KUDU_PASSWORD" \
               -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
-              "$(FTPS_URL)"
+              "$KUDU_DEPLOY_URL"
             
             if [ $? -eq 0 ]; then
               echo "Deployment successful."
