@@ -5,69 +5,98 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  APP_NAME: 'FitGymASD'  # Your Azure App Service name
+  APP_NAME_BACKEND: 'FitGymASD-Backend'  # Azure App Service name for backend
+  APP_NAME_FRONTEND: 'FitGymASD-Frontend'  # Azure App Service name for frontend
   RESOURCE_GROUP: 'ASDFitGym_group'  # Your Azure resource group name
-  AZURE_SUBSCRIPTION: 'Azure for Students'  # Azure DevOps service connection name for your subscription
+  AZURE_SUBSCRIPTION: 'Azure for Students'  # Your Azure DevOps service connection name
+  BACKEND_START_COMMAND: 'npm start'  # Command to start backend server
+  FRONTEND_BUILD_COMMAND: 'npm run build'  # Command to build frontend
 
 stages:
 - stage: BuildTestDeploy
   jobs:
-  - job: BuildTestDeploy
+  - job: Backend
     pool:
       vmImage: ubuntu-latest
     steps:
-    # Install Node.js version compatible with your project
-    - task: NodeTool@0
-      inputs:
-        versionSpec: "16.x"
-      displayName: "Install Node.js"
+      # Install backend dependencies and start
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js for Backend'
 
-    # Install NPM dependencies and build the frontend project using Vite
-    - script: |
-        npm install
-        npm run build
-      workingDirectory: ./FrontEnd # Make sure the working directory is where package.json exists
-      displayName: "npm install and build"
+      - script: |
+          cd BackEnd
+          npm install
+          npm install express
+          echo "Starting backend build..."
+        displayName: 'Install and set up backend dependencies'
 
-    # Run unit tests for TrainerProfile and append to JUnit report
-    - script: |
-        npm test --watchAll=false
-      workingDirectory: ./FrontEnd # Path to package.json and tests
-      displayName: 'Run every unit test'
+      # Archive the backend code and deploy it to Azure
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/backend.zip'
+        displayName: 'Archive Backend for Deployment'
 
-    # Publish the merged JUnit test results
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFiles: './FrontEnd/junit.xml' # Path to JUnit test result file, matches the output directory in package.json
-        testRunTitle: 'Merged Test Results'
-        mergeTestResults: true
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: $(AZURE_SUBSCRIPTION)
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            echo "Deploying backend..."
+            az webapp deployment source config-zip --resource-group $(RESOURCE_GROUP) --name $(APP_NAME_BACKEND) --src $(Build.ArtifactStagingDirectory)/backend.zip
+        displayName: 'Deploy Backend to Azure App Service'
 
-    # Optional: If you want to collect code coverage reports
-    # - script: |
-    #     npm test -- --coverage --watchAll=false
-    #   workingDirectory: ./FrontEnd
-    #   displayName: 'Run tests with code coverage'
+  - job: Frontend
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+      # Install frontend dependencies and run unit tests
+      - task: NodeTool@0
+        inputs:
+          versionSpec: '16.x'
+        displayName: 'Install Node.js for Frontend'
 
-    # Copy built frontend (dist) to backend public directory
-    - script: |
-        mkdir -p ./BackEnd/public
-        cp -r ./FrontEnd/dist/* ./BackEnd/public/
-      displayName: "Copy Frontend build to Backend public directory"
+      - script: |
+          cd FrontEnd
+          npm install
+          npm test --watchAll=false  # Run unit tests without watch mode
+        displayName: 'Run Frontend Unit Tests'
 
-    # Install backend dependencies
-    - script: |
-        npm install
-      workingDirectory: ./BackEnd
-      displayName: "Install Backend dependencies"
+      # Publish the merged JUnit test results
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFiles: './FrontEnd/junit.xml'  # Path to JUnit test result file, matches the output directory in package.json
+          testRunTitle: 'Frontend Unit Test Results'
+          mergeTestResults: true
+        displayName: 'Publish Unit Test Results'
 
-    # Deploy the App using Azure CLI
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(AZURE_SUBSCRIPTION)
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          echo "Starting deployment to Azure App Service..."
-          az webapp up --name $(APP_NAME) --resource-group $(RESOURCE_GROUP) --runtime "NODE|18-lts" --location "Australia Central"
-          echo "Deployment to Azure App Service complete!"
-      displayName: "Deploy to Azure App Service using Azure CLI"
+      # Build the frontend after tests pass
+      - script: |
+          cd FrontEnd
+          npm run build
+          echo "Frontend build complete."
+        displayName: 'Build Frontend with Vite'
+
+      # Archive the frontend build and deploy it to Azure
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/FrontEnd/dist'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/frontend.zip'
+        displayName: 'Archive Frontend for Deployment'
+
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: $(AZURE_SUBSCRIPTION)
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            echo "Deploying frontend..."
+            az webapp deployment source config-zip --resource-group $(RESOURCE_GROUP) --name $(APP_NAME_FRONTEND) --src $(Build.ArtifactStagingDirectory)/frontend.zip
+        displayName: 'Deploy Frontend to Azure App Service'
