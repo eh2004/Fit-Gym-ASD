@@ -7,47 +7,42 @@ pool:
 variables:
   FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.windows.net/site/wwwroot'  # FTPS Endpoint
   FTP_USERNAME: 'gym\$gym'  # FTPS Username
-  # Ensure FTP_PASSWORD is set in the Azure DevOps pipeline as a secret variable
+  # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
 
 stages:
-- stage: Build
+- stage: BuildAndDeploy
   jobs:
-  - job: Build
+  - job: BuildAndDeploy
     pool:
       vmImage: ubuntu-latest
     steps:
-    # Install Node.js version compatible with your project
+    # Install Node.js
     - task: NodeTool@0
       inputs:
         versionSpec: "18.x"
       displayName: "Install Node.js"
 
-    # Install NPM dependencies and build the project using Vite
+    # Install NPM dependencies and build
     - script: |
         npm install
         npm run build
-      workingDirectory: ./FrontEnd # Ensure the path is correct for your setup
+      workingDirectory: ./FrontEnd
       displayName: "npm install and build"
 
-    # List directory structure to verify output path
-    - script: ls -R ./FrontEnd
-      displayName: "List FrontEnd Directory Structure"
+    # Verify directory structure after build
+    - script: |
+        pwd
+        ls -R ./FrontEnd
+      displayName: "List Directory Structure After Build"
 
-- stage: Deploy
-  displayName: 'Deploy the web application'
-  dependsOn: Build
-  jobs:
-  - job: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    steps:
+    # FTP Upload from ./FrontEnd/dist
     - task: FtpUpload@2
       inputs:
         credentialsOption: 'inputs'
         serverUrl: '$(FTPS_URL)'  # FTPS URL
         username: '$(FTP_USERNAME)'  # FTPS Username
         password: '$(FTP_PASSWORD)'  # Use secret variable from Azure DevOps
-        rootDirectory: './FrontEnd/dist'  # Directly from build output folder
+        rootDirectory: '$(System.DefaultWorkingDirectory)/FrontEnd/dist'  # Full path to dist folder
         filePatterns: '**/*'
         remoteDirectory: '/site/wwwroot'  # Target directory in App Service
         clean: true  # Clears out the target folder before uploading
