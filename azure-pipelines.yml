@@ -5,8 +5,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  FTPS_URL: 'ftps://waws-prod-yt1-067.ftp.azurewebsites.net/site/wwwroot'  # FTPS Endpoint
-  FTP_USERNAME: 'gym\$gym'  # FTPS Username
+  APP_NAME: 'gym-hkdtbzfbg4fjeyad'  # Set your app name
   # Make sure FTP_PASSWORD is stored as a secret in Azure DevOps
 
 stages:
@@ -52,27 +51,18 @@ stages:
         excludeFiles: '**/.zipignore'  # Exclude unnecessary files specified in .zipignore
       displayName: "Archive Backend and Frontend build into ZIP"
 
-    # Upload the ZIP file to Azure App Service via FTP
-    - task: FtpUpload@2
-      inputs:
-        credentialsOption: 'inputs'
-        serverUrl: '$(FTPS_URL)'
-        username: '$(FTP_USERNAME)'
-        password: '$(FTP_PASSWORD)'
-        rootDirectory: '$(Build.ArtifactStagingDirectory)'
-        filePatterns: 'backend.zip'
-        remoteDirectory: '/site/wwwroot'
-        clean: true
-        overwrite: true
-      displayName: 'FTP Upload ZIP to Azure App Service'
-
-    # Unzip the archive and clean up the ZIP file on Azure
+    # Deploy the ZIP file to Azure App Service via Kudu API
     - task: Bash@3
       inputs:
         targetType: 'inline'
         script: |
           curl -X POST -u "$FTP_USERNAME:$FTP_PASSWORD" \
-            -H "Content-Type: application/json" \
-            -d '{ "command": "unzip -o /site/wwwroot/backend.zip -d /site/wwwroot && rm /site/wwwroot/backend.zip" }' \
-            https://gym-hkdtbzfbg4fjeyad.scm.azurewebsites.net/api/command
-      displayName: "Unzip and Cleanup on Azure"
+            -F "package=@$(Build.ArtifactStagingDirectory)/backend.zip" \
+            https://$(APP_NAME).scm.azurewebsites.net/api/zipdeploy
+      displayName: "Deploy ZIP to Azure App Service via Kudu"
+
+    # Optional: Verify deployment and cleanup
+    - script: |
+        echo "Deployment completed successfully."
+        # Add any additional verification or cleanup steps if needed
+      displayName: "Verify and finalize deployment"
