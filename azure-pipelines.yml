@@ -5,10 +5,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  APP_NAME: 'FitGym2' # Updated Azure App Service name
-  RESOURCE_GROUP: 'ASDFitGym_group' # Your Azure resource group name
-  AZURE_SUBSCRIPTION: '62b9d863-30e0-48d2-accb-5cefbcdf6d93' # Updated Subscription ID
-  WEB_APP_DOMAIN: 'fitgym2-baf8c4gabmfwfgdq.scm.canadacentral-01.azurewebsites.net'  # Updated Kudu domain
+  APP_NAME: 'FitGym2'
+  RESOURCE_GROUP: 'ASDFitGym_group'
+  AZURE_SUBSCRIPTION: '62b9d863-30e0-48d2-accb-5cefbcdf6d93'
+  WEB_APP_DOMAIN: 'fitgym2-baf8c4gabmfwfgdq.scm.canadacentral-01.azurewebsites.net'
 
 stages:
 - stage: BuildAndDeploy
@@ -50,10 +50,11 @@ stages:
           npm run build
         displayName: 'Build Frontend'
 
-      # Move frontend build output directly to BackEnd/public (avoiding FrontEnd/dist structure in deployment)
+      # Move frontend build output directly to BackEnd/public without nesting under FrontEnd
       - script: |
+          rm -rf BackEnd/public/*  # Clean up the public folder first
           mkdir -p BackEnd/public
-          cp -r FrontEnd/dist/* BackEnd/public/
+          cp -r FrontEnd/dist/* BackEnd/public/  # Copy dist contents directly into public
         displayName: 'Copy Frontend Build to Backend Public Directory'
 
       # Archive the entire backend (including frontend build files) for deployment
