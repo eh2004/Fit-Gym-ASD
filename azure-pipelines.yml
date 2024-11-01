@@ -50,21 +50,20 @@ stages:
           npm run build
         displayName: 'Build Frontend'
 
-      # Move frontend build output directly to BackEnd/public without nesting under FrontEnd
+      # Copy frontend build output directly to a staging folder for deployment
       - script: |
-          rm -rf BackEnd/public/*  # Clean up the public folder first
-          mkdir -p BackEnd/public
-          cp -r FrontEnd/dist/* BackEnd/public/  # Copy dist contents directly into public
-        displayName: 'Copy Frontend Build to Backend Public Directory'
+          mkdir -p deploy_staging
+          cp -r FrontEnd/dist/* deploy_staging/  # Copy dist contents directly into deploy_staging
+        displayName: 'Prepare Deployment Package'
 
-      # Archive the entire backend (including frontend build files) for deployment
+      # Archive only the contents of deploy_staging for deployment
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/BackEnd'
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/deploy_staging'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
-        displayName: 'Archive Combined Backend and Frontend for Deployment'
+        displayName: 'Archive Frontend Build Files for Deployment'
 
       # Download Publish Profile Secure File
       - task: DownloadSecureFile@1
