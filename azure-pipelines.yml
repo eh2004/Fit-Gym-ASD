@@ -5,10 +5,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  APP_NAME: 'FitGym2'                    # Azure App Service name
-  RESOURCE_GROUP: 'ASDFitGym_group'       # Azure resource group name
-  AZURE_SUBSCRIPTION: '62b9d863-30e0-48d2-accb-5cefbcdf6d93' # Subscription ID
-  WEB_APP_DOMAIN: 'fitgym2-baf8c4gabmfwfgdq.canadacentral-01.azurewebsites.net' # App Service domain
+  APP_NAME: 'FitGym2'                    # Updated Azure App Service name
+  RESOURCE_GROUP: 'ASDFitGym_group'       # Your Azure resource group name
+  AZURE_SUBSCRIPTION: '62b9d863-30e0-48d2-accb-5cefbcdf6d93' # Updated Subscription ID
+  WEB_APP_DOMAIN: 'fitgym2-baf8c4gabmfwfgdq.canadacentral-01.azurewebsites.net' # Updated domain from the screenshot
 
 stages:
 - stage: BuildAndDeploy
@@ -65,10 +65,27 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Combined Backend and Frontend for Deployment'
 
-      # Deploy to Azure App Service using AzureWebApp task
-      - task: AzureWebApp@1
+      # Download Publish Profile Secure File
+      - task: DownloadSecureFile@1
         inputs:
-          azureSubscription: 'ASD FitGym Service'  # The name of your Azure service connection
-          appName: 'FitGym2'                       # Your Azure App Service name
-          package: '$(Build.ArtifactStagingDirectory)/app.zip'
-        displayName: 'Deploy to Azure App Service'
+          secureFile: 'FitGym2.PublishSettings'  # Match the secure file name from the screenshot
+        displayName: 'Download Azure Publish Profile'
+
+      # Deploy to Azure App Service using Publish Profile via Curl and Kudu API
+      - task: Bash@3
+        inputs:
+          targetType: 'inline'
+          script: |
+            echo "Starting deployment using Publish Profile..."
+            
+            # Extract username and password from the publish profile
+            PUBLISH_USERNAME=$(grep -oP '(?<=userName=")[^"]+' $(Agent.TempDirectory)/FitGym2.PublishSettings)
+            PUBLISH_PASSWORD=$(grep -oP '(?<=userPWD=")[^"]+' $(Agent.TempDirectory)/FitGym2.PublishSettings)
+            
+            # Use the exact domain with region suffix for deployment
+            curl -X POST -u "$PUBLISH_USERNAME:$PUBLISH_PASSWORD" \
+                 -F "package=@$(Build.ArtifactStagingDirectory)/app.zip" \
+                 https://${WEB_APP_DOMAIN}/api/zipdeploy
+            
+            echo "Deployment to Azure App Service complete!"
+        displayName: 'Deploy to Azure App Service using Publish Profile and Curl' 
