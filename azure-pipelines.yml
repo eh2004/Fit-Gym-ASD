@@ -5,10 +5,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  APP_NAME: 'FitGym2'                    # Updated Azure App Service name
-  RESOURCE_GROUP: 'ASDFitGym_group'       # Your Azure resource group name
+  APP_NAME: 'FitGym2' # Updated Azure App Service name
+  RESOURCE_GROUP: 'ASDFitGym_group' # Your Azure resource group name
   AZURE_SUBSCRIPTION: '62b9d863-30e0-48d2-accb-5cefbcdf6d93' # Updated Subscription ID
-  WEB_APP_DOMAIN: 'fitgym2-baf8c4gabmfwfgdq.scm.canadacentral-01.azurewebsites.net' # Updated Kudu domain
+  WEB_APP_DOMAIN: 'fitgym2-baf8c4gabmfwfgdq.scm.canadacentral-01.azurewebsites.net'  # Updated Kudu domain
 
 stages:
 - stage: BuildAndDeploy
@@ -50,7 +50,7 @@ stages:
           npm run build
         displayName: 'Build Frontend'
 
-      # Copy frontend build output to backend public directory
+      # Move frontend build output directly to BackEnd/public (avoiding FrontEnd/dist structure in deployment)
       - script: |
           mkdir -p BackEnd/public
           cp -r FrontEnd/dist/* BackEnd/public/
@@ -68,7 +68,7 @@ stages:
       # Download Publish Profile Secure File
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'FitGym2.PublishSettings'  # Match the secure file name 
+          secureFile: 'FitGym2.PublishSettings'
         displayName: 'Download Azure Publish Profile'
 
       # Deploy to Azure App Service using Publish Profile via Curl and Kudu API
@@ -85,7 +85,7 @@ stages:
             # Use the exact Kudu domain for deployment
             curl -X POST -u "$PUBLISH_USERNAME:$PUBLISH_PASSWORD" \
                  -F "package=@$(Build.ArtifactStagingDirectory)/app.zip" \
-                 https://fitgym2-baf8c4gabmfwfgdq.scm.canadacentral-01.azurewebsites.net/api/zipdeploy
+                 https://${WEB_APP_DOMAIN}/api/zipdeploy
             
             echo "Deployment to Azure App Service complete!"
         displayName: 'Deploy to Azure App Service using Publish Profile and Curl'
