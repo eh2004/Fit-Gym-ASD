@@ -76,18 +76,18 @@ stages:
       # Download Publish Profile Secure File
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this is the correct secure file name
+          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this matches the exact name of your secure file in Azure DevOps
         displayName: 'Download Azure Publish Profile'
 
       # Deploy to Azure App Service using AzureWebApp Task (recommended)
       - task: AzureWebApp@1
         inputs:
-          azureSubscription: '$(AZURE_SUBSCRIPTION)'
-          appName: '$(APP_NAME)'
+          azureSubscription: '4dd7f012-7d65-4476-a1ee-84a31ce47b42'
+          appName: 'gym'
           package: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Deploy to Azure App Service using AzureWebApp Task'
 
-      # Deploy to Azure App Service using Publish Profile via Curl (for troubleshooting)
+      # Deploy to Azure App Service using Publish Profile via Curl (fallback method for troubleshooting)
       - task: Bash@3
         inputs:
           targetType: 'inline'
