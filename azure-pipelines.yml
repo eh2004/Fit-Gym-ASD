@@ -6,6 +6,8 @@ pool:
 
 variables:
   WEB_APP_DOMAIN: 'gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net'
+  APP_NAME: 'gym'
+  AZURE_SUBSCRIPTION: '4dd7f012-7d65-4476-a1ee-84a31ce47b42'  # Updated with your Azure subscription ID
 
 stages:
 - stage: BuildAndDeploy
@@ -56,24 +58,40 @@ stages:
       # Archive only the contents of deploy_staging for deployment
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/deploy_staging'
+          rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/deploy_staging'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Frontend Build Files for Deployment'
 
+      # Verify the contents of app.zip
+      - script: |
+          echo "Checking if app.zip exists in staging directory..."
+          ls $(Build.ArtifactStagingDirectory)
+          echo "Contents of app.zip:"
+          unzip -l $(Build.ArtifactStagingDirectory)/app.zip
+        displayName: 'Verify app.zip Contents'
+
       # Download the Publish Profile Secure File
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Use the exact name as shown in your library
+          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this is the exact name of your secure file
         displayName: 'Download Azure Publish Profile'
 
-      # Deploy to Azure App Service using Publish Profile via Curl and Kudu API
+      # Alternative Deployment to Azure App Service (recommended)
+      - task: AzureWebApp@1
+        inputs:
+          azureSubscription: '$(AZURE_SUBSCRIPTION)'
+          appName: '$(APP_NAME)'
+          package: '$(Build.ArtifactStagingDirectory)/app.zip'
+        displayName: 'Deploy to Azure App Service using AzureWebApp Task'
+
+      # Deploy to Azure App Service using Publish Profile via Curl (for troubleshooting)
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            echo "Starting deployment using Publish Profile..."
+            echo "Starting deployment using Publish Profile with Curl..."
             
             # Extract username and password from the publish profile
             PUBLISH_USERNAME=$(grep -oP '(?<=userName=")[^"]+' $(Agent.TempDirectory)/gym.PublishSettingsAS.PublishSettings)
