@@ -60,7 +60,7 @@ stages:
 
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'Gym.PublishSettings'
+          secureFile: 'profile.publishsettings'
         displayName: 'Download Azure Publish Profile'
 
       - task: Bash@3
