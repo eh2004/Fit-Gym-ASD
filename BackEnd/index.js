@@ -40,7 +40,7 @@ sequelize.authenticate()
     console.error('Unable to connect to the database:', err);
   });
 
-// Serve static files from the frontend's public folder
+// Serve static files from the frontend build output (assumed to be in 'public')
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Register API routes, prefixed with /api
@@ -57,12 +57,12 @@ app.use('/api', certificateRoutes);
 app.use('/api', measurementRoutes);
 app.use('/api', attendanceRoutes);
 
-// Simple route to test the server
+// Health check route for the API
 app.get('/api/health', (req, res) => {
   res.send('API is working');
 });
 
-// Catch-all route to serve index.html for any non-API routes (client-side routing support)
+// Catch-all route to serve the frontend's index.html for any non-API routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
