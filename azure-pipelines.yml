@@ -5,9 +5,10 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  WEB_APP_DOMAIN: 'gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net'
   APP_NAME: 'gym'
-  AZURE_SUBSCRIPTION: '4dd7f012-7d65-4476-a1ee-84a31ce47b42'  # Updated with your Azure subscription ID
+  RESOURCE_GROUP: 'gym_group'
+  AZURE_SUBSCRIPTION: '4dd7f012-7d65-4476-a1ee-84a31ce47b42'
+  WEB_APP_DOMAIN: 'gym-hkdtbzfbg4fjeyad.scm.canadacentral-01.azurewebsites.net'
 
 stages:
 - stage: BuildAndDeploy
@@ -16,7 +17,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
-      # Install Node.js 18
+      # Install Node.js 18 to meet dependency requirements
       - task: NodeTool@0
         inputs:
           versionSpec: '18.x'
@@ -58,40 +59,24 @@ stages:
       # Archive only the contents of deploy_staging for deployment
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/deploy_staging'
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/deploy_staging'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Frontend Build Files for Deployment'
 
-      # Verify the contents of app.zip
-      - script: |
-          echo "Checking if app.zip exists in staging directory..."
-          ls $(Build.ArtifactStagingDirectory)
-          echo "Contents of app.zip:"
-          unzip -l $(Build.ArtifactStagingDirectory)/app.zip
-        displayName: 'Verify app.zip Contents'
-
-      # Download the Publish Profile Secure File
+      # Download Publish Profile Secure File
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this is the exact name of your secure file
+          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this is the correct secure file name
         displayName: 'Download Azure Publish Profile'
 
-      # Alternative Deployment to Azure App Service (recommended)
-      - task: AzureWebApp@1
-        inputs:
-          azureSubscription: '$(AZURE_SUBSCRIPTION)'
-          appName: '$(APP_NAME)'
-          package: '$(Build.ArtifactStagingDirectory)/app.zip'
-        displayName: 'Deploy to Azure App Service using AzureWebApp Task'
-
-      # Deploy to Azure App Service using Publish Profile via Curl (for troubleshooting)
+      # Deploy to Azure App Service using Publish Profile via Curl and Kudu API
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            echo "Starting deployment using Publish Profile with Curl..."
+            echo "Starting deployment using Publish Profile..."
             
             # Extract username and password from the publish profile
             PUBLISH_USERNAME=$(grep -oP '(?<=userName=")[^"]+' $(Agent.TempDirectory)/gym.PublishSettingsAS.PublishSettings)
