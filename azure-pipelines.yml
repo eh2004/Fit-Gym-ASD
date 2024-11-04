@@ -65,34 +65,18 @@ stages:
           archiveFile: '$(Build.ArtifactStagingDirectory)/app.zip'
         displayName: 'Archive Frontend Build Files for Deployment'
 
-      # Verify the contents of app.zip
-      - script: |
-          echo "Checking if app.zip exists in staging directory..."
-          ls $(Build.ArtifactStagingDirectory)
-          echo "Contents of app.zip:"
-          unzip -l $(Build.ArtifactStagingDirectory)/app.zip
-        displayName: 'Verify app.zip Contents'
-
       # Download Publish Profile Secure File
       - task: DownloadSecureFile@1
         inputs:
-          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this matches the exact name of your secure file in Azure DevOps
+          secureFile: 'gym.PublishSettingsAS.PublishSettings'  # Ensure this is the correct secure file name
         displayName: 'Download Azure Publish Profile'
 
-      # Deploy to Azure App Service using AzureWebApp Task (recommended)
-      - task: AzureWebApp@1
-        inputs:
-          azureSubscription: '4dd7f012-7d65-4476-a1ee-84a31ce47b42'
-          appName: 'gym'
-          package: '$(Build.ArtifactStagingDirectory)/app.zip'
-        displayName: 'Deploy to Azure App Service using AzureWebApp Task'
-
-      # Deploy to Azure App Service using Publish Profile via Curl (fallback method for troubleshooting)
+      # Deploy to Azure App Service using Publish Profile via Curl and Kudu API
       - task: Bash@3
         inputs:
           targetType: 'inline'
           script: |
-            echo "Starting deployment using Publish Profile with Curl..."
+            echo "Starting deployment using Publish Profile..."
             
             # Extract username and password from the publish profile
             PUBLISH_USERNAME=$(grep -oP '(?<=userName=")[^"]+' $(Agent.TempDirectory)/gym.PublishSettingsAS.PublishSettings)
